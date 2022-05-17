@@ -1,0 +1,40 @@
+button.primary {
+  @apply border-sky-500;
+}
+button.filled.primary {
+  @apply bg-sky-500;
+  @apply text-neutral-800;
+}
+button:not(:disabled).primary {
+  @apply dark:hover:text-black;
+  @apply hover:text-white;
+  @apply hover:bg-sky-500;
+}
+
+button.warn {
+  @apply border-rose-400;
+}
+button.filled.warn {
+  @apply bg-rose-400;
+  @apply text-neutral-800;
+}
+button:not(:disabled).warn {
+  @apply dark:hover:text-black;
+  @apply hover:text-white;
+  @apply hover:bg-rose-500;
+}
+
+button.accent {
+  @apply border-yellow-600;
+}
+button.filled.accent {
+  @apply bg-yellow-500;
+  @apply text-neutral-800;
+}
+button:not(:disabled).accent {
+  @apply dark:hover:text-black;
+  @apply hover:text-white;
+  @apply hover:bg-yellow-600;
+}
+
+
