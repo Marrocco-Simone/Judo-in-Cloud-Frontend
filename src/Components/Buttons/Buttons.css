@@ -1,8 +1,10 @@
 button.primary {
   @apply border-sky-500;
+  @apply disabled:border-neutral-500;
 }
 button.filled.primary {
   @apply bg-sky-500;
+  @apply disabled:bg-neutral-500;
   @apply text-neutral-800;
 }
 button:not(:disabled).primary {
@@ -13,9 +15,11 @@ button:not(:disabled).primary {
 
 button.warn {
   @apply border-rose-400;
+  @apply disabled:border-neutral-500;
 }
 button.filled.warn {
   @apply bg-rose-400;
+  @apply disabled:bg-neutral-500;
   @apply text-neutral-800;
 }
 button:not(:disabled).warn {
@@ -26,9 +30,11 @@ button:not(:disabled).warn {
 
 button.accent {
   @apply border-yellow-600;
+  @apply disabled:border-neutral-500;
 }
 button.filled.accent {
   @apply bg-yellow-500;
+  @apply disabled:bg-neutral-500;
   @apply text-neutral-800;
 }
 button:not(:disabled).accent {
