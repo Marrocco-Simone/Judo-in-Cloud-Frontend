@@ -30,7 +30,9 @@ root.render(
             <div className='text-xl'>Page not found</div>
           } />
         </Route>
-        <Route path='/match-timer' element={<MatchTimer />} />
+        <Route path='/match-timer' element={<MatchTimer />}>
+          <Route path=':matchId' element={<MatchTimer />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
