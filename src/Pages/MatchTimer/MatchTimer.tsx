@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import './match.css';
-import { Params } from './types';
-import { Modal } from './Modal';
-import { ModifyParams } from './ModifyParams';
+import './css/match.css';
+import { Params } from './types/types';
+import { Modal } from './components/Modal';
+import { ModifyParams } from './components/ModifyParams';
 
 /* add line 'window.addEventListener("contextmenu", e => e.preventDefault());' to index.tsx */
 /*

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Params } from './types';
-import './modal.css';
+import { Params } from '../types/types';
+import '../css/modal.css';
 
 export function ModifyParams(props: {
   handleClose: () => void;
