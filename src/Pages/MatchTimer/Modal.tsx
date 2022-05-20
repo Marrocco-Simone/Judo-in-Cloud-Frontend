@@ -18,6 +18,6 @@ export function Modal(props: {
     </>
   );
 
-  const portal_div = document.getElementById('portal')!;
-  return createPortal(element, portal_div);
+  const portalDiv = document.getElementById('portal')!;
+  return createPortal(element, portalDiv);
 }
