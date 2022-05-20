@@ -19,7 +19,6 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<App />}>
-          <Route path='match-timer' element={<MatchTimer />} />
           <Route path='login' element={<LoginPage />} />
           <Route path='manage' element={<CompetitionManagementPage />} />
           <Route path='athletes' element={<AthletesPage />} />
@@ -31,6 +30,7 @@ root.render(
             <div className='text-xl'>Page not found</div>
           } />
         </Route>
+        <Route path='/match-timer' element={<MatchTimer />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

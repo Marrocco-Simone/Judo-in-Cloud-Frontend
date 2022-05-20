@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="segnapunti.css">
+    <title>Tabellone</title>
+</head>
+<body>
+<div class="wrapper">
+    <div class="half-colored-background"></div>
+    <div class="grid-container">
+        <!-- top row -->
+        <div id="info-button-container">
+            <button class="orange" id="info-button">Info</button>
+        </div>
+        <div id="gs-symbol">GS</div>
+        <div id="match-timer" class="seems-like-button">01:20</div>
+        <div id="current-tournament-container">
+            <button class="white" id="current-tournament-button">
+                Cadetti U66 M
+                <div class="seems-like-button orange">Modifica Parametri</div> 
+            </button>
+        </div>
+        <!-- score row -->
+        <div class="shido-flexbox" id="red-shido">
+            <img class="shido-img" src="shido-yellow.png" alt="1 shido">
+            <img class="shido-img" src="shido-yellow.png" alt="2 shido">
+            <img class="shido-img" src="shido-red.png"    alt="3 shido" hidden>
+        </div>
+        <div class="score-point" id="red-ippon"  >1</div>
+        <div class="score-point" id="red-wazaari">0</div>
+        <div class="score-point" id="white-ippon">0</div>
+        <div class="score-point" id="white-wazaari">1</div>
+        <div class="shido-flexbox" id="white-shido">
+            <img class="shido-img" src="shido-yellow.png" alt="1 shido">
+            <img class="shido-img" src="shido-yellow.png" alt="2 shido">
+            <img class="shido-img" src="shido-red.png"    alt="3 shido">
+        </div>
+        <!-- text row -->
+        <div class="score-text" id="red-shido-text">1 Shido</div>
+        <div class="score-text" id="red-ippon-text">Ippon</div>
+        <div class="score-text" id="red-wazaari-text">Waza-Ari</div>
+        <div class="score-text" id="white-ippon-text">Ippon</div>
+        <div class="score-text" id="white-wazaari-text">Waza-Ari</div>
+        <div class="score-text" id="white-shido-text">Hansoku Make</div>
+        <!-- osae-komi row -->
+        <div class="osk-bar" id="red-osk-bar" style="--width: 80"></div>
+        <div class="seems-like-button"  id="osk-timer" >12</div>
+        <div class="osk-bar" id="white-osk-bar" style="--width: 30"></div>
+        <!-- name row -->
+        <div class="name-row-flexbox">
+            <div class="athlete-name" id="red-name">Mario Rossi</div>
+            <div class="athlete-club" id="red-club">Judo Roma</div>
+            <div class="vertical-black-line"></div>
+            <div class="athlete-name" id="white-name">Giuseppe Esposito</div>
+            <div class="athlete-club" id="white-club">Judo Napoli</div>
+        </div>
+        <!-- <div class="name-row-flexbox">
+            <div id="winner-sign">Winner</div>
+            <div id="winner-name">Giuseppe Esposito</div>
+            <div id="send-match-data-container">
+                <button id="send-match-data" class="orange">Conferma e Invia</button>
+            </div>
+        </div> -->
+    </div>
+</div>
+</body>
+</html>
