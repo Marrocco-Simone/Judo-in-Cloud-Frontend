@@ -12,7 +12,7 @@
   outline: 0.5vh solid black;
   position: fixed;
   width: 45%;
-  height: 60%;
+  height: 75%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -50,7 +50,7 @@
 }
 
 .input-description {
-  font-size: 5vh;
+  font-size: 3vh;
   width: 60%;
 }
 
@@ -61,16 +61,17 @@
 }
 
 .timer-input {
+  border: 1px solid black;
   font-size: 3.5vh;
   text-align: center;
 }
 
 .timer-input[type='number'] {
-  width: 40%;
+  width: 62%;
 }
 
 .timer-input[type='number'].input-minute {
-  width: 20%;
+  width: 30%;
 }
 
 /* info text */

@@ -244,7 +244,7 @@ export default function MatchTimer() {
       const tasto = keyboardShortcuts[field].translate || field;
       const name = keyboardShortcuts[field].name.padEnd(25, ' ');
       kbInfoElem.push(
-        <span>
+        <span key={name}>
           {name}: {tasto}
         </span>
       );
@@ -651,7 +651,7 @@ export default function MatchTimer() {
         <div id='winner-sign'>Winner</div>
         <div id='winner-name'>{winnerName}</div>
         <div id='send-match-data-container'>
-          <button id='timer-button send-match-data' className='orange'>
+          <button id='send-match-data' className='timer-button orange'>
             Conferma e Invia
           </button>
         </div>

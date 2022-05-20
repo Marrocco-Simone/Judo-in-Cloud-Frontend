@@ -32,7 +32,7 @@ export function ModifyParams(props: {
     return (
       <input
         type='number'
-        className='.timer-input'
+        className='timer-input'
         value={num}
         onChange={(e) => {
           const value = Number(e.target.value);
@@ -47,7 +47,7 @@ export function ModifyParams(props: {
     return (
       <input
         type='number'
-        className='.timer-input input-minute'
+        className='timer-input input-minute'
         value={num}
         onChange={(e) => {
           const value = Number(e.target.value);
@@ -123,7 +123,7 @@ export function ModifyParams(props: {
           {getInputNumberField(wazaariOskTime, setWazaariOskTime)}
         </div>
       </label>
-      <button className='orange' type='submit' form='params-form'>
+      <button className='timer-button orange' type='submit' form='params-form'>
         Salva
       </button>
     </form>
