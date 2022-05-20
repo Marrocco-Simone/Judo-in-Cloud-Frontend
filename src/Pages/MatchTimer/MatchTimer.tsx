@@ -12,67 +12,67 @@ import { ModifyParams } from './ModifyParams';
     fix timers https:// stackoverflow.com/questions/29971898/how-to-create-an-accurate-timer-in-javascript
     aggiungere debouncing nel moodle dei parametri
     unire funzioni getInputNumberField e getInputMinuteField in ModifyParamsModal.tsx
-    modificare osk_timer_button in un div anziche' un button
-    qualcosa in UI per indicare che match_timer e' in pausa
+    modificare oskTimer_button in un div anziche' un button
+    qualcosa in UI per indicare che matchTimer e' in pausa
     invio vincitore
     se gs finisce, modal per segnare il vincitore
     animazione apertura e chiusura modal
-    In GS, se scatta Osk match_timer si ferma al wazaari (ma osk_timer continua correttamente fino a ippon)
+    In GS, se scatta Osk matchTimer si ferma al wazaari (ma oskTimer continua correttamente fino a ippon)
     premere i button li mette in focus e perdo le key shortcut
 */
 
-const refresh_rate = 200;
-const index_to_name = ['none', 'red', 'white'];
-const name_to_index = { none: 0, red: 1, white: 2 };
-const shido_to_lose = 3;
+const refreshRate = 200;
+const indexToName = ['none', 'red', 'white'];
+const nameToIndex = { none: 0, red: 1, white: 2 };
+const shidoToLose = 3;
 
 export default function MatchTimer() {
   // should be in props
   const category = 'Cadetti U66 M';
-  const red_name = 'Mario Rossi';
-  const red_club = 'Judo Kodokan Roma';
-  const white_name = 'Giuseppe Esposito';
-  const white_club = 'Judo Club Napoli';
+  const redName = 'Mario Rossi';
+  const redClub = 'Judo Kodokan Roma';
+  const whiteName = 'Giuseppe Esposito';
+  const whiteClub = 'Judo Club Napoli';
 
   // initial value from props
-  const [ippon_to_win, setIpponToWin] = useState(1);
-  const [wazaari_to_win, setWazaariToWin] = useState(2);
-  const [total_time, setTotalTime] = useState(240);
-  const [gs_time, setGsTime] = useState(Infinity);
-  const [ippon_osk_time, setIpponOskTime] = useState(20);
-  const [wazaari_osk_time, setWazaariOskTime] = useState(10);
+  const [ipponToWin, setIpponToWin] = useState(1);
+  const [wazaariToWin, setWazaariToWin] = useState(2);
+  const [totalTime, setTotalTime] = useState(240);
+  const [gsTime, setGsTime] = useState(Infinity);
+  const [ipponOskTime, setIpponOskTime] = useState(20);
+  const [wazaariOskTime, setWazaariOskTime] = useState(10);
   function setParams(params: Params) {
-    setIpponToWin(params.ippon_to_win);
-    setWazaariToWin(params.wazaari_to_win);
-    setTotalTime(params.total_time);
-    setGsTime(params.gs_time);
-    setIpponOskTime(params.ippon_osk_time);
-    setWazaariOskTime(params.wazaari_osk_time);
+    setIpponToWin(params.ipponToWin);
+    setWazaariToWin(params.wazaariToWin);
+    setTotalTime(params.totalTime);
+    setGsTime(params.gsTime);
+    setIpponOskTime(params.ipponOskTime);
+    setWazaariOskTime(params.wazaariOskTime);
   }
 
   // value could be present in props (recover match)
-  const [match_timer, setMatchTimer] = useState(total_time); // same props value of total_time or the recovered time
-  const [is_match_on, setIsMatchOn] = useState(false);
-  const [is_gs, setIsGs] = useState(false);
+  const [matchTimer, setMatchTimer] = useState(totalTime); // same props value of totalTime or the recovered time
+  const [isMatchOn, setIsMatchOn] = useState(false);
+  const [isGs, setIsGs] = useState(false);
 
-  const [red_ippon, setRedIppon] = useState(0);
-  const [red_wazaari, setRedWazaari] = useState(0);
-  const [red_shido, setRedShido] = useState(0);
-  const [white_ippon, setWhiteIppon] = useState(0);
-  const [white_wazaari, setWhiteWazaari] = useState(0);
-  const [white_shido, setWhiteShido] = useState(0);
+  const [redIppon, setRedIppon] = useState(0);
+  const [redWazaari, setRedWazaari] = useState(0);
+  const [redShido, setRedShido] = useState(0);
+  const [whiteIppon, setWhiteIppon] = useState(0);
+  const [whiteWazaari, setWhiteWazaari] = useState(0);
+  const [whiteShido, setWhiteShido] = useState(0);
 
-  const [osk_timer, setOskTimer] = useState(0);
-  const [is_osk_on, setIsOskOn] = useState(false);
-  const [osk_owner, setOskOwner] = useState(0);
-  const [last_osk_timer, setLastOskTimer] = useState(0);
-  const [has_osk_wazaari_given, setHasOskWazaariGiven] = useState(false);
-  const [has_osk_ippon_given, setHasOskIpponGiven] = useState(false);
+  const [oskTimer, setOskTimer] = useState(0);
+  const [isOskOn, setIsOskOn] = useState(false);
+  const [oskOwner, setOskOwner] = useState(0);
+  const [lastOskTimer, setLastOskTimer] = useState(0);
+  const [hasOskWazaariGiven, setHasOskWazaariGiven] = useState(false);
+  const [hasOskIpponGiven, setHasOskIpponGiven] = useState(false);
 
   const [winner, setWinner] = useState(0);
 
-  const [is_info_open, setIsInfoOpen] = useState(false);
-  const [is_modify_open, setIsModifyOpen] = useState(false);
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [isModifyOpen, setIsModifyOpen] = useState(false);
 
   // // // // // /Points Functions // // // // // // // // // // // // // // // // // // // // // // // // // //
 
@@ -80,85 +80,85 @@ export default function MatchTimer() {
   function increasePoint(
     increase: number,
     point: number,
-    max_point: number,
+    maxPoint: number,
     setPoint: (cb: (prevPoint: number) => number) => void
   ) {
     if (increase === 0) return;
     if (point + increase < 0) return;
-    if (point + increase > max_point) return;
+    if (point + increase > maxPoint) return;
     setPoint((prevPoint) => prevPoint + increase);
   }
 
   const increaseRedIppon = (increase: number) =>
-    increasePoint(increase, red_ippon, ippon_to_win, setRedIppon);
+    increasePoint(increase, redIppon, ipponToWin, setRedIppon);
   const increaseRedWazaari = (increase: number) =>
-    increasePoint(increase, red_wazaari, wazaari_to_win, setRedWazaari);
+    increasePoint(increase, redWazaari, wazaariToWin, setRedWazaari);
   const increaseRedShido = (increase: number) =>
-    increasePoint(increase, red_shido, shido_to_lose, setRedShido);
+    increasePoint(increase, redShido, shidoToLose, setRedShido);
   const increaseWhiteIppon = (increase: number) =>
-    increasePoint(increase, white_ippon, ippon_to_win, setWhiteIppon);
+    increasePoint(increase, whiteIppon, ipponToWin, setWhiteIppon);
   const increaseWhiteWazaari = (increase: number) =>
-    increasePoint(increase, white_wazaari, wazaari_to_win, setWhiteWazaari);
+    increasePoint(increase, whiteWazaari, wazaariToWin, setWhiteWazaari);
   const increaseWhiteShido = (increase: number) =>
-    increasePoint(increase, white_shido, shido_to_lose, setWhiteShido);
+    increasePoint(increase, whiteShido, shidoToLose, setWhiteShido);
 
   function playMatchTimer() {
-    if (!is_match_on) setLastOskTimer(0);
+    if (!isMatchOn) setLastOskTimer(0);
     setIsMatchOn((prec) => !prec);
   }
 
   function playOskTimer() {
     // Sonomama
-    if (osk_timer > 0) setIsOskOn((prec) => !prec);
+    if (oskTimer > 0) setIsOskOn((prec) => !prec);
   }
 
   function startOsk(athlete: 'red' | 'white') {
     setIsOskOn(true);
-    setOskOwner(name_to_index[athlete]);
+    setOskOwner(nameToIndex[athlete]);
     setLastOskTimer(0);
   }
 
   function endOsk() {
-    setLastOskTimer(osk_timer);
+    setLastOskTimer(oskTimer);
     setIsOskOn(false);
-    setOskOwner(name_to_index.none);
+    setOskOwner(nameToIndex.none);
     setHasOskIpponGiven(false);
     setHasOskWazaariGiven(false);
     setOskTimer(-0.2);
   }
 
   function switchOskOwner(athlete: 'red' | 'white') {
-    const old_owner = index_to_name[osk_owner];
-    if (index_to_name[osk_owner] === athlete) return;
-    if (has_osk_ippon_given) {
-      if (old_owner === 'red') {
+    const oldOwner = indexToName[oskOwner];
+    if (indexToName[oskOwner] === athlete) return;
+    if (hasOskIpponGiven) {
+      if (oldOwner === 'red') {
         increaseWhiteIppon(1);
         increaseRedIppon(-1);
       }
-      if (old_owner === 'white') {
+      if (oldOwner === 'white') {
         increaseRedIppon(1);
         increaseWhiteIppon(-1);
       }
-    } else if (has_osk_wazaari_given) {
-      if (old_owner === 'red') {
+    } else if (hasOskWazaariGiven) {
+      if (oldOwner === 'red') {
         increaseWhiteWazaari(1);
         increaseRedWazaari(-1);
       }
-      if (old_owner === 'white') {
+      if (oldOwner === 'white') {
         increaseRedWazaari(1);
         increaseWhiteWazaari(-1);
       }
     }
-    setOskOwner(name_to_index[athlete]);
+    setOskOwner(nameToIndex[athlete]);
   }
 
   function manageOskFromArrowKey(athlete: 'red' | 'white') {
-    if (!is_osk_on) startOsk(athlete);
+    if (!isOskOn) startOsk(athlete);
     else switchOskOwner(athlete);
   }
 
   // // // // // /Keyboard shortcuts// // // // // // // // // // // // // // // // // // // // // // // // // //
-  const keyboard_shortcuts: {
+  const keyboardShortcuts: {
     [key: string]: {
       name: string;
       setFunction: () => void;
@@ -234,22 +234,22 @@ export default function MatchTimer() {
   function keyboardEventShortcuts(e: React.KeyboardEvent<HTMLDivElement>) {
     if (e.repeat) return;
     const code = e.code.replace('Key', '');
-    if (keyboard_shortcuts[code]) keyboard_shortcuts[code].setFunction();
+    if (keyboardShortcuts[code]) keyboardShortcuts[code].setFunction();
   }
 
-  /** write keyboard_shortcuts in a readable format */
+  /** write keyboardShortcuts in a readable format */
   function getKeyboardShortcutInfo() {
-    const kb_info_elem = [];
-    for (const field in keyboard_shortcuts) {
-      const tasto = keyboard_shortcuts[field].translate || field;
-      const name = keyboard_shortcuts[field].name.padEnd(25, ' ');
-      kb_info_elem.push(
+    const kbInfoElem = [];
+    for (const field in keyboardShortcuts) {
+      const tasto = keyboardShortcuts[field].translate || field;
+      const name = keyboardShortcuts[field].name.padEnd(25, ' ');
+      kbInfoElem.push(
         <span>
           {name}: {tasto}
         </span>
       );
     }
-    return kb_info_elem;
+    return kbInfoElem;
   }
 
   // // // // // /TOP ROW// // // // // // // // // // // // // // // // // // // // // // // // // //
@@ -270,7 +270,7 @@ export default function MatchTimer() {
         >
           Info
         </button>
-        {is_info_open && (
+        {isInfoOpen && (
           <Modal handleClose={handleClose(setIsInfoOpen)}>
             <div className='info'>{getKeyboardShortcutInfo()}</div>
           </Modal>
@@ -290,19 +290,19 @@ export default function MatchTimer() {
           {category}
           {<div className='seems-like-button orange'>Modifica Parametri</div>}
         </button>
-        {is_modify_open && (
+        {isModifyOpen && (
           <Modal handleClose={handleClose(setIsModifyOpen)}>
             <ModifyParams
               handleClose={handleClose(setIsModifyOpen)}
-              match_timer={match_timer}
+              matchTimer={matchTimer}
               setMatchTimer={setMatchTimer}
               params={{
-                ippon_to_win,
-                wazaari_to_win,
-                total_time,
-                gs_time,
-                ippon_osk_time,
-                wazaari_osk_time,
+                ipponToWin,
+                wazaariToWin,
+                totalTime,
+                gsTime,
+                ipponOskTime,
+                wazaariOskTime,
               }}
               setParams={setParams}
             ></ModifyParams>
@@ -314,55 +314,55 @@ export default function MatchTimer() {
 
   /** start timer. if it gets below zero, match ends and maybe golden score starts */
   useEffect(() => {
-    if (is_match_on) {
+    if (isMatchOn) {
       setTimeout(() => {
         // activate golden score
-        if (match_timer < 0) {
+        if (matchTimer < 0) {
           setMatchTimer(0.6); // a little bit extra or the timer will need to be double started after gs
-          if (!is_osk_on) setIsGs(true);
+          if (!isOskOn) setIsGs(true);
           setIsMatchOn(false);
         }
 
         // golden scoore is finished
-        if (is_gs && match_timer > gs_time) return setIsMatchOn(false);
+        if (isGs && matchTimer > gsTime) return setIsMatchOn(false);
 
         // continue timer
-        if (is_gs) {
+        if (isGs) {
           setMatchTimer(
-            (prev_timer) =>
-              Math.trunc((prev_timer + refresh_rate / 1000) * 10) / 10
+            (prevTimer) =>
+              Math.trunc((prevTimer + refreshRate / 1000) * 10) / 10
           );
         } else {
           setMatchTimer(
-            (prev_timer) =>
-              Math.trunc((prev_timer - refresh_rate / 1000) * 10) / 10
+            (prevTimer) =>
+              Math.trunc((prevTimer - refreshRate / 1000) * 10) / 10
           );
         }
-      }, refresh_rate);
+      }, refreshRate);
     }
-  }, [match_timer, is_match_on]);
+  }, [matchTimer, isMatchOn]);
 
   /** check if golden score is needed when match ends */
   useEffect(() => {
     // if both are even, the golden score will start
-    if (is_gs && red_ippon === white_ippon && red_wazaari === white_wazaari) {
+    if (isGs && redIppon === whiteIppon && redWazaari === whiteWazaari) {
       return;
     }
 
     setIsGs(false);
-    if (red_ippon > white_ippon) return setWinner(name_to_index.red);
-    if (red_ippon < white_ippon) return setWinner(name_to_index.white);
-    if (red_wazaari > white_wazaari) return setWinner(name_to_index.red);
-    if (red_wazaari < white_wazaari) return setWinner(name_to_index.white);
-  }, [is_gs]);
+    if (redIppon > whiteIppon) return setWinner(nameToIndex.red);
+    if (redIppon < whiteIppon) return setWinner(nameToIndex.white);
+    if (redWazaari > whiteWazaari) return setWinner(nameToIndex.red);
+    if (redWazaari < whiteWazaari) return setWinner(nameToIndex.white);
+  }, [isGs]);
 
-  /** convert math_timer seconds in a nice format */
+  /** convert mathTimer seconds in a nice format */
   function getMatchTimer() {
-    const min = Math.trunc(match_timer / 60);
-    const sec = Math.trunc(match_timer % 60);
-    const min_string = min < 10 ? `0${min}` : `${min}`;
-    const sec_string = sec < 10 ? `0${sec}` : `${sec}`;
-    const timer_string = `${min_string}:${sec_string}`;
+    const min = Math.trunc(matchTimer / 60);
+    const sec = Math.trunc(matchTimer % 60);
+    const minString = min < 10 ? `0${min}` : `${min}`;
+    const secString = sec < 10 ? `0${sec}` : `${sec}`;
+    const timerString = `${minString}:${secString}`;
 
     return (
       <div id='match-timer-container'>
@@ -371,7 +371,7 @@ export default function MatchTimer() {
           id='match-timer-button'
           onClick={() => playMatchTimer()}
         >
-          {timer_string}
+          {timerString}
         </button>
       </div>
     );
@@ -382,44 +382,44 @@ export default function MatchTimer() {
   /** returns the value given from the mouse */
   function getScoreIncrease(e: React.MouseEvent) {
     e.preventDefault();
-    const MOUSE_CLICKS = [
-      'LEFT_CLICK',
-      'MIDDLE_CLICK',
-      'RIGHT_CLICK',
+    const MOUSECLICKS = [
+      'LEFTCLICK',
+      'MIDDLECLICK',
+      'RIGHTCLICK',
       'ERROR',
       'ERROR',
     ];
-    if (MOUSE_CLICKS[e.button] === 'LEFT_CLICK') return 1;
-    if (MOUSE_CLICKS[e.button] === 'RIGHT_CLICK') return -1;
+    if (MOUSECLICKS[e.button] === 'LEFTCLICK') return 1;
+    if (MOUSECLICKS[e.button] === 'RIGHTCLICK') return -1;
     return 0;
   }
 
   /** check if someone wins for score assignment */
   useEffect(() => {
-    let winner = name_to_index.none;
-    if (red_ippon === ippon_to_win) winner = name_to_index.red;
-    if (red_wazaari === wazaari_to_win) winner = name_to_index.red;
-    if (white_shido === shido_to_lose) winner = name_to_index.red;
-    if (is_gs && (red_ippon > white_ippon || red_wazaari > white_wazaari)) {
-      winner = name_to_index.red;
+    let winner = nameToIndex.none;
+    if (redIppon === ipponToWin) winner = nameToIndex.red;
+    if (redWazaari === wazaariToWin) winner = nameToIndex.red;
+    if (whiteShido === shidoToLose) winner = nameToIndex.red;
+    if (isGs && (redIppon > whiteIppon || redWazaari > whiteWazaari)) {
+      winner = nameToIndex.red;
     }
 
-    if (white_ippon === ippon_to_win) winner = name_to_index.white;
-    if (white_wazaari === wazaari_to_win) winner = name_to_index.white;
-    if (red_shido === shido_to_lose) winner = name_to_index.white;
-    if (is_gs && (white_ippon > red_ippon || white_wazaari > red_wazaari)) {
-      winner = name_to_index.white;
+    if (whiteIppon === ipponToWin) winner = nameToIndex.white;
+    if (whiteWazaari === wazaariToWin) winner = nameToIndex.white;
+    if (redShido === shidoToLose) winner = nameToIndex.white;
+    if (isGs && (whiteIppon > redIppon || whiteWazaari > redWazaari)) {
+      winner = nameToIndex.white;
     }
 
-    if (winner != name_to_index.none) setIsMatchOn(false);
+    if (winner !== nameToIndex.none) setIsMatchOn(false);
     setWinner(winner);
   }, [
-    red_ippon,
-    red_wazaari,
-    red_shido,
-    white_ippon,
-    white_wazaari,
-    white_shido,
+    redIppon,
+    redWazaari,
+    redShido,
+    whiteIppon,
+    whiteWazaari,
+    whiteShido,
   ]);
 
   function getScoreRow() {
@@ -430,13 +430,13 @@ export default function MatchTimer() {
           id='red-shido'
           onMouseDown={(e) => increaseRedShido(getScoreIncrease(e))}
         >
-          {red_shido > 0 && (
+          {redShido > 0 && (
             <img className='shido-img' src='shido-yellow.png' alt='1 shido' />
           )}
-          {red_shido > 1 && (
+          {redShido > 1 && (
             <img className='shido-img' src='shido-yellow.png' alt='2 shido' />
           )}
-          {red_shido > 2 && (
+          {redShido > 2 && (
             <img className='shido-img' src='shido-red.png' alt='3 shido' />
           )}
         </div>
@@ -445,41 +445,41 @@ export default function MatchTimer() {
           id='red-ippon'
           onMouseDown={(e) => increaseRedIppon(getScoreIncrease(e))}
         >
-          {red_ippon}
+          {redIppon}
         </div>
         <div
           className='score-point'
           id='red-wazaari'
           onMouseDown={(e) => increaseRedWazaari(getScoreIncrease(e))}
         >
-          {red_wazaari}
+          {redWazaari}
         </div>
         <div
           className='score-point'
           id='white-ippon'
           onMouseDown={(e) => increaseWhiteIppon(getScoreIncrease(e))}
         >
-          {white_ippon}
+          {whiteIppon}
         </div>
         <div
           className='score-point'
           id='white-wazaari'
           onMouseDown={(e) => increaseWhiteWazaari(getScoreIncrease(e))}
         >
-          {white_wazaari}
+          {whiteWazaari}
         </div>
         <div
           className='shido-flexbox'
           id='white-shido'
           onMouseDown={(e) => increaseWhiteShido(getScoreIncrease(e))}
         >
-          {white_shido > 0 && (
+          {whiteShido > 0 && (
             <img className='shido-img' src='shido-yellow.png' alt='1 shido' />
           )}
-          {white_shido > 1 && (
+          {whiteShido > 1 && (
             <img className='shido-img' src='shido-yellow.png' alt='2 shido' />
           )}
-          {white_shido > 2 && (
+          {whiteShido > 2 && (
             <img className='shido-img' src='shido-red.png' alt='3 shido' />
           )}
         </div>
@@ -491,7 +491,7 @@ export default function MatchTimer() {
     return (
       <>
         <div className='score-text' id='red-shido-text'>
-          {red_shido === shido_to_lose ? 'Hansuko Make' : `${red_shido} Shido`}
+          {redShido === shidoToLose ? 'Hansuko Make' : `${redShido} Shido`}
         </div>
         <div className='score-text' id='red-ippon-text'>
           Ippon
@@ -506,9 +506,9 @@ export default function MatchTimer() {
           Waza-Ari
         </div>
         <div className='score-text' id='white-shido-text'>
-          {white_shido === shido_to_lose
+          {whiteShido === shidoToLose
             ? 'Hansuko Make'
-            : `${white_shido} Shido`}
+            : `${whiteShido} Shido`}
         </div>
       </>
     );
@@ -518,44 +518,44 @@ export default function MatchTimer() {
 
   /** start osk timer. if it's over the time for wazaari, it assigns it to the osk holder. if it's over the time for ippon, it stops the timer, remove the wazaari and assings ippon to the winner */
   useEffect(() => {
-    if (is_osk_on) {
+    if (isOskOn) {
       setTimeout(() => {
-        if (!has_osk_wazaari_given && osk_timer > wazaari_osk_time) {
-          if (osk_owner === name_to_index.red) {
+        if (!hasOskWazaariGiven && oskTimer > wazaariOskTime) {
+          if (oskOwner === nameToIndex.red) {
             setRedWazaari((prevWaz) => prevWaz + 1);
           }
-          if (osk_owner === name_to_index.white) {
+          if (oskOwner === nameToIndex.white) {
             setWhiteWazaari((prevWaz) => prevWaz + 1);
           }
           setHasOskWazaariGiven(true);
         }
 
-        if (!has_osk_ippon_given && osk_timer > ippon_osk_time) {
-          if (osk_owner === name_to_index.red) {
+        if (!hasOskIpponGiven && oskTimer > ipponOskTime) {
+          if (oskOwner === nameToIndex.red) {
             setRedIppon((prevWaz) => prevWaz + 1);
             setRedWazaari((prevWaz) => prevWaz - 1);
           }
-          if (osk_owner === name_to_index.white) {
+          if (oskOwner === nameToIndex.white) {
             setWhiteIppon((prevWaz) => prevWaz + 1);
             setWhiteWazaari((prevWaz) => prevWaz - 1);
           }
           setHasOskIpponGiven(true);
         }
 
-        if (osk_timer < ippon_osk_time) {
-          setOskTimer((prev_timer) => prev_timer + refresh_rate / 1000);
+        if (oskTimer < ipponOskTime) {
+          setOskTimer((prevTimer) => prevTimer + refreshRate / 1000);
         }
-      }, refresh_rate);
+      }, refreshRate);
     }
-  }, [osk_timer, is_osk_on]);
+  }, [oskTimer, isOskOn]);
 
   /** decide what to show on the osaekomi bar side: start, my bar, buttons to end or switch */
   function getOskBar(athlete: 'red' | 'white') {
-    if (osk_timer <= 0) {
+    if (oskTimer <= 0) {
       return (
         <div className='osk-buttons'>
           <button
-            className='timer-button start_osk orange'
+            className='timer-button startOsk orange'
             onClick={() => startOsk(athlete)}
           >
             Inizia OsaeKomi
@@ -564,14 +564,14 @@ export default function MatchTimer() {
       );
     }
 
-    if (osk_owner === name_to_index[athlete]) {
+    if (oskOwner === nameToIndex[athlete]) {
       return (
         <div
           className='osk-bar'
           id={`${athlete}-osk-bar`}
           style={
             {
-              '--width': (osk_timer / ippon_osk_time) * 100,
+              '--width': (oskTimer / ipponOskTime) * 100,
             } as React.CSSProperties
           }
         />
@@ -596,21 +596,21 @@ export default function MatchTimer() {
   /** decide whether to show the osaekomi timer or not */
   function getOskTimer() {
     let elem = null;
-    if (osk_timer > 0) {
+    if (oskTimer > 0) {
       elem = (
         <button
           className='timer-button black'
           id='osk-timer-button'
           onClick={() => playOskTimer()}
         >
-          {Math.trunc(osk_timer)}
+          {Math.trunc(oskTimer)}
         </button>
       );
     }
-    if (last_osk_timer !== 0) {
+    if (lastOskTimer !== 0) {
       elem = (
         <button className='timer-button black' id='osk-timer-button'>
-          {Math.trunc(last_osk_timer)}
+          {Math.trunc(lastOskTimer)}
         </button>
       );
     }
@@ -621,35 +621,35 @@ export default function MatchTimer() {
 
   /** decide whether to show the names or the winner name */
   function getNameRow() {
-    const default_row = (
+    const defaultRow = (
       <div className='name-row-flexbox'>
         <div className='athlete-name' id='red-name'>
-          {red_name}
+          {redName}
         </div>
         <div className='athlete-club' id='red-club'>
-          {red_club}
+          {redClub}
         </div>
         <div className='vertical-black-line'></div>
         <div className='athlete-name' id='white-name'>
-          {white_name}
+          {whiteName}
         </div>
         <div className='athlete-club' id='white-club'>
-          {white_club}
+          {whiteClub}
         </div>
       </div>
     );
 
     const getWinnerName = () => {
-      if (winner === name_to_index.none) return 'ERROR';
-      if (winner === name_to_index.red) return red_name;
-      if (winner === name_to_index.white) return white_name;
+      if (winner === nameToIndex.none) return 'ERROR';
+      if (winner === nameToIndex.red) return redName;
+      if (winner === nameToIndex.white) return whiteName;
     };
-    const winner_name = getWinnerName();
+    const winnerName = getWinnerName();
 
-    const winner_row = (
+    const winnerRow = (
       <div className='name-row-flexbox'>
         <div id='winner-sign'>Winner</div>
-        <div id='winner-name'>{winner_name}</div>
+        <div id='winner-name'>{winnerName}</div>
         <div id='send-match-data-container'>
           <button id='timer-button send-match-data' className='orange'>
             Conferma e Invia
@@ -658,8 +658,8 @@ export default function MatchTimer() {
       </div>
     );
 
-    if (!winner) return default_row;
-    return winner_row;
+    if (!winner) return defaultRow;
+    return winnerRow;
   }
 
   // // // // // /RETURN// // // // // // // // // // // // // // // // // // // // // // // // // //
@@ -675,7 +675,7 @@ export default function MatchTimer() {
       <div className='grid-container'>
         {/* top row */}
         {getInfoButton()}
-        <div id='gs-symbol'>{is_gs && 'GS'}</div>
+        <div id='gs-symbol'>{isGs && 'GS'}</div>
         {getMatchTimer()}
         {getModifyParamsButton()}
 
