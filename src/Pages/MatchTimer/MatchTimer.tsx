@@ -31,7 +31,7 @@ export default function MatchTimer() {
   const category = 'Cadetti U66 M';
   const red_name = 'Mario Rossi';
   const red_club = 'Judo Kodokan Roma';
-  const white_name = 'Giuseppe Gennaro Esposito';
+  const white_name = 'Giuseppe Esposito';
   const white_club = 'Judo Club Napoli';
 
   // initial value from props
@@ -378,6 +378,7 @@ export default function MatchTimer() {
 
   /** returns the value given from the mouse */
   function getScoreIncrease(e: React.MouseEvent) {
+    e.preventDefault();
     const MOUSE_CLICKS = [
       'LEFT_CLICK',
       'MIDDLE_CLICK',
@@ -652,6 +653,7 @@ export default function MatchTimer() {
       className='wrapper'
       tabIndex={0}
       onKeyDown={(e) => keyboardEventShortcuts(e)}
+      onContextMenu={(e) => e.preventDefault()}
     >
       <div className='half-colored-background'></div>
       <div className='grid-container'>
