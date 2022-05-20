@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import './css/match.css';
-import { Params } from './types/types';
+import { MatchData, Params } from './types/types';
 import { Modal } from './components/Modal';
 import { ModifyParams } from './components/ModifyParams';
+import { apiGet } from '../../Services/Api/api';
 
 /* add line 'window.addEventListener("contextmenu", e => e.preventDefault());' to index.tsx */
 /*
@@ -13,12 +15,13 @@ import { ModifyParams } from './components/ModifyParams';
     aggiungere debouncing nel moodle dei parametri
     unire funzioni getInputNumberField e getInputMinuteField in ModifyParamsModal.tsx
     modificare oskTimer_button in un div anziche' un button
-    qualcosa in UI per indicare che matchTimer e' in pausa
+    qualcosa in UI per indicare che matchTimer e' in pausa (metterlo giallo on rosso off)
     invio vincitore
     se gs finisce, modal per segnare il vincitore
     animazione apertura e chiusura modal
     In GS, se scatta Osk matchTimer si ferma al wazaari (ma oskTimer continua correttamente fino a ippon)
     premere i button li mette in focus e perdo le key shortcut
+    controllare quando GS e' infinito
 */
 
 const refreshRate = 200;
@@ -28,11 +31,11 @@ const shidoToLose = 3;
 
 export default function MatchTimer() {
   // should be in props
-  const category = 'Cadetti U66 M';
-  const redName = 'Mario Rossi';
-  const redClub = 'Judo Kodokan Roma';
-  const whiteName = 'Giuseppe Esposito';
-  const whiteClub = 'Judo Club Napoli';
+  const [categoryName, setCategoryName] = useState('Amichevole');
+  const [redName, setRedName] = useState('Atleta Rosso');
+  const [redClub, setRedClub] = useState('');
+  const [whiteName, setWhiteName] = useState('Atleta Bianco');
+  const [whiteClub, setWhiteClub] = useState('');
 
   // initial value from props
   const [ipponToWin, setIpponToWin] = useState(1);
@@ -49,6 +52,29 @@ export default function MatchTimer() {
     setIpponOskTime(params.ipponOskTime);
     setWazaariOskTime(params.wazaariOskTime);
   }
+
+  // get params
+  const { matchId } = useParams();
+  React.useEffect(() => {
+    if (!matchId) return; // amichevole, usiamo i valori di default
+    apiGet(`v1/match/${matchId}`).then((matchData: MatchData) => {
+      if (!matchData) return;
+      setCategoryName(matchData.category_name);
+      setRedName(`${matchData.red_athlete.surname} ${matchData.red_athlete.name}`);
+      setRedClub(matchData.red_athlete.club);
+      setWhiteName(`${matchData.white_athlete.surname} ${matchData.white_athlete.name}`);
+      setWhiteClub(matchData.white_athlete.club);
+      setParams({
+        ipponToWin: matchData.params.ippon_to_win,
+        wazaariToWin: matchData.params.wazaari_to_win,
+        totalTime: matchData.params.match_time,
+        gsTime: matchData.params.supplemental_match_time,
+        ipponOskTime: matchData.params.ippon_timer,
+        wazaariOskTime: matchData.params.wazaari_timer,
+      });
+      setMatchTimer(matchData.params.match_time);
+    });
+  }, [matchId]);
 
   // value could be present in props (recover match)
   const [matchTimer, setMatchTimer] = useState(totalTime); // same props value of totalTime or the recovered time
@@ -287,7 +313,7 @@ export default function MatchTimer() {
           id='current-tournament-button'
           onClick={() => setIsModifyOpen(true)}
         >
-          {category}
+          {categoryName}
           {<div className='seems-like-button orange'>Modifica Parametri</div>}
         </button>
         {isModifyOpen && (
@@ -413,14 +439,7 @@ export default function MatchTimer() {
 
     if (winner !== nameToIndex.none) setIsMatchOn(false);
     setWinner(winner);
-  }, [
-    redIppon,
-    redWazaari,
-    redShido,
-    whiteIppon,
-    whiteWazaari,
-    whiteShido,
-  ]);
+  }, [redIppon, redWazaari, redShido, whiteIppon, whiteWazaari, whiteShido]);
 
   function getScoreRow() {
     return (
@@ -506,9 +525,7 @@ export default function MatchTimer() {
           Waza-Ari
         </div>
         <div className='score-text' id='white-shido-text'>
-          {whiteShido === shidoToLose
-            ? 'Hansuko Make'
-            : `${whiteShido} Shido`}
+          {whiteShido === shidoToLose ? 'Hansuko Make' : `${whiteShido} Shido`}
         </div>
       </>
     );
