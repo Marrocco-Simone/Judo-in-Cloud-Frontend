@@ -1,39 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import './css/match.css';
 import { MatchData, Params } from './types/types';
 import { Modal } from './components/Modal';
 import { ModifyParams } from './components/ModifyParams';
-import { apiGet } from '../../Services/Api/api';
+import { apiGet, apiPost } from '../../Services/Api/api';
 
 /* add line 'window.addEventListener("contextmenu", e => e.preventDefault());' to index.tsx */
 /*
-    TODOS:
-    reusable modal info e form
-    custom modal scroll -> in reusable modal info
-    fix timers https:// stackoverflow.com/questions/29971898/how-to-create-an-accurate-timer-in-javascript
-    aggiungere debouncing nel moodle dei parametri
-    unire funzioni getInputNumberField e getInputMinuteField in ModifyParamsModal.tsx
-    modificare oskTimer_button in un div anziche' un button
-    qualcosa in UI per indicare che matchTimer e' in pausa (metterlo giallo on rosso off)
-    invio vincitore
-    se gs finisce, modal per segnare il vincitore
-    animazione apertura e chiusura modal
-    In GS, se scatta Osk matchTimer si ferma al wazaari (ma oskTimer continua correttamente fino a ippon)
-    premere i button li mette in focus e perdo le key shortcut
-    controllare quando GS e' infinito
+  TODOS:
+  reusable modal info e form
+  custom modal scroll -> in reusable modal info
+  fix timers https:// stackoverflow.com/questions/29971898/how-to-create-an-accurate-timer-in-javascript
+  aggiungere debouncing nel moodle dei parametri
+  unire funzioni getInputNumberField e getInputMinuteField in ModifyParamsModal.tsx
+  modificare oskTimer_button in un div anziche' un button
+  qualcosa in UI per indicare che matchTimer e' in pausa (metterlo giallo on rosso off)
+  invio vincitore
+  se gs finisce, modal per segnare il vincitore
+  animazione apertura e chiusura modal
+  In GS, se scatta Osk matchTimer si ferma al wazaari (ma oskTimer continua correttamente fino a ippon)
+  analogo problema con l'osaekomi se il bloccante ha gia' un wazaari (si ferma a 10 secondi, ma osk continua fino a ippon)
+  premere i button li mette in focus e perdo le key shortcut
+  controllare quando GS e' infinito cosa viene stampato
+  impedire che si possano modificare i parametri con cose negative nel form
+  swal di errore se si da' la vittoria ad entrambi
+  se avvio l'osaekomi parte anche il match timer
+  dare hansoku make non vuol dire perdere direttamente ma da' ippon all'altro (che poi vince)
+  modo diretto per dare hansoku make
 */
 
 const refreshRate = 200;
-const indexToName = ['none', 'red', 'white'];
-const nameToIndex = { none: 0, red: 1, white: 2 };
 const shidoToLose = 3;
 
+type Athlete = 'none' | 'red' | 'white';
+
 export default function MatchTimer() {
+  // for redirect
+  const navigate = useNavigate();
+
   // should be in props
   const [categoryName, setCategoryName] = useState('Amichevole');
+  const [redId, setRedId] = useState('');
   const [redName, setRedName] = useState('Atleta Rosso');
   const [redClub, setRedClub] = useState('');
+  const [whiteId, setWhiteId] = useState('');
   const [whiteName, setWhiteName] = useState('Atleta Bianco');
   const [whiteClub, setWhiteClub] = useState('');
 
@@ -60,9 +71,15 @@ export default function MatchTimer() {
     apiGet(`v1/match/${matchId}`).then((matchData: MatchData) => {
       if (!matchData) return;
       setCategoryName(matchData.category_name);
-      setRedName(`${matchData.red_athlete.surname} ${matchData.red_athlete.name}`);
+      setRedId(matchData.red_athlete._id);
+      setRedName(
+        `${matchData.red_athlete.surname} ${matchData.red_athlete.name}`
+      );
       setRedClub(matchData.red_athlete.club);
-      setWhiteName(`${matchData.white_athlete.surname} ${matchData.white_athlete.name}`);
+      setWhiteId(matchData.white_athlete._id);
+      setWhiteName(
+        `${matchData.white_athlete.surname} ${matchData.white_athlete.name}`
+      );
       setWhiteClub(matchData.white_athlete.club);
       setParams({
         ipponToWin: matchData.params.ippon_to_win,
@@ -73,6 +90,7 @@ export default function MatchTimer() {
         wazaariOskTime: matchData.params.wazaari_timer,
       });
       setMatchTimer(matchData.params.match_time);
+      apiPost(`v1/match/${matchId}`, { is_started: true });
     });
   }, [matchId]);
 
@@ -90,12 +108,12 @@ export default function MatchTimer() {
 
   const [oskTimer, setOskTimer] = useState(0);
   const [isOskOn, setIsOskOn] = useState(false);
-  const [oskOwner, setOskOwner] = useState(0);
+  const [oskOwner, setOskOwner] = useState<Athlete>('none');
   const [lastOskTimer, setLastOskTimer] = useState(0);
   const [hasOskWazaariGiven, setHasOskWazaariGiven] = useState(false);
   const [hasOskIpponGiven, setHasOskIpponGiven] = useState(false);
 
-  const [winner, setWinner] = useState(0);
+  const [winner, setWinner] = useState<Athlete>('none');
 
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isModifyOpen, setIsModifyOpen] = useState(false);
@@ -138,24 +156,24 @@ export default function MatchTimer() {
     if (oskTimer > 0) setIsOskOn((prec) => !prec);
   }
 
-  function startOsk(athlete: 'red' | 'white') {
+  function startOsk(athlete: Athlete) {
     setIsOskOn(true);
-    setOskOwner(nameToIndex[athlete]);
+    setOskOwner(athlete);
     setLastOskTimer(0);
   }
 
   function endOsk() {
     setLastOskTimer(oskTimer);
     setIsOskOn(false);
-    setOskOwner(nameToIndex.none);
+    setOskOwner('none');
     setHasOskIpponGiven(false);
     setHasOskWazaariGiven(false);
     setOskTimer(-0.2);
   }
 
-  function switchOskOwner(athlete: 'red' | 'white') {
-    const oldOwner = indexToName[oskOwner];
-    if (indexToName[oskOwner] === athlete) return;
+  function switchOskOwner(athlete: Athlete) {
+    const oldOwner = oskOwner;
+    if (oskOwner === athlete) return;
     if (hasOskIpponGiven) {
       if (oldOwner === 'red') {
         increaseWhiteIppon(1);
@@ -175,10 +193,10 @@ export default function MatchTimer() {
         increaseWhiteWazaari(-1);
       }
     }
-    setOskOwner(nameToIndex[athlete]);
+    setOskOwner(athlete);
   }
 
-  function manageOskFromArrowKey(athlete: 'red' | 'white') {
+  function manageOskFromArrowKey(athlete: Athlete) {
     if (!isOskOn) startOsk(athlete);
     else switchOskOwner(athlete);
   }
@@ -376,10 +394,10 @@ export default function MatchTimer() {
     }
 
     setIsGs(false);
-    if (redIppon > whiteIppon) return setWinner(nameToIndex.red);
-    if (redIppon < whiteIppon) return setWinner(nameToIndex.white);
-    if (redWazaari > whiteWazaari) return setWinner(nameToIndex.red);
-    if (redWazaari < whiteWazaari) return setWinner(nameToIndex.white);
+    if (redIppon > whiteIppon) return setWinner('red');
+    if (redIppon < whiteIppon) return setWinner('white');
+    if (redWazaari > whiteWazaari) return setWinner('red');
+    if (redWazaari < whiteWazaari) return setWinner('white');
   }, [isGs]);
 
   /** convert mathTimer seconds in a nice format */
@@ -422,23 +440,23 @@ export default function MatchTimer() {
 
   /** check if someone wins for score assignment */
   useEffect(() => {
-    let winner = nameToIndex.none;
-    if (redIppon === ipponToWin) winner = nameToIndex.red;
-    if (redWazaari === wazaariToWin) winner = nameToIndex.red;
-    if (whiteShido === shidoToLose) winner = nameToIndex.red;
+    let newWinner: Athlete = 'none';
+    if (redIppon === ipponToWin) newWinner = 'red';
+    if (redWazaari === wazaariToWin) newWinner = 'red';
+    if (whiteShido === shidoToLose) newWinner = 'red';
     if (isGs && (redIppon > whiteIppon || redWazaari > whiteWazaari)) {
-      winner = nameToIndex.red;
+      newWinner = 'red';
     }
 
-    if (whiteIppon === ipponToWin) winner = nameToIndex.white;
-    if (whiteWazaari === wazaariToWin) winner = nameToIndex.white;
-    if (redShido === shidoToLose) winner = nameToIndex.white;
+    if (whiteIppon === ipponToWin) newWinner = 'white';
+    if (whiteWazaari === wazaariToWin) newWinner = 'white';
+    if (redShido === shidoToLose) newWinner = 'white';
     if (isGs && (whiteIppon > redIppon || whiteWazaari > redWazaari)) {
-      winner = nameToIndex.white;
+      newWinner = 'white';
     }
 
-    if (winner !== nameToIndex.none) setIsMatchOn(false);
-    setWinner(winner);
+    if (newWinner !== 'none') setIsMatchOn(false);
+    setWinner(newWinner);
   }, [redIppon, redWazaari, redShido, whiteIppon, whiteWazaari, whiteShido]);
 
   function getScoreRow() {
@@ -538,21 +556,21 @@ export default function MatchTimer() {
     if (isOskOn) {
       setTimeout(() => {
         if (!hasOskWazaariGiven && oskTimer > wazaariOskTime) {
-          if (oskOwner === nameToIndex.red) {
+          if (oskOwner === 'red') {
             setRedWazaari((prevWaz) => prevWaz + 1);
           }
-          if (oskOwner === nameToIndex.white) {
+          if (oskOwner === 'white') {
             setWhiteWazaari((prevWaz) => prevWaz + 1);
           }
           setHasOskWazaariGiven(true);
         }
 
         if (!hasOskIpponGiven && oskTimer > ipponOskTime) {
-          if (oskOwner === nameToIndex.red) {
+          if (oskOwner === 'red') {
             setRedIppon((prevWaz) => prevWaz + 1);
             setRedWazaari((prevWaz) => prevWaz - 1);
           }
-          if (oskOwner === nameToIndex.white) {
+          if (oskOwner === 'white') {
             setWhiteIppon((prevWaz) => prevWaz + 1);
             setWhiteWazaari((prevWaz) => prevWaz - 1);
           }
@@ -567,7 +585,7 @@ export default function MatchTimer() {
   }, [oskTimer, isOskOn]);
 
   /** decide what to show on the osaekomi bar side: start, my bar, buttons to end or switch */
-  function getOskBar(athlete: 'red' | 'white') {
+  function getOskBar(athlete: Athlete) {
     if (oskTimer <= 0) {
       return (
         <div className='osk-buttons'>
@@ -581,7 +599,7 @@ export default function MatchTimer() {
       );
     }
 
-    if (oskOwner === nameToIndex[athlete]) {
+    if (oskOwner === athlete) {
       return (
         <div
           className='osk-bar'
@@ -657,9 +675,9 @@ export default function MatchTimer() {
     );
 
     const getWinnerName = () => {
-      if (winner === nameToIndex.none) return 'ERROR';
-      if (winner === nameToIndex.red) return redName;
-      if (winner === nameToIndex.white) return whiteName;
+      if (winner === 'none') return 'ERROR';
+      if (winner === 'red') return redName;
+      if (winner === 'white') return whiteName;
     };
     const winnerName = getWinnerName();
 
@@ -668,15 +686,43 @@ export default function MatchTimer() {
         <div id='winner-sign'>Winner</div>
         <div id='winner-name'>{winnerName}</div>
         <div id='send-match-data-container'>
-          <button id='send-match-data' className='timer-button orange'>
-            Conferma e Invia
+          <button
+            id='send-match-data'
+            className='timer-button orange'
+            onClick={() => {
+              if (!matchId) return; // amichevole
+              if (winner === 'none') return;
+              apiPost(`v1/match/${matchId}`, getVictoryData()).then(() =>
+                navigate('/tournaments')
+              );
+            }}
+          >
+            {matchId ? 'Conferma e Invia' : 'Concludi'}
           </button>
         </div>
       </div>
     );
 
-    if (!winner) return defaultRow;
+    if (winner === 'none') return defaultRow;
     return winnerRow;
+  }
+
+  function getVictoryData() {
+    const body = {
+      winner_athlete: winner === 'red' ? redId : whiteId,
+      is_over: true,
+      is_started: true,
+      match_scores: {
+        final_time: Math.floor(matchTimer),
+        white_ippon: whiteIppon,
+        white_wazaari: whiteWazaari,
+        white_penalties: whiteShido,
+        red_ippon: redIppon,
+        red_wazaari: redWazaari,
+        red_penalties: redShido,
+      },
+    };
+    return body;
   }
 
   // // // // // /RETURN// // // // // // // // // // // // // // // // // // // // // // // // // //
