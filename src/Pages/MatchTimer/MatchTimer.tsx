@@ -65,7 +65,7 @@ export default function MatchTimer() {
   }
 
   // get params
-  const { matchId } = useParams();
+  let { matchId } = useParams();
   React.useEffect(() => {
     if (!matchId) return; // amichevole, usiamo i valori di default
     apiGet(`v1/match/${matchId}`).then((matchData: MatchData) => {
@@ -102,7 +102,7 @@ export default function MatchTimer() {
         setWhiteShido(matchScores.white_penalties);
       } else setMatchTimer(matchData.params.match_time); // if match is new, full timer
       apiPost(`v1/match/${matchId}`, { is_started: true });
-    });
+    }).catch(() => { matchId=''; });
   }, [matchId]);
 
   // value could be present in props (recover match)
