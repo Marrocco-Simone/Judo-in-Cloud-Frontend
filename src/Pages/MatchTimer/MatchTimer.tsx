@@ -479,13 +479,13 @@ export default function MatchTimer() {
           onMouseDown={(e) => increaseRedShido(getScoreIncrease(e))}
         >
           {redShido > 0 && (
-            <img className='shido-img' src='shido-yellow.png' alt='1 shido' />
+            <img className='shido-img' src='/shido-yellow.png' alt='1 shido' />
           )}
           {redShido > 1 && (
-            <img className='shido-img' src='shido-yellow.png' alt='2 shido' />
+            <img className='shido-img' src='/shido-yellow.png' alt='2 shido' />
           )}
           {redShido > 2 && (
-            <img className='shido-img' src='shido-red.png' alt='3 shido' />
+            <img className='shido-img' src='/shido-red.png' alt='3 shido' />
           )}
         </div>
         <div
@@ -522,13 +522,13 @@ export default function MatchTimer() {
           onMouseDown={(e) => increaseWhiteShido(getScoreIncrease(e))}
         >
           {whiteShido > 0 && (
-            <img className='shido-img' src='shido-yellow.png' alt='1 shido' />
+            <img className='shido-img' src='/shido-yellow.png' alt='1 shido' />
           )}
           {whiteShido > 1 && (
-            <img className='shido-img' src='shido-yellow.png' alt='2 shido' />
+            <img className='shido-img' src='/shido-yellow.png' alt='2 shido' />
           )}
           {whiteShido > 2 && (
-            <img className='shido-img' src='shido-red.png' alt='3 shido' />
+            <img className='shido-img' src='/shido-red.png' alt='3 shido' />
           )}
         </div>
       </>
