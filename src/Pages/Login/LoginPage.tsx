@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import OutlinedButton from '../../Components/Buttons/OutlinedButton';
 import Input from '../../Components/Inputs/Input';
 import CenteredBox from '../../Components/Layout/CenteredBox';
+import { UserI } from '../../models/user.model';
 import { apiPost } from '../../Services/Api/api';
+import { AuthContext } from '../../Services/Auth/AuthContext';
 import { setToken } from '../../Services/Auth/token-service';
 
 function LoginPage() {
@@ -11,6 +13,7 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const { setUser } = useContext(AuthContext);
 
   async function login(event: React.MouseEvent) {
     event.preventDefault();
@@ -21,8 +24,9 @@ function LoginPage() {
         username,
         password
       });
-      const res = await apiPost<{ access_token: string}>('v1/auth/login', data);
+      const res = await apiPost<{ access_token: string, user: UserI }>('v1/auth', data);
       setToken(res.access_token);
+      setUser(res.user);
       navigate('/manage');
     } catch (err) {
       console.error({ err });
