@@ -74,7 +74,7 @@ export default function MatchTimer() {
   const [is_info_open, setIsInfoOpen] = useState(false);
   const [is_modify_open, setIsModifyOpen] = useState(false);
 
-  // // // // // /Points Functions // // // // // // // // // // // // // // // // // // // // // // // // // // 
+  // // // // // /Points Functions // // // // // // // // // // // // // // // // // // // // // // // // // //
 
   /** generic function to increase or decrease a point, checking it doesn't go over the limits */
   function increasePoint(
@@ -121,7 +121,7 @@ export default function MatchTimer() {
   function endOsk() {
     setLastOskTimer(osk_timer);
     setIsOskOn(false);
-    setOskOwner(name_to_index['none']);
+    setOskOwner(name_to_index.none);
     setHasOskIpponGiven(false);
     setHasOskWazaariGiven(false);
     setOskTimer(-0.2);
@@ -157,7 +157,7 @@ export default function MatchTimer() {
     else switchOskOwner(athlete);
   }
 
-  // // // // // /Keyboard shortcuts// // // // // // // // // // // // // // // // // // // // // // // // // // 
+  // // // // // /Keyboard shortcuts// // // // // // // // // // // // // // // // // // // // // // // // // //
   const keyboard_shortcuts: {
     [key: string]: {
       name: string;
@@ -234,13 +234,13 @@ export default function MatchTimer() {
   function keyboardEventShortcuts(e: React.KeyboardEvent<HTMLDivElement>) {
     if (e.repeat) return;
     const code = e.code.replace('Key', '');
-    if (!!keyboard_shortcuts[code]) keyboard_shortcuts[code].setFunction();
+    if (keyboard_shortcuts[code]) keyboard_shortcuts[code].setFunction();
   }
 
   /** write keyboard_shortcuts in a readable format */
   function getKeyboardShortcutInfo() {
-    let kb_info_elem = [];
-    for (let field in keyboard_shortcuts) {
+    const kb_info_elem = [];
+    for (const field in keyboard_shortcuts) {
       const tasto = keyboard_shortcuts[field].translate || field;
       const name = keyboard_shortcuts[field].name.padEnd(25, ' ');
       kb_info_elem.push(
@@ -252,7 +252,7 @@ export default function MatchTimer() {
     return kb_info_elem;
   }
 
-  // // // // // /TOP ROW// // // // // // // // // // // // // // // // // // // // // // // // // // 
+  // // // // // /TOP ROW// // // // // // // // // // // // // // // // // // // // // // // // // //
 
   /** returns a function that calls @param setFunction to false. Used to pass to a modal as handleClose */
   const handleClose = (setFunction: Function) => {
@@ -314,7 +314,7 @@ export default function MatchTimer() {
 
   /** start timer. if it gets below zero, match ends and maybe golden score starts */
   useEffect(() => {
-    if (is_match_on)
+    if (is_match_on) {
       setTimeout(() => {
         // activate golden score
         if (match_timer < 0) {
@@ -327,24 +327,27 @@ export default function MatchTimer() {
         if (is_gs && match_timer > gs_time) return setIsMatchOn(false);
 
         // continue timer
-        if (is_gs)
+        if (is_gs) {
           setMatchTimer(
             (prev_timer) =>
               Math.trunc((prev_timer + refresh_rate / 1000) * 10) / 10
           );
-        else
+        } else {
           setMatchTimer(
             (prev_timer) =>
               Math.trunc((prev_timer - refresh_rate / 1000) * 10) / 10
           );
+        }
       }, refresh_rate);
+    }
   }, [match_timer, is_match_on]);
 
   /** check if golden score is needed when match ends */
   useEffect(() => {
     // if both are even, the golden score will start
-    if (is_gs && red_ippon === white_ippon && red_wazaari === white_wazaari)
+    if (is_gs && red_ippon === white_ippon && red_wazaari === white_wazaari) {
       return;
+    }
 
     setIsGs(false);
     if (red_ippon > white_ippon) return setWinner(name_to_index.red);
@@ -374,7 +377,7 @@ export default function MatchTimer() {
     );
   }
 
-  // // // // // /SCORE ROW// // // // // // // // // // // // // // // // // // // // // // // // // // 
+  // // // // // /SCORE ROW// // // // // // // // // // // // // // // // // // // // // // // // // //
 
   /** returns the value given from the mouse */
   function getScoreIncrease(e: React.MouseEvent) {
@@ -393,20 +396,22 @@ export default function MatchTimer() {
 
   /** check if someone wins for score assignment */
   useEffect(() => {
-    let winner = name_to_index['none'];
+    let winner = name_to_index.none;
     if (red_ippon === ippon_to_win) winner = name_to_index.red;
     if (red_wazaari === wazaari_to_win) winner = name_to_index.red;
     if (white_shido === shido_to_lose) winner = name_to_index.red;
-    if (is_gs && (red_ippon > white_ippon || red_wazaari > white_wazaari))
+    if (is_gs && (red_ippon > white_ippon || red_wazaari > white_wazaari)) {
       winner = name_to_index.red;
+    }
 
     if (white_ippon === ippon_to_win) winner = name_to_index.white;
     if (white_wazaari === wazaari_to_win) winner = name_to_index.white;
     if (red_shido === shido_to_lose) winner = name_to_index.white;
-    if (is_gs && (white_ippon > red_ippon || white_wazaari > red_wazaari))
+    if (is_gs && (white_ippon > red_ippon || white_wazaari > red_wazaari)) {
       winner = name_to_index.white;
+    }
 
-    if (winner != name_to_index['none']) setIsMatchOn(false);
+    if (winner != name_to_index.none) setIsMatchOn(false);
     setWinner(winner);
   }, [
     red_ippon,
@@ -486,7 +491,7 @@ export default function MatchTimer() {
     return (
       <>
         <div className='score-text' id='red-shido-text'>
-          {red_shido === shido_to_lose ? `Hansuko Make` : `${red_shido} Shido`}
+          {red_shido === shido_to_lose ? 'Hansuko Make' : `${red_shido} Shido`}
         </div>
         <div className='score-text' id='red-ippon-text'>
           Ippon
@@ -502,24 +507,26 @@ export default function MatchTimer() {
         </div>
         <div className='score-text' id='white-shido-text'>
           {white_shido === shido_to_lose
-            ? `Hansuko Make`
+            ? 'Hansuko Make'
             : `${white_shido} Shido`}
         </div>
       </>
     );
   }
 
-  // // // // // /OSAEKOMI ROW// // // // // // // // // // // // // // // // // // // // // // // // // // 
+  // // // // // /OSAEKOMI ROW// // // // // // // // // // // // // // // // // // // // // // // // // //
 
   /** start osk timer. if it's over the time for wazaari, it assigns it to the osk holder. if it's over the time for ippon, it stops the timer, remove the wazaari and assings ippon to the winner */
   useEffect(() => {
-    if (is_osk_on)
+    if (is_osk_on) {
       setTimeout(() => {
         if (!has_osk_wazaari_given && osk_timer > wazaari_osk_time) {
-          if (osk_owner === name_to_index.red)
+          if (osk_owner === name_to_index.red) {
             setRedWazaari((prevWaz) => prevWaz + 1);
-          if (osk_owner === name_to_index.white)
+          }
+          if (osk_owner === name_to_index.white) {
             setWhiteWazaari((prevWaz) => prevWaz + 1);
+          }
           setHasOskWazaariGiven(true);
         }
 
@@ -535,14 +542,16 @@ export default function MatchTimer() {
           setHasOskIpponGiven(true);
         }
 
-        if (osk_timer < ippon_osk_time)
+        if (osk_timer < ippon_osk_time) {
           setOskTimer((prev_timer) => prev_timer + refresh_rate / 1000);
+        }
       }, refresh_rate);
+    }
   }, [osk_timer, is_osk_on]);
 
   /** decide what to show on the osaekomi bar side: start, my bar, buttons to end or switch */
   function getOskBar(athlete: 'red' | 'white') {
-    if (osk_timer <= 0)
+    if (osk_timer <= 0) {
       return (
         <div className='osk-buttons'>
           <button
@@ -553,8 +562,9 @@ export default function MatchTimer() {
           </button>
         </div>
       );
+    }
 
-    if (osk_owner === name_to_index[athlete])
+    if (osk_owner === name_to_index[athlete]) {
       return (
         <div
           className='osk-bar'
@@ -566,13 +576,17 @@ export default function MatchTimer() {
           }
         />
       );
+    }
 
     return (
       <div className='osk-buttons'>
         <button className='timer-button orange' onClick={() => endOsk()}>
           Termina Osaekomi
         </button>
-        <button className='timer-button orange' onClick={() => switchOskOwner(athlete)}>
+        <button
+          className='timer-button orange'
+          onClick={() => switchOskOwner(athlete)}
+        >
           Sbagliato lato
         </button>
       </div>
@@ -582,7 +596,7 @@ export default function MatchTimer() {
   /** decide whether to show the osaekomi timer or not */
   function getOskTimer() {
     let elem = null;
-    if (osk_timer > 0)
+    if (osk_timer > 0) {
       elem = (
         <button
           className='timer-button black'
@@ -592,16 +606,18 @@ export default function MatchTimer() {
           {Math.trunc(osk_timer)}
         </button>
       );
-    if (last_osk_timer !== 0)
+    }
+    if (last_osk_timer !== 0) {
       elem = (
         <button className='timer-button black' id='osk-timer-button'>
           {Math.trunc(last_osk_timer)}
         </button>
       );
+    }
     return <div id='osk-timer-container'>{elem}</div>;
   }
 
-  // // // // // /NAME ROW// // // // // // // // // // // // // // // // // // // // // // // // // // 
+  // // // // // /NAME ROW// // // // // // // // // // // // // // // // // // // // // // // // // //
 
   /** decide whether to show the names or the winner name */
   function getNameRow() {
@@ -624,7 +640,7 @@ export default function MatchTimer() {
     );
 
     const getWinnerName = () => {
-      if (winner === name_to_index['none']) return 'ERROR';
+      if (winner === name_to_index.none) return 'ERROR';
       if (winner === name_to_index.red) return red_name;
       if (winner === name_to_index.white) return white_name;
     };
@@ -646,7 +662,7 @@ export default function MatchTimer() {
     return winner_row;
   }
 
-  // // // // // /RETURN// // // // // // // // // // // // // // // // // // // // // // // // // // 
+  // // // // // /RETURN// // // // // // // // // // // // // // // // // // // // // // // // // //
 
   return (
     <div
