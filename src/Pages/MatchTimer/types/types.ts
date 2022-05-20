@@ -27,8 +27,8 @@ export type MatchData = {
   winner_athlete: string;
   tournament: string;
   category_name: string;
-  is_started: false;
-  is_over: false;
+  is_started: boolean;
+  is_over: boolean;
   match_type: string;
   __v: number;
   params: {
@@ -38,5 +38,14 @@ export type MatchData = {
     wazaari_to_win: number;
     ippon_timer: number;
     wazaari_timer: number;
+  };
+  match_scores: {
+    final_time: number;
+    white_ippon: number;
+    white_wazaari: number;
+    white_penalties: number;
+    red_ippon: number;
+    red_wazaari: number;
+    red_penalties: number;
   };
 };

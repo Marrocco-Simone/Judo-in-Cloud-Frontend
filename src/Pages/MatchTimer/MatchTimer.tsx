@@ -33,7 +33,7 @@ import { apiGet, apiPost } from '../../Services/Api/api';
 const refreshRate = 200;
 const shidoToLose = 3;
 
-type Athlete = 'none' | 'red' | 'white';
+type AthleteColor = 'none' | 'red' | 'white';
 
 export default function MatchTimer() {
   // for redirect
@@ -70,26 +70,37 @@ export default function MatchTimer() {
     if (!matchId) return; // amichevole, usiamo i valori di default
     apiGet(`v1/match/${matchId}`).then((matchData: MatchData) => {
       if (!matchData) return;
+      const redAthlete = matchData.red_athlete;
+      const whiteAthlete = matchData.white_athlete;
+      const params = matchData.params;
       setCategoryName(matchData.category_name);
-      setRedId(matchData.red_athlete._id);
-      setRedName(
-        `${matchData.red_athlete.surname} ${matchData.red_athlete.name}`
-      );
-      setRedClub(matchData.red_athlete.club);
-      setWhiteId(matchData.white_athlete._id);
-      setWhiteName(
-        `${matchData.white_athlete.surname} ${matchData.white_athlete.name}`
-      );
-      setWhiteClub(matchData.white_athlete.club);
+      // athletes values
+      setRedId(redAthlete._id);
+      setRedName(`${redAthlete.surname} ${redAthlete.name}`);
+      setRedClub(redAthlete.club);
+      setWhiteId(whiteAthlete._id);
+      setWhiteName(`${whiteAthlete.surname} ${whiteAthlete.name}`);
+      setWhiteClub(whiteAthlete.club);
+      // set match params
       setParams({
-        ipponToWin: matchData.params.ippon_to_win,
-        wazaariToWin: matchData.params.wazaari_to_win,
-        totalTime: matchData.params.match_time,
-        gsTime: matchData.params.supplemental_match_time,
-        ipponOskTime: matchData.params.ippon_timer,
-        wazaariOskTime: matchData.params.wazaari_timer,
+        ipponToWin: params.ippon_to_win,
+        wazaariToWin: params.wazaari_to_win,
+        totalTime: params.match_time,
+        gsTime: params.supplemental_match_time,
+        ipponOskTime: params.ippon_timer,
+        wazaariOskTime: params.wazaari_timer,
       });
-      setMatchTimer(matchData.params.match_time);
+      // recover old values
+      const matchScores = matchData.match_scores;
+      if (matchScores) {
+        setMatchTimer(matchScores.final_time);
+        setRedIppon(matchScores.red_ippon);
+        setRedWazaari(matchScores.red_wazaari);
+        setRedShido(matchScores.red_penalties);
+        setWhiteIppon(matchScores.white_ippon);
+        setWhiteWazaari(matchScores.white_wazaari);
+        setWhiteShido(matchScores.white_penalties);
+      } else setMatchTimer(matchData.params.match_time); // if match is new, full timer
       apiPost(`v1/match/${matchId}`, { is_started: true });
     });
   }, [matchId]);
@@ -108,12 +119,12 @@ export default function MatchTimer() {
 
   const [oskTimer, setOskTimer] = useState(0);
   const [isOskOn, setIsOskOn] = useState(false);
-  const [oskOwner, setOskOwner] = useState<Athlete>('none');
+  const [oskOwner, setOskOwner] = useState<AthleteColor>('none');
   const [lastOskTimer, setLastOskTimer] = useState(0);
   const [hasOskWazaariGiven, setHasOskWazaariGiven] = useState(false);
   const [hasOskIpponGiven, setHasOskIpponGiven] = useState(false);
 
-  const [winner, setWinner] = useState<Athlete>('none');
+  const [winner, setWinner] = useState<AthleteColor>('none');
 
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isModifyOpen, setIsModifyOpen] = useState(false);
@@ -156,7 +167,7 @@ export default function MatchTimer() {
     if (oskTimer > 0) setIsOskOn((prec) => !prec);
   }
 
-  function startOsk(athlete: Athlete) {
+  function startOsk(athlete: AthleteColor) {
     setIsOskOn(true);
     setOskOwner(athlete);
     setLastOskTimer(0);
@@ -171,7 +182,7 @@ export default function MatchTimer() {
     setOskTimer(-0.2);
   }
 
-  function switchOskOwner(athlete: Athlete) {
+  function switchOskOwner(athlete: AthleteColor) {
     const oldOwner = oskOwner;
     if (oskOwner === athlete) return;
     if (hasOskIpponGiven) {
@@ -196,7 +207,7 @@ export default function MatchTimer() {
     setOskOwner(athlete);
   }
 
-  function manageOskFromArrowKey(athlete: Athlete) {
+  function manageOskFromArrowKey(athlete: AthleteColor) {
     if (!isOskOn) startOsk(athlete);
     else switchOskOwner(athlete);
   }
@@ -440,7 +451,7 @@ export default function MatchTimer() {
 
   /** check if someone wins for score assignment */
   useEffect(() => {
-    let newWinner: Athlete = 'none';
+    let newWinner: AthleteColor = 'none';
     if (redIppon === ipponToWin) newWinner = 'red';
     if (redWazaari === wazaariToWin) newWinner = 'red';
     if (whiteShido === shidoToLose) newWinner = 'red';
@@ -585,7 +596,7 @@ export default function MatchTimer() {
   }, [oskTimer, isOskOn]);
 
   /** decide what to show on the osaekomi bar side: start, my bar, buttons to end or switch */
-  function getOskBar(athlete: Athlete) {
+  function getOskBar(athlete: AthleteColor) {
     if (oskTimer <= 0) {
       return (
         <div className='osk-buttons'>
