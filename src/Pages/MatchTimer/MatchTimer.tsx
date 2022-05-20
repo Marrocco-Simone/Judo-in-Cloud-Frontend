@@ -264,7 +264,7 @@ export default function MatchTimer() {
     return (
       <div id='info-button-container'>
         <button
-          className='orange'
+          className='timer-button orange'
           id='info-button'
           onClick={() => setIsInfoOpen(true)}
         >
@@ -283,7 +283,7 @@ export default function MatchTimer() {
     return (
       <div id='current-tournament-container'>
         <button
-          className='white'
+          className='timer-button white'
           id='current-tournament-button'
           onClick={() => setIsModifyOpen(true)}
         >
@@ -364,7 +364,7 @@ export default function MatchTimer() {
     return (
       <div id='match-timer-container'>
         <button
-          className='black'
+          className='timer-button black'
           id='match-timer-button'
           onClick={() => playMatchTimer()}
         >
@@ -546,7 +546,7 @@ export default function MatchTimer() {
       return (
         <div className='osk-buttons'>
           <button
-            className='start_osk orange'
+            className='timer-button start_osk orange'
             onClick={() => startOsk(athlete)}
           >
             Inizia OsaeKomi
@@ -569,10 +569,10 @@ export default function MatchTimer() {
 
     return (
       <div className='osk-buttons'>
-        <button className='orange' onClick={() => endOsk()}>
+        <button className='timer-button orange' onClick={() => endOsk()}>
           Termina Osaekomi
         </button>
-        <button className='orange' onClick={() => switchOskOwner(athlete)}>
+        <button className='timer-button orange' onClick={() => switchOskOwner(athlete)}>
           Sbagliato lato
         </button>
       </div>
@@ -585,7 +585,7 @@ export default function MatchTimer() {
     if (osk_timer > 0)
       elem = (
         <button
-          className='black'
+          className='timer-button black'
           id='osk-timer-button'
           onClick={() => playOskTimer()}
         >
@@ -594,7 +594,7 @@ export default function MatchTimer() {
       );
     if (last_osk_timer !== 0)
       elem = (
-        <button className='black' id='osk-timer-button'>
+        <button className='timer-button black' id='osk-timer-button'>
           {Math.trunc(last_osk_timer)}
         </button>
       );
@@ -635,7 +635,7 @@ export default function MatchTimer() {
         <div id='winner-sign'>Winner</div>
         <div id='winner-name'>{winner_name}</div>
         <div id='send-match-data-container'>
-          <button id='send-match-data' className='orange'>
+          <button id='timer-button send-match-data' className='orange'>
             Conferma e Invia
           </button>
         </div>

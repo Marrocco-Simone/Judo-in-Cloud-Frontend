@@ -30,7 +30,7 @@
     height: 100%;
 }
 
-button {
+.timer-button {
     border: 0.5vh solid black;
     border-radius: 1.5vh;
     box-sizing: content-box;

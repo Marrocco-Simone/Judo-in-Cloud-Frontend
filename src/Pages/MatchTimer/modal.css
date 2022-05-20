@@ -43,7 +43,7 @@
 
 /* form */
 
-label {
+.timer-label {
     width: 100%;
     display: flex;
     padding-bottom: 1.5vh;
@@ -60,16 +60,16 @@ label {
     justify-content: center;
 }
 
-input {
+.timer-input {
     font-size: 3.5vh;
     text-align: center;
 }
 
-input[type=number] {
+.timer-input[type=number] {
     width: 40%;
 }
 
-input[type=number].input-minute {
+.timer-input[type=number].input-minute {
     width: 20%;
 }
 

@@ -38,6 +38,7 @@ export function ModifyParams(props: {
         return (
         <input 
             type="number" 
+            className=".timer-input"
             value={num}
             onChange={(e) => {
                 const value = Number(e.target.value);
@@ -52,7 +53,7 @@ export function ModifyParams(props: {
         return (
         <input 
             type="number" 
-            className="input-minute" 
+            className=".timer-input input-minute" 
             value={num}
             onChange={(e) => {
                 const value = Number(e.target.value);
@@ -81,7 +82,7 @@ export function ModifyParams(props: {
             setParams(new_params);
             handleClose();
         }}>
-            <label>
+            <label className='timer-label'>
                 <span className="input-description">Tempo attuale</span>
                 <div className="input-container">
                     {getInputMinuteField(match_timer_min, setMatchTimerMin)}
@@ -89,7 +90,7 @@ export function ModifyParams(props: {
                     {getInputMinuteField(match_timer_sec, setMatchTimerSec)}
                 </div>
             </label>
-            <label>
+            <label className='timer-label'>
                 <span className="input-description">Tempo regolamentare</span>
                 <div className="input-container">
                     {getInputMinuteField(total_time_min, setTotalTimeMin)}
@@ -97,7 +98,7 @@ export function ModifyParams(props: {
                     {getInputMinuteField(total_time_sec, setTotalTimeSec)}
                 </div>
             </label>
-            <label>
+            <label className='timer-label'>
                 <span className="input-description">Tempo Golden Score</span>                        
                 <div className="input-container">
                     {getInputMinuteField(gs_time_min, setGsTimeMin)}
@@ -105,25 +106,25 @@ export function ModifyParams(props: {
                     {getInputMinuteField(gs_time_sec, setGsTimeSec)}
                 </div>
             </label>
-            <label>
+            <label className='timer-label'>
                 <span className="input-description">Ippon per vincere</span>                        
                 <div className="input-container">
                     {getInputNumberField(ippon_to_win, setIpponToWin)}
                 </div>
             </label>
-            <label>
+            <label className='timer-label'>
                 <span className="input-description">Waza-ari per vincere</span>                        
                 <div className="input-container">
                     {getInputNumberField(wazaari_to_win, setWazaariToWin)}
                 </div>
             </label>
-            <label>
+            <label className='timer-label'>
                 <span className="input-description">Osaekomi per Ippon</span>                        
                 <div className="input-container">
                     {getInputNumberField(ippon_osk_time, setIpponOskTime)}
                 </div>
             </label>
-            <label>
+            <label className='timer-label'>
                 <span className="input-description">Osaekomi per Waza-ari</span>                        
                 <div className="input-container">
                     {getInputNumberField(wazaari_osk_time, setWazaariOskTime)}
