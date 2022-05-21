@@ -8,7 +8,8 @@ import MatchTimer from './Pages/MatchTimer/MatchTimer';
 import LoginPage from './Pages/Login/LoginPage';
 import AthletesPage from './Pages/Athletes/AthletesPage';
 import CompetitionManagementPage from './Pages/CompetitionManagement/CompetitionManagementPage';
-import TournamentPage from './Pages/Tournament/Tournament';
+import Tournament from './Pages/Tournament/Tournament';
+import MainLayout from './Components/Layout/MainLayout';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -17,14 +18,18 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<App />}>
-          <Route path='login' element={<LoginPage />} />
-          <Route path='manage' element={<CompetitionManagementPage />} />
-          <Route path='athletes' element={<AthletesPage />} />
-          <Route path='tournament' element={<TournamentPage />} />
-          <Route path='*' element={
-            <div className='text-xl'>Page not found</div>
-          } />
+        <Route element={<App />}>
+          <Route element={<MainLayout />} >
+            <Route index element={<></>}></Route>
+            <Route path='match-timer' element={<MatchTimer />} />
+            <Route path='login' element={<LoginPage />} />
+            <Route path='manage' element={<CompetitionManagementPage />} />
+            <Route path='athletes' element={<AthletesPage />} />
+            <Route path='tournament' element={<Tournament />} />
+            <Route path='*' element={
+              <div className='text-xl'>Page not found</div>
+            } />
+          </Route>
         </Route>
         <Route path='/match-timer' element={<MatchTimer />}>
           <Route path=':matchId' element={<MatchTimer />} />

@@ -1,29 +1,42 @@
-import React from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
-import OutlinedButton from './Components/Buttons/OutlinedButton';
+import React, { useEffect, useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import { UserI } from './models/user.model';
+import { apiGet } from './Services/Api/api';
+import { AuthContext, AuthContextI } from './Services/Auth/AuthContext';
+import { getToken } from './Services/Auth/token-service';
+import { ThemeContext, ThemeContextI } from './Services/Theme/ThemeContext';
+import { getTheme, ThemeT } from './Services/Theme/theme-service';
+
 function App() {
+  const [user, setUser] = useState<UserI | null>(null);
+  const [theme, setTheme] = useState<ThemeT>(() => getTheme());
+  const authContext: AuthContextI = { user, setUser };
+  const themeContext: ThemeContextI = { theme, setTheme };
+
+  useEffect(() => {
+    // try loading the user
+    const token = getToken();
+    if (token !== null) {
+      apiGet('v1/auth')
+        .then((res: UserI) => {
+          setUser(res);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, []);
+
   return (
-    <div className='w-full min-h-screen dark:bg-neutral-800 dark:text-neutral-200'>
-      <nav className='py-3 px-3 border-y dark:border-neutral-200 flex items-center dark:bg-neutral-900'>
-        <h1 className='text-3xl font-bold dark:text-neutral-100 mr-10'>
-          Judo in cloud
-        </h1>
-        <div className='flex-grow'></div>
-
-        <NavLink to='match-timer' className='mx-2 text-sky-500 hover:text-sky-800 dark:text-sky-300 dark:hover:text-sky-500'>
-          Match timer
-        </NavLink>
-
-        <NavLink to='login' className='mx-2'>
-          <OutlinedButton>
-            Login
-          </OutlinedButton>
-        </NavLink>
-      </nav>
-      <div className='px-2 pt-2 md:px-4 h-full'>
-        <Outlet></Outlet>
-      </div>
-    </div>
+    <ThemeContext.Provider value={themeContext}>
+      <AuthContext.Provider value={authContext}>
+        <div className={theme === 'dark' ? 'dark' : ''}>
+          <div className='w-full min-h-screen dark:bg-neutral-800 dark:text-neutral-200'>
+            <Outlet></Outlet>
+          </div>
+        </div>
+      </AuthContext.Provider>
+    </ThemeContext.Provider>
   );
 }
 
