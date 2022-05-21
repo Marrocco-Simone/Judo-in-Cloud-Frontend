@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './css/match.css';
-import { MatchData, Params } from './types/types';
+import { MatchInterface, MatchParamsInterface } from '../../Types/types';
 import { Modal } from './components/Modal';
 import { ModifyParams } from './components/ModifyParams';
 import { apiGet, apiPost } from '../../Services/Api/api';
@@ -55,7 +55,7 @@ export default function MatchTimer() {
   const [gsTime, setGsTime] = useState(Infinity);
   const [ipponOskTime, setIpponOskTime] = useState(20);
   const [wazaariOskTime, setWazaariOskTime] = useState(10);
-  function setParams(params: Params) {
+  function setParams(params: MatchParamsInterface) {
     setIpponToWin(params.ipponToWin);
     setWazaariToWin(params.wazaariToWin);
     setTotalTime(params.totalTime);
@@ -68,7 +68,7 @@ export default function MatchTimer() {
   let { matchId } = useParams();
   React.useEffect(() => {
     if (!matchId) return; // amichevole, usiamo i valori di default
-    apiGet(`v1/match/${matchId}`).then((matchData: MatchData) => {
+    apiGet(`v1/match/${matchId}`).then((matchData: MatchInterface) => {
       if (!matchData) return;
       const redAthlete = matchData.red_athlete;
       const whiteAthlete = matchData.white_athlete;

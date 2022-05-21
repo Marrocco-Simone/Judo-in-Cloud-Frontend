@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Params } from '../types/types';
+import { MatchParamsInterface } from '../../../Types/types';
 import '../css/modal.css';
 
 export function ModifyParams(props: {
   handleClose: () => void;
   matchTimer: number;
   setMatchTimer: (time: number) => void;
-  params: Params;
-  setParams: (params: Params) => void;
+  params: MatchParamsInterface;
+  setParams: (params: MatchParamsInterface) => void;
 }) {
   const { handleClose, matchTimer, setMatchTimer, params, setParams } = props;
 
@@ -64,7 +64,7 @@ export function ModifyParams(props: {
       onSubmit={(e) => {
         e.preventDefault();
 
-        const newParams: Params = {
+        const newParams: MatchParamsInterface = {
           totalTime: getTotalSec(totalTimeMin, totalTimeSec),
           gsTime: getTotalSec(gsTimeMin, gsTimeSec),
           ipponToWin,

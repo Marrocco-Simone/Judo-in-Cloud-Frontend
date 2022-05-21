@@ -1,4 +1,4 @@
-export type Params = {
+export type MatchParamsInterface = {
   ipponToWin: number;
   wazaariToWin: number;
   totalTime: number;
@@ -7,7 +7,7 @@ export type Params = {
   wazaariOskTime: number;
 };
 
-type Athlete = {
+type AthleteInterface = {
   _id: string;
   name: string;
   surname: string;
@@ -20,11 +20,11 @@ type Athlete = {
   __v: number;
 };
 
-export type MatchData = {
+export type MatchInterface = {
   _id: string;
-  white_athlete: Athlete;
-  red_athlete: Athlete;
-  winner_athlete: string;
+  white_athlete: AthleteInterface;
+  red_athlete: AthleteInterface;
+  winner_athlete: AthleteInterface;
   tournament: string;
   category_name: string;
   is_started: boolean;
@@ -48,4 +48,30 @@ export type MatchData = {
     red_wazaari: number;
     red_penalties: number;
   };
+};
+
+export type TournamentInterface = {
+  _id: string;
+  competition: string;
+  category: {
+    _id: string;
+    age_class: {
+      _id: string;
+      max_age: number;
+      competition: string;
+      name: string;
+      closed: boolean;
+      __v: 0;
+    };
+    max_weight: number;
+    gender: 'M' | 'F';
+    __v: number;
+  };
+  tatami_number: number;
+  finished: boolean;
+  athletes: string[];
+  winners_bracket: string[][];
+  recovered_bracket_1: string[][];
+  recovered_bracket_2: string[][];
+  __v: number;
 };
