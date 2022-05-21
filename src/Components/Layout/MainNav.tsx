@@ -1,6 +1,7 @@
 import React, { FC, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AuthContext } from '../../Services/Auth/AuthContext';
+import DarkModeToggle from '../Buttons/DarkModeToggle';
 import OutlinedButton from '../Buttons/OutlinedButton';
 
 const MainNav: FC = () => {
@@ -30,6 +31,9 @@ const MainNav: FC = () => {
           Judo in cloud
         </h1>
       </NavLink>
+      <span className='text-2xl flex items-end ml-2'>
+        <DarkModeToggle />
+      </span>
       <div className='flex-grow'></div>
 
       <NavLink
