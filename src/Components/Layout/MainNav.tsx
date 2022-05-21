@@ -9,9 +9,11 @@ const MainNav: FC = () => {
   function loginButton() {
     if (user) {
       return (
-        <span>
-          Ciao <b>{user.username}</b>!
-        </span>
+        <NavLink to='/manage'>
+          <OutlinedButton>
+            Ciao <b>{user.username}</b>!
+          </OutlinedButton>
+        </NavLink>
       );
     }
     return (
@@ -22,9 +24,9 @@ const MainNav: FC = () => {
   }
 
   return (
-    <nav className='py-3 px-3 border-y dark:border-neutral-200 flex items-center dark:bg-neutral-900 h-20'>
+    <nav className='py-3 px-3 border-y dark:border-neutral-200 bg-neutral-100 flex items-center dark:bg-neutral-900 h-20'>
       <NavLink to='/'>
-        <h1 className='text-3xl font-bold dark:text-neutral-100 mr-10'>
+        <h1 className='text-3xl font-bold dark:text-neutral-100'>
           Judo in cloud
         </h1>
       </NavLink>
