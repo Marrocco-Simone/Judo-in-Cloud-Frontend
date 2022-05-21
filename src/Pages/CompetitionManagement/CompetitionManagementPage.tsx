@@ -12,7 +12,7 @@ const CompetitionManagementPage: FC = () => {
 
       <div className='flex flex-wrap max-w-lg'>
         <div className='w-full md:w-1/2 p-3'>
-          <Link to='/tournaments'>
+          <Link to='/tournament'>
             <LargeButton>
               Gestione torneo
             </LargeButton>

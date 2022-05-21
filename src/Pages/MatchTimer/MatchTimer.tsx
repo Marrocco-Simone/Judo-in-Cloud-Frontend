@@ -701,10 +701,10 @@ export default function MatchTimer() {
             id='send-match-data'
             className='timer-button orange'
             onClick={() => {
-              if (!matchId) return navigate('/tournaments'); // amichevole
+              if (!matchId) return navigate('/tournament'); // amichevole
               if (winner === 'none') return;
               apiPost(`v1/match/${matchId}`, getVictoryData()).then(() =>
-                navigate('/tournaments')
+                navigate('/tournament')
               );
             }}
           >
