@@ -32,11 +32,17 @@ export default function MatchTable({
         >
           <td>{match.whiteAthlete}</td>
           <td>{match.redAthlete}</td>
-          <td>icon</td>
+          <td>{getWinner(match)}</td>
         </tr>
       );
     }
     return tableElem;
+  }
+
+  function getWinner(match: MatchTableData) {
+    if (match.winnerAthlete === match.whiteAthlete) return 'Bianco';
+    if (match.winnerAthlete === match.redAthlete) return 'Rosso';
+    return '';
   }
 
   return (
@@ -44,7 +50,7 @@ export default function MatchTable({
       <thead>
         <th>Atleta Bianco</th>
         <th>Atleta Rosso</th>
-        <th></th>
+        <th>Vincitore</th>
       </thead>
       <tbody>{getTableElements()}</tbody>
     </table>

@@ -88,6 +88,7 @@ export type MatchTableData = {
   _id: string;
   whiteAthlete: string;
   redAthlete: string;
+  winnerAthlete: string;
   isStarted: boolean;
   isOver: boolean;
 };

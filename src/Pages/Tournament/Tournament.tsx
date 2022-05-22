@@ -65,11 +65,28 @@ export default function Tournament() {
         _id: match._id,
         whiteAthlete: `${match.white_athlete.surname} ${match.white_athlete.name}`,
         redAthlete: `${match.red_athlete.surname} ${match.red_athlete.name}`,
+        winnerAthlete: match.is_over
+          ? `${match.winner_athlete.surname} ${match.winner_athlete.name}`
+          : '',
         isStarted: match.is_started,
         isOver: match.is_over,
       });
     }
     return matchTableData;
+  }
+
+  function confirmGoNextMatch(title: string, info: string) {
+    Swal.fire({
+      title,
+      html: info,
+      showCancelButton: true,
+      confirmButtonText: 'Continua con l\'incontro',
+      cancelButtonText: 'Torna Indietro',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate(`/match-timer/${activeMatch}`);
+      }
+    });
   }
 
   return (
@@ -100,9 +117,7 @@ export default function Tournament() {
       </button>
       <button
         className='tournament-button orange'
-        onClick={
-          () => navigate('/errorpage') /* dovra' portare al torneo scelto */
-        }
+        onClick={() => navigate(`/tournament/${activeTournament}`)}
       >
         Apri Tabellone
       </button>
@@ -114,9 +129,25 @@ export default function Tournament() {
       </button>
       <button
         className='tournament-button orange'
-        onClick={() => navigate(`/match-timer/${activeMatch}`)}
+        onClick={() => {
+          const fullActiveMatch = matches.find((m) => m._id === activeMatch);
+          if (!fullActiveMatch) return Swal.fire('Nessun incontro selezionato');
+          if (fullActiveMatch?.is_over) {
+            return confirmGoNextMatch(
+              "Incontro gia' concluso",
+              "Attenzione, l'incontro e' finito. Vuoi recuperarlo per cambiare l'esito?"
+            );
+          }
+          if (fullActiveMatch?.is_started) {
+            return confirmGoNextMatch(
+              "Incontro gia' iniziato",
+              "Attenzione, l'incontro e' gia' stato iniziato da qualche altro tavolo. Iniziarlo e finirlo qui sovrascriverebbe i dati dell'altro tavolo. Continuare?"
+            );
+          }
+          navigate(`/match-timer/${activeMatch}`);
+        }}
       >
-        Inizia Prossimo Incontro
+        Inizia Incontro Selezionato
       </button>
     </div>
   );
