@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { FaChevronDown, FaCog, FaPen, FaTrash } from 'react-icons/fa';
 import { apiGet } from '../../Services/Api/api';
 import {
   AgeClassInterface,
@@ -42,7 +43,14 @@ export default function AthletesPage() {
       tableElem.push(
         <tr key={ageClass._id} className='age-class-row centered-text'>
           <td colSpan={5}>{ageClass.name}</td>
-          <td className='table-column-10 centered-text'>icon</td>
+          <td className='table-column-10 centered-text'>
+            <button className='icon-button orange'>
+              <FaCog />
+            </button>
+            <button className='icon-button orange'>
+              <FaChevronDown />
+            </button>
+          </td>
         </tr>
       );
       tableElem = [...tableElem, ...getTableCategories(ageClass)];
@@ -57,7 +65,11 @@ export default function AthletesPage() {
       tableElem.push(
         <tr key={category._id} className='category-row centered-text'>
           <td colSpan={5}>{`U${category.max_weight} ${category.gender}`}</td>
-          <td className='table-column-10 centered-text'>icon</td>
+          <td className='table-column-10 centered-text'>
+            <button className='icon-button orange'>
+              <FaChevronDown />
+            </button>
+          </td>
         </tr>
       );
       tableElem = [...tableElem, ...getTableAthletes(ageClass, category)];
@@ -71,6 +83,7 @@ export default function AthletesPage() {
   ) {
     const tableElem = [<div key='delete'></div>];
     tableElem.pop(); // only to get the right type of tableElem
+    if (!athletes[category._id]) return [<></>];
     for (const athlete of athletes[category._id]) {
       tableElem.push(
         <tr key={athlete._id}>
@@ -80,7 +93,14 @@ export default function AthletesPage() {
           <td className='table-column-15'>{athlete.birth_year}</td>
           <td className='table-column-15'>{athlete.weight}</td>
           <td className='table-column-15'>{athlete.gender}</td>
-          <td className='table-column-10 centered-text'>icon</td>
+          <td className='table-column-10 centered-text'>
+            <button className='icon-button orange'>
+              <FaPen />
+            </button>
+            <button className='icon-button orange'>
+              <FaTrash />
+            </button>
+          </td>
         </tr>
       );
     }
