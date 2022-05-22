@@ -33,9 +33,9 @@ export default function TournamentTable({
           className={getRowClass(tour)}
           onClick={() => setActiveTournament(tour._id)}
         >
-          <td>{tour.ageClassName}</td>
-          <td>{tour.weight}</td>
-          <td>{tour.gender}</td>
+          <td className='table-column-50'>{tour.ageClassName}</td>
+          <td className='table-column-25'>{tour.weight}</td>
+          <td className='table-column-25'>{tour.gender}</td>
         </tr>
       );
     }
@@ -46,9 +46,9 @@ export default function TournamentTable({
     <table className='table'>
       <thead>
         <tr>
-          <td>{"Classe d'eta'"}</td>
-          <td>Peso</td>
-          <td>Sesso</td>
+          <td className='table-column-50'>{"Classe d'eta'"}</td>
+          <td className='table-column-25'>Peso</td>
+          <td className='table-column-25'>Sesso</td>
         </tr>
       </thead>
       <tbody>{getTableElements()}</tbody>

@@ -38,7 +38,7 @@
   box-shadow: 0 0 1.5vh rgba(0, 0, 0, 0.4);
 }
 
-.table thead tr td {
+.table thead td {
   background-color: lightskyblue;
   font-weight: bold;
   padding: 1vh 1vh;
@@ -46,13 +46,23 @@
   border: 0.1vh solid lightskyblue;
 }
 
-.table td {
-  border: 0.1vh solid lightgray;
-  padding: 1vh 1vh;
+.table tbody {
+  display: block;
+  height: 40vh;
+  overflow-y: auto;
 }
 
-.table tr {
-  max-height: 1vh;
+.table thead,
+.table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.table tbody td {
+  border: 0.1vh solid lightgray;
+  padding: 1vh 1vh;
+  height: 1vh;
 }
 
 .table tr:nth-of-type(even) {
@@ -78,6 +88,11 @@
   text-align: center;
   font-size: bold;
 }
+
+.table-column-50 {width: 50%;}
+.table-column-40 {width: 40%;}
+.table-column-25 {width: 25%;}
+.table-column-20 {width: 20%;}
 
 .tournament-button {
   justify-self: center;
