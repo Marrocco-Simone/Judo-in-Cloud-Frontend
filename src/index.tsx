@@ -10,6 +10,7 @@ import AthletesPage from './Pages/Athletes/AthletesPage';
 import CompetitionManagementPage from './Pages/CompetitionManagement/CompetitionManagementPage';
 import Tournament from './Pages/Tournament/Tournament';
 import MainLayout from './Components/Layout/MainLayout';
+import TournamentPage from './Pages/Tournament/TournamentPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -25,7 +26,10 @@ root.render(
             <Route path='login' element={<LoginPage />} />
             <Route path='manage' element={<CompetitionManagementPage />} />
             <Route path='athletes' element={<AthletesPage />} />
-            <Route path='tournament' element={<Tournament />} />
+            <Route path='tournament'>
+              <Route path='' element={<Tournament />} />
+              <Route path=':tournamentId' element={<TournamentPage />} />
+            </Route>
             <Route path='*' element={
               <div className='text-xl'>Page not found</div>
             } />
