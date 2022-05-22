@@ -10,6 +10,12 @@ export default function TournamentTable({
   activeTournament: string;
   setActiveTournament: (tournamentId: string) => void;
 }) {
+  function getRowClass(tour: TournamentTableData) {
+    if (activeTournament === tour._id) return 'active-row';
+    if (tour.finished) return 'finished-row';
+    return '';
+  }
+
   function getTableElements() {
     const tableElem = [<div key='delete'></div>];
     tableElem.pop(); // only to get the right type of tableElem
@@ -20,7 +26,7 @@ export default function TournamentTable({
       tableElem.push(
         <tr
           key={tour._id}
-          className={activeTournament === tour._id ? 'active-row' : ''}
+          className={getRowClass(tour)}
           onClick={() => setActiveTournament(tour._id)}
         >
           <td>{tour.ageClassName}</td>

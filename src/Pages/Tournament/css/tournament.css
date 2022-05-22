@@ -64,6 +64,16 @@
   background-color: lightgreen;
 }
 
+.table tr.finished-row {
+  font-weight: bold;
+  background-color: darkgray;
+}
+
+.table tr.warning-row {
+  font-weight: bold;
+  background-color: red;
+}
+
 .tournament-button {
   justify-self: center;
   border: 0.5vh solid black;
