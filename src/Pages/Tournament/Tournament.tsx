@@ -16,7 +16,7 @@ export default function Tournament() {
   // for redirect
   const navigate = useNavigate();
   // to get the tournament id from query
-  const [searchParams/* , setSearchParams */] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const getStartingTournament = () => {
     const fromTournament = searchParams.get('from_tournament');
     if (!fromTournament) return '';
@@ -25,7 +25,9 @@ export default function Tournament() {
 
   const [tournaments, setTournaments] = useState<TournamentInterface[]>([]);
   const [matches, setMatches] = useState<MatchInterface[]>([]);
-  const [activeTournament, setActiveTournament] = useState<string>(getStartingTournament());
+  const [activeTournament, setActiveTournament] = useState<string>(
+    getStartingTournament()
+  );
   const [activeMatch, setActiveMatch] = useState<string>('');
 
   useEffect(() => {
@@ -98,71 +100,80 @@ export default function Tournament() {
       cancelButtonText: 'Torna Indietro',
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate(`/match-timer/${activeMatch}?from_tournament=${activeTournament}`);
+        navigate(
+          `/match-timer/${activeMatch}?from_tournament=${activeTournament}`
+        );
       }
     });
   }
 
   return (
-    <div className='tournament-grid-container'>
-      <div className='n-tatami-container'>Tornei</div>
-      <div className='blank-space'></div>
-      <div className='table-text'>Categorie Prenotate</div>
-      <div className='table-text'>Lista Incontri</div>
-      <div className='table-container'>
-        <TournamentTable
-          tournamentTableData={getTournamentsDataForTable()}
-          activeTournament={activeTournament}
-          setActiveTournament={setActiveTournament}
-        />
+    <div className='tournament-container'>
+      <div className='n-tatami-container'></div>
+      <div className='multi-table-container'>
+        <div className='table-container'>
+          <div className='table-text'>Categorie Prenotate</div>
+          <TournamentTable
+            tournamentTableData={getTournamentsDataForTable()}
+            activeTournament={activeTournament}
+            setActiveTournament={setActiveTournament}
+          />
+        </div>
+        <div className='table-container'>
+          <div className='table-text'>Lista Incontri</div>
+          <MatchTable
+            matchTableData={getMatchesDataForTable()}
+            activeMatch={activeMatch}
+            setActiveMatch={setActiveMatch}
+          />
+        </div>
       </div>
-      <div className='table-container'>
-        <MatchTable
-          matchTableData={getMatchesDataForTable()}
-          activeMatch={activeMatch}
-          setActiveMatch={setActiveMatch}
-        />
+      <div className="button-row">
+        <button
+          className='tournament-button orange'
+          onClick={() => Swal.fire('Coming Soon')}
+        >
+          Prenota Categorie - Coming Soon
+        </button>
+        <button
+          className='tournament-button orange'
+          onClick={() => navigate(`/tournament/${activeTournament}`)}
+        >
+          Apri Tabellone
+        </button>
+        <button
+          className='tournament-button orange'
+          onClick={() =>
+            navigate(`/match-timer?from_tournament=${activeTournament}`)
+          }
+        >
+          Incontro Amichevole
+        </button>
+        <button
+          className='tournament-button orange'
+          onClick={() => {
+            const fullActiveMatch = matches.find((m) => m._id === activeMatch);
+            if (!fullActiveMatch) return Swal.fire('Nessun incontro selezionato');
+            if (fullActiveMatch?.is_over) {
+              return confirmGoNextMatch(
+                "Incontro gia' concluso",
+                "Attenzione, l'incontro e' finito. Vuoi recuperarlo per cambiare l'esito?"
+              );
+            }
+            if (fullActiveMatch?.is_started) {
+              return confirmGoNextMatch(
+                "Incontro gia' iniziato",
+                "Attenzione, l'incontro e' gia' stato iniziato da qualche altro tavolo. Iniziarlo e finirlo qui sovrascriverebbe i dati dell'altro tavolo. Continuare?"
+              );
+            }
+            navigate(
+              `/match-timer/${activeMatch}?from_tournament=${activeTournament}`
+            );
+          }}
+        >
+          Inizia Incontro Selezionato
+        </button>
       </div>
-      <button
-        className='tournament-button orange'
-        onClick={() => Swal.fire('Coming Soon')}
-      >
-        Prenota Categorie - Coming Soon
-      </button>
-      <button
-        className='tournament-button orange'
-        onClick={() => navigate(`/tournament/${activeTournament}`)}
-      >
-        Apri Tabellone
-      </button>
-      <button
-        className='tournament-button orange'
-        onClick={() => navigate(`/match-timer?from_tournament=${activeTournament}`)}
-      >
-        Incontro Amichevole
-      </button>
-      <button
-        className='tournament-button orange'
-        onClick={() => {
-          const fullActiveMatch = matches.find((m) => m._id === activeMatch);
-          if (!fullActiveMatch) return Swal.fire('Nessun incontro selezionato');
-          if (fullActiveMatch?.is_over) {
-            return confirmGoNextMatch(
-              "Incontro gia' concluso",
-              "Attenzione, l'incontro e' finito. Vuoi recuperarlo per cambiare l'esito?"
-            );
-          }
-          if (fullActiveMatch?.is_started) {
-            return confirmGoNextMatch(
-              "Incontro gia' iniziato",
-              "Attenzione, l'incontro e' gia' stato iniziato da qualche altro tavolo. Iniziarlo e finirlo qui sovrascriverebbe i dati dell'altro tavolo. Continuare?"
-            );
-          }
-          navigate(`/match-timer/${activeMatch}?from_tournament=${activeTournament}`);
-        }}
-      >
-        Inizia Incontro Selezionato
-      </button>
     </div>
   );
 }

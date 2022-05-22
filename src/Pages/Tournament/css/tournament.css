@@ -1,38 +1,43 @@
-.tournament-grid-container {
+.tournament-container {
   background-color: cornflowerblue;
-  display: grid;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 1fr 1fr 5fr 2fr;
 }
 
-.blank-space {
-  grid-column: span 3;
+.n-tatami-container {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  height: 10%;
 }
 
-.table-text {
-  grid-column: span 2;
-  font-size: 3vh;
-  font-weight: bold;
-  text-align: left;
-  padding: 0 7vh;
+.multi-table-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60%;
+  margin-top: 5vh;
 }
 
 .table-container {
-  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
   text-align: left;
-  justify-self: center;
+  justify-content: center;
+  align-items: center;
   font-size: 3vh;
-  width: 85%;
-  height: 100%;
+}
+
+.table-text {
+  font-size: 3vh;
+  font-weight: bold;
+  width: 100%;
+  padding: 0 7vh;
 }
 
 .table {
   background-color: white;
   border-collapse: collapse;
-  min-width: 100%;
+  width: 85%;
   border-radius: 2vh 2vh;
   overflow: hidden;
   box-shadow: 0 0 1.5vh rgba(0, 0, 0, 0.4);
@@ -94,19 +99,19 @@
 .table-column-25 {width: 25%;}
 .table-column-20 {width: 20%;}
 
+.button-row {
+  margin-top: 7vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .tournament-button {
-  justify-self: center;
   border: 0.5vh solid black;
   border-radius: 1.5vh;
-  box-sizing: content-box;
   cursor: pointer;
   font-size: 2.5vh;
   padding: 1.5vh 2.5vh;
-  width: 45%;
-  height: 35%;
-}
-
-.orange {
-  background-color: orange;
-  transition: color 100ms;
+  width: 15%;
+  height: 12vh;
 }
