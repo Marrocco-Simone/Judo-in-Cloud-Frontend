@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import './css/tournament.css';
 import TournamentTable from './components/TournamentTable';
 import MatchTable from './components/MatchTable';
@@ -15,10 +15,17 @@ import Swal from 'sweetalert2';
 export default function Tournament() {
   // for redirect
   const navigate = useNavigate();
+  // to get the tournament id from query
+  const [searchParams/* , setSearchParams */] = useSearchParams();
+  const getStartingTournament = () => {
+    const fromTournament = searchParams.get('from_tournament');
+    if (!fromTournament) return '';
+    return fromTournament;
+  };
 
   const [tournaments, setTournaments] = useState<TournamentInterface[]>([]);
   const [matches, setMatches] = useState<MatchInterface[]>([]);
-  const [activeTournament, setActiveTournament] = useState<string>('');
+  const [activeTournament, setActiveTournament] = useState<string>(getStartingTournament());
   const [activeMatch, setActiveMatch] = useState<string>('');
 
   useEffect(() => {
@@ -130,7 +137,7 @@ export default function Tournament() {
       </button>
       <button
         className='tournament-button orange'
-        onClick={() => navigate('/match-timer')}
+        onClick={() => navigate(`/match-timer?from_tournament=${activeTournament}`)}
       >
         Incontro Amichevole
       </button>
@@ -151,7 +158,7 @@ export default function Tournament() {
               "Attenzione, l'incontro e' gia' stato iniziato da qualche altro tavolo. Iniziarlo e finirlo qui sovrascriverebbe i dati dell'altro tavolo. Continuare?"
             );
           }
-          navigate(`/match-timer/${activeMatch}`);
+          navigate(`/match-timer/${activeMatch}?from_tournament=${activeTournament}`);
         }}
       >
         Inizia Incontro Selezionato

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import './css/match.css';
 import { MatchInterface, MatchParamsInterface } from '../../Types/types';
 import { Modal } from './components/Modal';
@@ -38,6 +38,8 @@ type AthleteColor = 'none' | 'red' | 'white';
 export default function MatchTimer() {
   // for redirect
   const navigate = useNavigate();
+  // to get the tournament id from query
+  const [searchParams/* , setSearchParams */] = useSearchParams();
 
   // should be in props
   const [categoryName, setCategoryName] = useState('Amichevole');
@@ -68,41 +70,45 @@ export default function MatchTimer() {
   let { matchId } = useParams();
   React.useEffect(() => {
     if (!matchId) return; // amichevole, usiamo i valori di default
-    apiGet(`v1/match/${matchId}`).then((matchData: MatchInterface) => {
-      if (!matchData) return;
-      const redAthlete = matchData.red_athlete;
-      const whiteAthlete = matchData.white_athlete;
-      const params = matchData.params;
-      setCategoryName(matchData.category_name);
-      // athletes values
-      setRedId(redAthlete._id);
-      setRedName(`${redAthlete.surname} ${redAthlete.name}`);
-      setRedClub(redAthlete.club);
-      setWhiteId(whiteAthlete._id);
-      setWhiteName(`${whiteAthlete.surname} ${whiteAthlete.name}`);
-      setWhiteClub(whiteAthlete.club);
-      // set match params
-      setParams({
-        ipponToWin: params.ippon_to_win,
-        wazaariToWin: params.wazaari_to_win,
-        totalTime: params.match_time,
-        gsTime: params.supplemental_match_time,
-        ipponOskTime: params.ippon_timer,
-        wazaariOskTime: params.wazaari_timer,
+    apiGet(`v1/match/${matchId}`)
+      .then((matchData: MatchInterface) => {
+        if (!matchData) return;
+        const redAthlete = matchData.red_athlete;
+        const whiteAthlete = matchData.white_athlete;
+        const params = matchData.params;
+        setCategoryName(matchData.category_name);
+        // athletes values
+        setRedId(redAthlete._id);
+        setRedName(`${redAthlete.surname} ${redAthlete.name}`);
+        setRedClub(redAthlete.club);
+        setWhiteId(whiteAthlete._id);
+        setWhiteName(`${whiteAthlete.surname} ${whiteAthlete.name}`);
+        setWhiteClub(whiteAthlete.club);
+        // set match params
+        setParams({
+          ipponToWin: params.ippon_to_win,
+          wazaariToWin: params.wazaari_to_win,
+          totalTime: params.match_time,
+          gsTime: params.supplemental_match_time,
+          ipponOskTime: params.ippon_timer,
+          wazaariOskTime: params.wazaari_timer,
+        });
+        // recover old values
+        const matchScores = matchData.match_scores;
+        if (matchScores && matchData.is_over) {
+          setMatchTimer(matchScores.final_time);
+          setRedIppon(matchScores.red_ippon);
+          setRedWazaari(matchScores.red_wazaari);
+          setRedShido(matchScores.red_penalties);
+          setWhiteIppon(matchScores.white_ippon);
+          setWhiteWazaari(matchScores.white_wazaari);
+          setWhiteShido(matchScores.white_penalties);
+        } else setMatchTimer(matchData.params.match_time); // if match is new, full timer
+        apiPost(`v1/match/${matchId}`, { is_started: true });
+      })
+      .catch(() => {
+        matchId = '';
       });
-      // recover old values
-      const matchScores = matchData.match_scores;
-      if (matchScores && matchData.is_over) {
-        setMatchTimer(matchScores.final_time);
-        setRedIppon(matchScores.red_ippon);
-        setRedWazaari(matchScores.red_wazaari);
-        setRedShido(matchScores.red_penalties);
-        setWhiteIppon(matchScores.white_ippon);
-        setWhiteWazaari(matchScores.white_wazaari);
-        setWhiteShido(matchScores.white_penalties);
-      } else setMatchTimer(matchData.params.match_time); // if match is new, full timer
-      apiPost(`v1/match/${matchId}`, { is_started: true });
-    }).catch(() => { matchId=''; });
   }, [matchId]);
 
   // value could be present in props (recover match)
@@ -701,10 +707,20 @@ export default function MatchTimer() {
             id='send-match-data'
             className='timer-button orange'
             onClick={() => {
-              if (!matchId) return navigate('/tournament'); // amichevole
+              if (!matchId) {
+                return navigate(
+                  `/tournament?from_tournament=${searchParams.get(
+                    'from_tournament'
+                  )}`
+                ); // amichevole
+              }
               if (winner === 'none') return;
               apiPost(`v1/match/${matchId}`, getVictoryData()).then(() =>
-                navigate('/tournament')
+                navigate(
+                  `/tournament?from_tournament=${searchParams.get(
+                    'from_tournament'
+                  )}`
+                )
               );
             }}
           >
