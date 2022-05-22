@@ -4,7 +4,12 @@ import './css/tournament.css';
 import TournamentTable from './components/TournamentTable';
 import MatchTable from './components/MatchTable';
 import { apiGet } from '../../Services/Api/api';
-import { TournamentInterface, MatchInterface } from '../../Types/types';
+import {
+  TournamentInterface,
+  MatchInterface,
+  TournamentTableData,
+  MatchTableData,
+} from '../../Types/types';
 import Swal from 'sweetalert2';
 
 export default function Tournament() {
@@ -13,23 +18,27 @@ export default function Tournament() {
 
   const [tournaments, setTournaments] = useState<TournamentInterface[]>([]);
   const [matches, setMatches] = useState<MatchInterface[]>([]);
+  const [activeTournament, setActiveTournament] = useState<string>('');
 
   useEffect(() => {
-    apiGet('v1/tournaments').then((tournamentsData) => {
-      setTournaments(tournamentsData);
+    apiGet('v1/tournaments').then((tournamentData) => {
+      setTournaments(tournamentData);
     });
   }, []);
 
+  function getNextMatches(tournamentId: string) {
+    /* apiGet(`v1/tournaments/${tournamentId}/next`).then((matchTableData) => { */
+    apiGet(`v1/tournaments/${tournamentId}`).then((matchData) => {
+      setMatches(matchData.winners_bracket[0]);
+    });
+  }
+
+  useEffect(() => getNextMatches(activeTournament), [activeTournament]);
+
   function getTournamentsDataForTable() {
-    const tournamentData: {
-      _id: string;
-      ageClassName: string;
-      weight: string;
-      gender: string;
-      finished: boolean;
-    }[] = [];
+    const tournamentTableData: TournamentTableData[] = [];
     for (const tour of tournaments) {
-      tournamentData.push({
+      tournamentTableData.push({
         _id: tour._id,
         ageClassName: tour.category.age_class.name,
         weight: `U${tour.category.max_weight}`,
@@ -37,24 +46,11 @@ export default function Tournament() {
         finished: tour.finished,
       });
     }
-    return tournamentData;
-  }
-
-  function getNextMatches(tournamentId: string) {
-    /* apiGet(`v1/tournaments/${tournamentId}/next`).then((matchesData) => { */
-    return apiGet(`v1/tournaments/${tournamentId}`).then((matchesData) => {
-      setMatches(matchesData.winners_bracket[0]);
-    });
+    return tournamentTableData;
   }
 
   function getMatchesDataForTable() {
-    const matchesData: {
-      _id: string;
-      whiteAthlete: string;
-      redAthlete: string;
-      isStarted: boolean;
-      isOver: boolean;
-    }[] = [];
+    const matchTableData: MatchTableData[] = [];
     for (const match of matches) {
       if (
         !match?.white_athlete?.surname ||
@@ -64,7 +60,7 @@ export default function Tournament() {
       ) {
         continue;
       }
-      matchesData.push({
+      matchTableData.push({
         _id: match._id,
         whiteAthlete: `${match.white_athlete.surname} ${match.white_athlete.name}`,
         redAthlete: `${match.red_athlete.surname} ${match.red_athlete.name}`,
@@ -72,7 +68,7 @@ export default function Tournament() {
         isOver: match.is_over,
       });
     }
-    return matchesData;
+    return matchTableData;
   }
 
   return (
@@ -82,10 +78,14 @@ export default function Tournament() {
       <div className='table-text'>Categorie Prenotate</div>
       <div className='table-text'>Lista Incontri</div>
       <div className='table-container'>
-        <TournamentTable />
+        <TournamentTable
+          tournamentTableData={getTournamentsDataForTable()}
+          activeTournament={activeTournament}
+          setActiveTournament={setActiveTournament}
+        />
       </div>
       <div className='table-container'>
-        <MatchTable />
+        <MatchTable matchTableData={getMatchesDataForTable()} />
       </div>
       <button
         className='tournament-button orange'
@@ -109,14 +109,12 @@ export default function Tournament() {
       </button>
       <button
         className='tournament-button orange'
-        onClick={() => /* navigate('/errorpage')  dovra' portare al primo incontro disponibile */ {
-          const tournamentData = getTournamentsDataForTable();
-          getNextMatches(tournamentData[0]._id).then(() => {
-            const matchesData = getMatchesDataForTable();
-            console.table(tournamentData);
-            console.table(matchesData);
-          });
-        }}
+        onClick={
+          () =>
+            navigate(
+              '/errorpage'
+            ) /* dovra' portare al primo incontro disponibile */
+        }
       >
         Inizia Prossimo Incontro
       </button>

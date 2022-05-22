@@ -1,6 +1,7 @@
 .tournament-grid-container {
   background-color: cornflowerblue;
   display: grid;
+  justify-content: center;
   align-items: center;
   height: 100vh;
   grid-template-columns: repeat(4, 1fr);
@@ -15,10 +16,52 @@
   grid-column: span 2;
   font-size: 3vh;
   font-weight: bold;
+  text-align: left;
+  padding: 0 7vh;
 }
 
 .table-container {
   grid-column: span 2;
+  text-align: left;
+  justify-self: center;
+  font-size: 3vh;
+  width: 85%;
+  height: 100%;
+}
+
+.table {
+  background-color: white;
+  border-collapse: collapse;
+  min-width: 100%;
+  border-radius: 2vh 2vh;
+  overflow: hidden;
+  box-shadow: 0 0 1.5vh rgba(0, 0, 0, 0.4);
+}
+
+.table th {
+  background-color: lightskyblue;
+  font-weight: bold;
+  padding: 1vh 1vh;
+  height: 1vh;
+  border: 0.1vh solid lightskyblue;
+}
+
+.table td {
+  border: 0.1vh solid lightgray;
+  padding: 1vh 1vh;
+}
+
+.table tr {
+  max-height: 1vh;
+}
+
+.table tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.table tr.active-row {
+  font-weight: bold;
+  background-color: lightgreen;
 }
 
 .tournament-button {

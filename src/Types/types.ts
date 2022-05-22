@@ -75,3 +75,19 @@ export type TournamentInterface = {
   recovered_bracket_2: string[][];
   __v: number;
 };
+
+export type TournamentTableData = {
+  _id: string;
+  ageClassName: string;
+  weight: string;
+  gender: string;
+  finished: boolean;
+};
+
+export type MatchTableData = {
+  _id: string;
+  whiteAthlete: string;
+  redAthlete: string;
+  isStarted: boolean;
+  isOver: boolean;
+};
