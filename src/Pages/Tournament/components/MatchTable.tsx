@@ -2,9 +2,13 @@ import React from 'react';
 import { MatchTableData } from '../../../Types/types';
 
 export default function MatchTable({
-  matchTableData
+  matchTableData,
+  activeMatch,
+  setActiveMatch,
 }: {
-  matchTableData: MatchTableData[]
+  matchTableData: MatchTableData[];
+  activeMatch: string;
+  setActiveMatch: (matchId: string) => void;
 }) {
   function getTableElements() {
     const tableElem = [<div key='delete'></div>];
@@ -14,7 +18,11 @@ export default function MatchTable({
     }
     for (const match of matchTableData) {
       tableElem.push(
-        <tr key={match._id}>
+        <tr
+          key={match._id}
+          className={activeMatch === match._id ? 'active-row' : ''}
+          onClick={() => setActiveMatch(match._id)}
+        >
           <td>{match.whiteAthlete}</td>
           <td>{match.redAthlete}</td>
           <td>icon</td>
@@ -31,9 +39,7 @@ export default function MatchTable({
         <th>Atleta Rosso</th>
         <th></th>
       </thead>
-      <tbody>
-        {getTableElements()}
-      </tbody>
+      <tbody>{getTableElements()}</tbody>
     </table>
   );
 }

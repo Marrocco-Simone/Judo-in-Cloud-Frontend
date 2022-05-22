@@ -19,6 +19,7 @@ export default function Tournament() {
   const [tournaments, setTournaments] = useState<TournamentInterface[]>([]);
   const [matches, setMatches] = useState<MatchInterface[]>([]);
   const [activeTournament, setActiveTournament] = useState<string>('');
+  const [activeMatch, setActiveMatch] = useState<string>('');
 
   useEffect(() => {
     apiGet('v1/tournaments').then((tournamentData) => {
@@ -85,7 +86,11 @@ export default function Tournament() {
         />
       </div>
       <div className='table-container'>
-        <MatchTable matchTableData={getMatchesDataForTable()} />
+        <MatchTable
+          matchTableData={getMatchesDataForTable()}
+          activeMatch={activeMatch}
+          setActiveMatch={setActiveMatch}
+        />
       </div>
       <button
         className='tournament-button orange'
@@ -109,12 +114,7 @@ export default function Tournament() {
       </button>
       <button
         className='tournament-button orange'
-        onClick={
-          () =>
-            navigate(
-              '/errorpage'
-            ) /* dovra' portare al primo incontro disponibile */
-        }
+        onClick={() => navigate(`/match-timer/${activeMatch}`)}
       >
         Inizia Prossimo Incontro
       </button>
