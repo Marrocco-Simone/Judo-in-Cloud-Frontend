@@ -52,9 +52,11 @@ export default function MatchTable({
   return (
     <table className='table'>
       <thead>
-        <th>Atleta Bianco</th>
-        <th>Atleta Rosso</th>
-        <th>Vincitore</th>
+        <tr>
+          <td>Atleta Bianco</td>
+          <td>Atleta Rosso</td>
+          <td>Vincitore</td>
+        </tr>
       </thead>
       <tbody>{getTableElements()}</tbody>
     </table>

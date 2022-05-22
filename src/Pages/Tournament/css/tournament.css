@@ -38,7 +38,7 @@
   box-shadow: 0 0 1.5vh rgba(0, 0, 0, 0.4);
 }
 
-.table th {
+.table thead tr td {
   background-color: lightskyblue;
   font-weight: bold;
   padding: 1vh 1vh;

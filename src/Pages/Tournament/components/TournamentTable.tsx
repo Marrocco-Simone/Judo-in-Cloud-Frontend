@@ -45,9 +45,11 @@ export default function TournamentTable({
   return (
     <table className='table'>
       <thead>
-        <th>{"Classe d'eta'"}</th>
-        <th>Peso</th>
-        <th>Sesso</th>
+        <tr>
+          <td>{"Classe d'eta'"}</td>
+          <td>Peso</td>
+          <td>Sesso</td>
+        </tr>
       </thead>
       <tbody>{getTableElements()}</tbody>
     </table>
