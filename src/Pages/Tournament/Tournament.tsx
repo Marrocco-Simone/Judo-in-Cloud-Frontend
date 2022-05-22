@@ -31,7 +31,13 @@ export default function Tournament() {
     /* TODO bisogna sistemare l'api e poi questo */
     /* apiGet(`v1/tournaments/${tournamentId}/next`).then((matchTableData) => { */
     apiGet(`v1/tournaments/${tournamentId}`).then((matchData) => {
-      setMatches(matchData?.winners_bracket?.[0] || []);
+      if (!matchData?.winners_bracket) return;
+      if (matchData.winners_bracket.length === 0) return;
+      let totalMatches: MatchInterface[] = [];
+      for (const bracket of matchData.winners_bracket) {
+        totalMatches = [...totalMatches, ...bracket];
+      }
+      setMatches(totalMatches);
     });
   }
 
@@ -81,7 +87,7 @@ export default function Tournament() {
       title,
       html: info,
       showCancelButton: true,
-      confirmButtonText: 'Continua con l\'incontro',
+      confirmButtonText: "Continua con l'incontro",
       cancelButtonText: 'Torna Indietro',
     }).then((result) => {
       if (result.isConfirmed) {
