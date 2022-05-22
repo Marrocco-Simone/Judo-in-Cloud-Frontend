@@ -92,7 +92,7 @@ export default function MatchTimer() {
       });
       // recover old values
       const matchScores = matchData.match_scores;
-      if (matchScores) {
+      if (matchScores && matchData.is_over) {
         setMatchTimer(matchScores.final_time);
         setRedIppon(matchScores.red_ippon);
         setRedWazaari(matchScores.red_wazaari);
