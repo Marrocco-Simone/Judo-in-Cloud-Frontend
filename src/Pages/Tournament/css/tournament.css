@@ -74,6 +74,11 @@
   background-color: red;
 }
 
+.table-empty {
+  text-align: center;
+  font-size: bold;
+}
+
 .tournament-button {
   justify-self: center;
   border: 0.5vh solid black;

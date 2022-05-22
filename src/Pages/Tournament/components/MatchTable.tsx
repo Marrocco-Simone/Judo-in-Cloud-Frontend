@@ -21,7 +21,11 @@ export default function MatchTable({
     const tableElem = [<div key='delete'></div>];
     tableElem.pop(); // only to get the right type of tableElem
     if (matchTableData.length === 0) {
-      return <div className='table-empty'>Nessun Incontro Disponibile</div>;
+      return (
+        <tr className='table-empty'>
+          <td colSpan={3}>Nessun Incontro Disponibile</td>
+        </tr>
+      );
     }
     for (const match of matchTableData) {
       tableElem.push(

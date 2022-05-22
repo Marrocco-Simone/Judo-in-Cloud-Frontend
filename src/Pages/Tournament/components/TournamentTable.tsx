@@ -20,7 +20,11 @@ export default function TournamentTable({
     const tableElem = [<div key='delete'></div>];
     tableElem.pop(); // only to get the right type of tableElem
     if (tournamentTableData.length === 0) {
-      return <div className='table-empty'>Nessun Torneo Disponibile</div>;
+      return (
+        <tr className='table-empty'>
+          <td colSpan={3}>Nessun Torneo Disponibile</td>
+        </tr>
+      );
     }
     for (const tour of tournamentTableData) {
       tableElem.push(

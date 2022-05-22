@@ -28,9 +28,10 @@ export default function Tournament() {
   }, []);
 
   function getNextMatches(tournamentId: string) {
+    /* TODO bisogna sistemare l'api e poi questo */
     /* apiGet(`v1/tournaments/${tournamentId}/next`).then((matchTableData) => { */
     apiGet(`v1/tournaments/${tournamentId}`).then((matchData) => {
-      setMatches(matchData.winners_bracket[0]);
+      setMatches(matchData?.winners_bracket?.[0] || []);
     });
   }
 
