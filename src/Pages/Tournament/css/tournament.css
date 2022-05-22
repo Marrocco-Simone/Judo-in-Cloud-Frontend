@@ -31,7 +31,7 @@
   font-size: 3vh;
   font-weight: bold;
   width: 100%;
-  padding: 0 7vh;
+  padding: 3vh 7vh;
 }
 
 .table {
@@ -41,6 +41,10 @@
   border-radius: 2vh 2vh;
   overflow: hidden;
   box-shadow: 0 0 1.5vh rgba(0, 0, 0, 0.4);
+}
+
+#athlete-table {
+  width: 95%;
 }
 
 .table thead td {
@@ -55,6 +59,10 @@
   display: block;
   height: 40vh;
   overflow-y: auto;
+}
+
+#athlete-table tbody{
+  height: 73.75vh;
 }
 
 .table thead,
@@ -98,6 +106,18 @@
 .table-column-40 {width: 40%;}
 .table-column-25 {width: 25%;}
 .table-column-20 {width: 20%;}
+.table-column-15 {width: 15%;}
+.table-column-10 {width: 10%;}
+
+.age-class-row td{
+  height: 13.2vh !important;
+  background-color: lightskyblue;
+}
+
+.centered-text {
+  text-align: center;
+  outline: 0.25vh solid rgba(0, 0, 0, 0.4);
+}
 
 .button-row {
   margin-top: 7vh;

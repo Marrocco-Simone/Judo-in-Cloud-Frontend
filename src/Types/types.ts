@@ -7,7 +7,7 @@ export type MatchParamsInterface = {
   wazaariOskTime: number;
 };
 
-type AthleteInterface = {
+export type AthleteInterface = {
   _id: string;
   name: string;
   surname: string;
@@ -91,4 +91,30 @@ export type MatchTableData = {
   winnerAthlete: string;
   isStarted: boolean;
   isOver: boolean;
+};
+
+export type CategoryInterface = {
+  _id: string;
+  age_class: string;
+  max_weight: number;
+  gender: 'M'|'F';
+  __v: number;
+};
+
+export type AgeClassInterface = {
+  params: {
+    match_time: number;
+    supplemental_match_time: number;
+    ippon_to_win: number;
+    wazaari_to_win: number;
+    ippon_timer: number;
+    wazaari_timer: number;
+  };
+  _id: string;
+  max_age: number;
+  competition: string;
+  name: string;
+  closed: boolean;
+  __v: number;
+  categories: CategoryInterface[];
 };
