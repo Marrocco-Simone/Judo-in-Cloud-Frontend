@@ -40,6 +40,13 @@ export default function MatchTimer() {
   const navigate = useNavigate();
   // to get the tournament id from query
   const [searchParams/* , setSearchParams */] = useSearchParams();
+  function turnBack() {
+    const params = searchParams.get('from_tournament');
+    const query = !params ? '' : params;
+    navigate(
+      `/tournament?from_tournament=${query}`
+    );
+  }
 
   // should be in props
   const [categoryName, setCategoryName] = useState('Amichevole');
@@ -708,19 +715,11 @@ export default function MatchTimer() {
             className='timer-button orange'
             onClick={() => {
               if (!matchId) {
-                return navigate(
-                  `/tournament?from_tournament=${searchParams.get(
-                    'from_tournament'
-                  )}`
-                ); // amichevole
+                return turnBack(); // amichevole
               }
               if (winner === 'none') return;
               apiPost(`v1/match/${matchId}`, getVictoryData()).then(() =>
-                navigate(
-                  `/tournament?from_tournament=${searchParams.get(
-                    'from_tournament'
-                  )}`
-                )
+                turnBack()
               );
             }}
           >

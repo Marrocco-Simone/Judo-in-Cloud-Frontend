@@ -98,7 +98,7 @@ export default function Tournament() {
       cancelButtonText: 'Torna Indietro',
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate(`/match-timer/${activeMatch}`);
+        navigate(`/match-timer/${activeMatch}?from_tournament=${activeTournament}`);
       }
     });
   }

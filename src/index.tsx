@@ -22,7 +22,6 @@ root.render(
         <Route element={<App />}>
           <Route element={<MainLayout />} >
             <Route index element={<></>}></Route>
-            <Route path='match-timer' element={<MatchTimer />} />
             <Route path='login' element={<LoginPage />} />
             <Route path='manage' element={<CompetitionManagementPage />} />
             <Route path='athletes' element={<AthletesPage />} />
@@ -34,9 +33,9 @@ root.render(
               <div className='text-xl'>Page not found</div>
             } />
           </Route>
-        </Route>
-        <Route path='/match-timer' element={<MatchTimer />}>
-          <Route path=':matchId' element={<MatchTimer />} />
+          <Route path='/match-timer' element={<MatchTimer />}>
+            <Route path=':matchId' element={<MatchTimer />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
