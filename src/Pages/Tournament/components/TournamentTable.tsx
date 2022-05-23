@@ -46,7 +46,7 @@ export default function TournamentTable({
     <table className='table'>
       <thead>
         <tr>
-          <td className='table-column-50'>{"Classe d'eta'"}</td>
+          <td className='table-column-50'>{'Classe d\'eta\''}</td>
           <td className='table-column-25'>Peso</td>
           <td className='table-column-25'>Sesso</td>
         </tr>
