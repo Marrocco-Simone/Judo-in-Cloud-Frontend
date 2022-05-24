@@ -134,11 +134,11 @@ export default function AthletesPage() {
                   })
                 }
                 initialValues={{
-                  name: 'AAAA',
-                  surname: 'AAAA',
-                  club: 'AAAA',
-                  birth_year: 2020,
-                  weight: 10,
+                  name: '',
+                  surname: '',
+                  club: '',
+                  birth_year: 2000,
+                  weight: 50,
                   gender: 'M',
                 }}
                 url={'v1/athletes'}
