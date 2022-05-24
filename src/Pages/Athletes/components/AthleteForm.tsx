@@ -73,7 +73,7 @@ export default function AthleteForm(props: {
 
   return (
     <form
-      id='new-athlete-form'
+      id='athlete-form'
       onSubmit={(e) => {
         e.preventDefault();
         apiPost(url, values).then((athlete) => {
@@ -97,7 +97,7 @@ export default function AthleteForm(props: {
       <button
         className='timer-button orange'
         type='submit'
-        form='new-athlete-form'
+        form='athlete-form'
       >
         Salva
       </button>
