@@ -6,13 +6,16 @@ import {
   AthleteInterface,
   CategoryInterface,
 } from '../../Types/types';
+import { Modal } from '../MatchTimer/components/Modal';
+import AthleteForm from './components/AthleteForm';
 
 export default function AthletesPage() {
   const [ageClasses, setAgeClasses] = useState<AgeClassInterface[]>([]);
   const [athletes, setAthletes] = useState<{
     [categoryId: string]: AthleteInterface[];
   }>({});
-  console.table(athletes);
+  const [isNewAthleteOpen, setIsNewAthleteOpen] = useState(false);
+  /*   const [isModifyAgeClassOpen, setIsModifygeClassOpen] = useState(false); */
 
   useEffect(() => {
     apiGet('v1/age_classes').then((ageClassData: AgeClassInterface[]) => {
@@ -31,7 +34,6 @@ export default function AthletesPage() {
           );
         }
       }
-      console.log(myAthletes);
       setAthletes(myAthletes);
     });
   }, [ageClasses]);
@@ -72,15 +74,12 @@ export default function AthletesPage() {
           </td>
         </tr>
       );
-      tableElem = [...tableElem, ...getTableAthletes(ageClass, category)];
+      tableElem = [...tableElem, ...getTableAthletes(category)];
     }
     return tableElem;
   }
 
-  function getTableAthletes(
-    ageClass: AgeClassInterface,
-    category: CategoryInterface
-  ) {
+  function getTableAthletes(category: CategoryInterface) {
     const tableElem = [<div key='delete'></div>];
     tableElem.pop(); // only to get the right type of tableElem
     if (!athletes[category._id]) return [<></>];
@@ -113,7 +112,39 @@ export default function AthletesPage() {
       <div className='table-container'>
         <div className='table-text'>
           Gestione Atleti
-          <button className='athlete-button orange'>Aggiungi Atleta</button>
+          <button
+            className='athlete-button orange'
+            onClick={() => setIsNewAthleteOpen(true)}
+          >
+            Aggiungi Atleta
+          </button>
+          {isNewAthleteOpen && (
+            <Modal handleClose={() => setIsNewAthleteOpen(false)}>
+              <div className='form-title'>Aggiungi Atleta</div>
+              <AthleteForm
+                handleClose={() => setIsNewAthleteOpen(false)}
+                addNewAthleteToTable={(newAthlete: AthleteInterface) =>
+                  setAthletes((prevAth) => {
+                    const categoryId = newAthlete.category;
+                    const newCategory = {
+                      [categoryId]: prevAth[categoryId],
+                    };
+                    newCategory[categoryId].push(newAthlete);
+                    return { ...prevAth, ...newCategory };
+                  })
+                }
+                initialValues={{
+                  name: 'AAAA',
+                  surname: 'AAAA',
+                  club: 'AAAA',
+                  birth_year: 2020,
+                  weight: 10,
+                  gender: 'M',
+                }}
+                url={'v1/athletes'}
+              />
+            </Modal>
+          )}
         </div>
         <table className='table' id='athlete-table'>
           <thead>

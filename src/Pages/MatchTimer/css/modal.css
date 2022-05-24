@@ -43,6 +43,13 @@
 
 /* form */
 
+.form-title {
+  font-size: 5vh;
+  font-size: bold;
+  margin-left: 1vh;
+  margin-bottom: 1vh;
+}
+
 .timer-label {
   width: 100%;
   display: flex;
@@ -72,6 +79,40 @@
 
 .timer-input[type='number'].input-minute {
   width: 30%;
+}
+
+.athlete-input {
+  border: 1px solid black;
+  font-size: 3.5vh;
+  text-align: center;
+  width: 100%;
+  border-radius: 2vh 2vh;
+  box-shadow: 0 0 1.5vh rgba(0, 0, 0, 0.4);
+}
+
+.radio-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 7vh;
+  font-size: 3.5vh;
+  margin: 0 3.5vh;
+  border: 0.1vh solid black;
+  border-radius: 1vh;
+}
+
+.select-gender {
+  display: flex;
+  justify-content: right;
+}
+
+.radio-input {
+  display: none;
+}
+
+.radio-input:checked + .radio-label {
+  background-color:sandybrown;
 }
 
 /* info text */
