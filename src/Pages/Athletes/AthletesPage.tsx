@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaChevronDown, FaCog, FaPen, FaTrash } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 import { apiGet } from '../../Services/Api/api';
 import {
   AgeClassInterface,
@@ -7,6 +8,7 @@ import {
   CategoryInterface,
 } from '../../Types/types';
 import { Modal } from '../MatchTimer/components/Modal';
+import AgeClassForm from './components/AgeClassForm';
 import AthleteForm from './components/AthleteForm';
 
 export default function AthletesPage() {
@@ -15,7 +17,7 @@ export default function AthletesPage() {
     [categoryId: string]: AthleteInterface[];
   }>({});
   const [isNewAthleteOpen, setIsNewAthleteOpen] = useState(false);
-  /*   const [isModifyAgeClassOpen, setIsModifygeClassOpen] = useState(false); */
+  const [modifyAgeClassOpen, setModifyAgeClassOpen] = useState('');
 
   useEffect(() => {
     apiGet('v1/age_classes').then((ageClassData: AgeClassInterface[]) => {
@@ -46,7 +48,10 @@ export default function AthletesPage() {
         <tr key={ageClass._id} className='age-class-row centered-text'>
           <td colSpan={5}>{ageClass.name}</td>
           <td className='table-column-10 centered-text'>
-            <button className='icon-button orange'>
+            <button
+              className='icon-button orange'
+              onClick={() => setModifyAgeClassOpen(ageClass._id)}
+            >
               <FaCog />
             </button>
             <button className='icon-button orange'>
@@ -105,6 +110,22 @@ export default function AthletesPage() {
     }
     return tableElem;
   }
+  const getAgeClassForForm = () => {
+    const ageClass = ageClasses.find((ac) => ac._id === modifyAgeClassOpen);
+    if (!ageClass) throw new Error('age class not found'); // should never be here
+    return ageClass;
+  };
+
+  useEffect(() => {
+    if (!modifyAgeClassOpen) return;
+    const ageClass = getAgeClassForForm();
+    if (!ageClass.closed) return;
+    setModifyAgeClassOpen('');
+    Swal.fire(
+      "Classe gia' chiusa",
+      "La classe e' gia' stata chiusa, non e' piu' possibile modificarla"
+    );
+  }, [modifyAgeClassOpen]);
 
   return (
     <div className='tournament-container'>
@@ -118,33 +139,6 @@ export default function AthletesPage() {
           >
             Aggiungi Atleta
           </button>
-          {isNewAthleteOpen && (
-            <Modal handleClose={() => setIsNewAthleteOpen(false)}>
-              <div className='form-title'>Aggiungi Atleta</div>
-              <AthleteForm
-                handleClose={() => setIsNewAthleteOpen(false)}
-                addNewAthleteToTable={(newAthlete: AthleteInterface) =>
-                  setAthletes((prevAth) => {
-                    const categoryId = newAthlete.category;
-                    const newCategory = {
-                      [categoryId]: prevAth[categoryId],
-                    };
-                    newCategory[categoryId].push(newAthlete);
-                    return { ...prevAth, ...newCategory };
-                  })
-                }
-                initialValues={{
-                  name: '',
-                  surname: '',
-                  club: '',
-                  birth_year: 2000,
-                  weight: 50,
-                  gender: 'M',
-                }}
-                url={'v1/athletes'}
-              />
-            </Modal>
-          )}
         </div>
         <table className='table' id='athlete-table'>
           <thead>
@@ -161,6 +155,53 @@ export default function AthletesPage() {
           <tbody>{getTableAgeClasses()}</tbody>
         </table>
       </div>
+      {isNewAthleteOpen && (
+        <Modal handleClose={() => setIsNewAthleteOpen(false)}>
+          <div className='form-title'>Aggiungi Atleta</div>
+          <AthleteForm
+            handleClose={() => setIsNewAthleteOpen(false)}
+            addNewAthleteToTable={(newAthlete: AthleteInterface) =>
+              setAthletes((prevAth) => {
+                const categoryId = newAthlete.category;
+                const newCategory = {
+                  [categoryId]: prevAth[categoryId],
+                };
+                newCategory[categoryId].push(newAthlete);
+                return { ...prevAth, ...newCategory };
+              })
+            }
+            initialValues={{
+              name: null,
+              surname: null,
+              club: null,
+              birth_year: null,
+              weight: null,
+              gender: null,
+            }}
+            url={'v1/athletes'}
+          />
+        </Modal>
+      )}
+      {modifyAgeClassOpen !== '' && !getAgeClassForForm().closed && (
+        <Modal handleClose={() => setModifyAgeClassOpen('')}>
+          <div className='form-title'>{"Impostazioni Classe d'eta'"}</div>
+          <AgeClassForm
+            handleClose={() => setModifyAgeClassOpen('')}
+            ageClass={getAgeClassForForm()}
+            updateAgeClass={(newParams: AgeClassInterface['params'], closed: boolean) =>
+              setAgeClasses((prevAgeClasses) => {
+                const newAgeClass = prevAgeClasses.find(
+                  (ac) => ac._id === modifyAgeClassOpen
+                );
+                if (!newAgeClass) throw new Error('age class not found'); // should never be here
+                newAgeClass.params = newParams;
+                newAgeClass.closed = closed;
+                return prevAgeClasses;
+              })
+            }
+          />
+        </Modal>
+      )}
     </div>
   );
 }

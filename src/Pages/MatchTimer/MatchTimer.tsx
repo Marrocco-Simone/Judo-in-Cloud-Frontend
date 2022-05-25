@@ -28,6 +28,8 @@ import { apiGet, apiPost } from '../../Services/Api/api';
   se avvio l'osaekomi parte anche il match timer
   dare hansoku make non vuol dire perdere direttamente ma da' ippon all'altro (che poi vince)
   modo diretto per dare hansoku make
+  fare che golden score infinito se il tempo del gs massimo e' null
+  modificare pulsante info in modo pesante (usare una tabella)
 */
 
 const refreshRate = 200;

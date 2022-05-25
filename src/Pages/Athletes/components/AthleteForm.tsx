@@ -6,12 +6,12 @@ export default function AthleteForm(props: {
   handleClose: () => void;
   addNewAthleteToTable: (newAthlete: AthleteInterface) => void;
   initialValues: {
-    name: string;
-    surname: string;
-    club: string;
-    birth_year: number;
-    weight: number;
-    gender: 'M' | 'F';
+    name: string | null;
+    surname: string | null;
+    club: string | null;
+    birth_year: number | null;
+    weight: number | null;
+    gender: 'M' | 'F' | null;
   };
   /* url verso cui fare post con i dati modificati di values */
   url: string;
@@ -37,7 +37,7 @@ export default function AthleteForm(props: {
           <input
             type={inputType}
             className='athlete-input'
-            value={values[field]}
+            value={values[field] || ''}
             onChange={(e) => {
               const updatedValue = { [field]: e.target.value };
               setValues((prevValues) => ({ ...prevValues, ...updatedValue }));
@@ -91,6 +91,7 @@ export default function AthleteForm(props: {
       })}
       {getInputRow('Peso', 'weight', 'number', { min: 1, max: 200 })}
       <div className='select-gender'>
+        <div className="gender-text">Sesso</div>
         {getGenderRadio('M')}
         {getGenderRadio('F')}
       </div>
