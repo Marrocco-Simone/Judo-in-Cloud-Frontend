@@ -8,6 +8,7 @@ import {
   CategoryInterface,
 } from '../../Types/types';
 import { Modal } from '../MatchTimer/components/Modal';
+import OrangeButton from '../Tournament/components/OrangeButton';
 import AgeClassForm from './components/AgeClassForm';
 import AthleteForm from './components/AthleteForm';
 
@@ -130,12 +131,9 @@ export default function AthletesPage() {
       <div className='table-container'>
         <div className='table-text'>
           Gestione Atleti
-          <button
-            className='athlete-button orange'
-            onClick={() => setIsNewAthleteOpen(true)}
-          >
+          <OrangeButton onClickFunction={() => setIsNewAthleteOpen(true)}>
             Aggiungi Atleta
-          </button>
+          </OrangeButton>
         </div>
         <table className='table' id='athlete-table'>
           <thead>
@@ -185,7 +183,10 @@ export default function AthletesPage() {
           <AgeClassForm
             handleClose={() => setModifyAgeClassOpen('')}
             ageClass={getAgeClassForForm()}
-            updateAgeClass={(newParams: AgeClassInterface['params'], closed: boolean) =>
+            updateAgeClass={(
+              newParams: AgeClassInterface['params'],
+              closed: boolean
+            ) =>
               setAgeClasses((prevAgeClasses) => {
                 const newAgeClass = prevAgeClasses.find(
                   (ac) => ac._id === modifyAgeClassOpen
