@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Swal from 'sweetalert2';
 import { apiPost } from '../../../Services/Api/api';
 import { AthleteInterface } from '../../../Types/types';
 
@@ -16,12 +17,7 @@ export default function AthleteForm(props: {
   /* url verso cui fare post con i dati modificati di values */
   url: string;
 }) {
-  const {
-    handleClose,
-    addNewAthleteToTable,
-    initialValues,
-    url,
-  } = props;
+  const { handleClose, addNewAthleteToTable, initialValues, url } = props;
   const [values, setValues] = useState(initialValues);
 
   function getInputRow(
@@ -62,7 +58,6 @@ export default function AthleteForm(props: {
             const updatedValue: { gender: 'M' | 'F' } = { gender };
             setValues((prevValues) => ({ ...prevValues, ...updatedValue }));
           }}
-          required
         />
         <label className='timer-label radio-label' htmlFor={`gender-${gender}`}>
           {gender}
@@ -76,6 +71,7 @@ export default function AthleteForm(props: {
       id='athlete-form'
       onSubmit={(e) => {
         e.preventDefault();
+        if (!values.gender) return Swal.fire("Scegliere il sesso dell'atleta");
         apiPost(url, values).then((athlete) => {
           addNewAthleteToTable(athlete);
           handleClose();
@@ -91,15 +87,11 @@ export default function AthleteForm(props: {
       })}
       {getInputRow('Peso', 'weight', 'number', { min: 1, max: 200 })}
       <div className='select-gender'>
-        <div className="gender-text">Sesso</div>
+        <div className='gender-text'>Sesso</div>
         {getGenderRadio('M')}
         {getGenderRadio('F')}
       </div>
-      <button
-        className='timer-button orange'
-        type='submit'
-        form='athlete-form'
-      >
+      <button className='timer-button orange' type='submit' form='athlete-form'>
         Salva
       </button>
     </form>
