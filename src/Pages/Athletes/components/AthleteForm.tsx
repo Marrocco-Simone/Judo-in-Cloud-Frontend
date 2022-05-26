@@ -6,7 +6,7 @@ import { AthleteInterface } from '../../../Types/types';
 export default function AthleteForm(props: {
   handleClose: () => void;
   addNewAthleteToTable: (newAthlete: AthleteInterface) => void;
-  initialValues: {
+  initialParams: {
     name: string | null;
     surname: string | null;
     club: string | null;
@@ -14,15 +14,15 @@ export default function AthleteForm(props: {
     weight: number | null;
     gender: 'M' | 'F' | null;
   };
-  /* url verso cui fare post con i dati modificati di values */
+  /* url verso cui fare post con i dati modificati di params */
   url: string;
 }) {
-  const { handleClose, addNewAthleteToTable, initialValues, url } = props;
-  const [values, setValues] = useState(initialValues);
+  const { handleClose, addNewAthleteToTable, initialParams, url } = props;
+  const [params, setParams] = useState(initialParams);
 
   function getInputRow(
     text: string,
-    field: keyof typeof values,
+    field: keyof typeof params,
     inputType: string,
     extraAttributes?: React.InputHTMLAttributes<HTMLInputElement>
   ) {
@@ -33,12 +33,11 @@ export default function AthleteForm(props: {
           <input
             type={inputType}
             className='athlete-input'
-            value={values[field] || ''}
+            value={params[field] || ''}
             onChange={(e) => {
-              const updatedValue = { [field]: e.target.value };
-              setValues((prevValues) => ({ ...prevValues, ...updatedValue }));
+              const updatedParam = { [field]: e.target.value };
+              setParams((prevParams) => ({ ...prevParams, ...updatedParam }));
             }}
-            required
             {...extraAttributes}
           />
         </div>
@@ -46,21 +45,35 @@ export default function AthleteForm(props: {
     );
   }
 
-  function getGenderRadio(gender: 'M' | 'F') {
+  function getGenderRadio() {
     return (
-      <div key={`gender-${gender}`}>
+      <div className='select-gender'>
+        <div className='gender-text'>Sesso</div>
         <input
-          id={`gender-${gender}`}
+          id={'gender-M'}
           type='radio'
           className='radio-input'
           name='gender'
           onChange={() => {
-            const updatedValue: { gender: 'M' | 'F' } = { gender };
-            setValues((prevValues) => ({ ...prevValues, ...updatedValue }));
+            const updatedParam: { gender: 'M' | 'F' } = { gender: 'M' };
+            setParams((prevParams) => ({ ...prevParams, ...updatedParam }));
           }}
         />
-        <label className='timer-label radio-label' htmlFor={`gender-${gender}`}>
-          {gender}
+        <label className='timer-label radio-label' htmlFor={'gender-M'}>
+          M
+        </label>
+        <input
+          id={'gender-F'}
+          type='radio'
+          className='radio-input'
+          name='gender'
+          onChange={() => {
+            const updatedParam: { gender: 'M' | 'F' } = { gender: 'F' };
+            setParams((prevParams) => ({ ...prevParams, ...updatedParam }));
+          }}
+        />
+        <label className='timer-label radio-label' htmlFor={'gender-F'}>
+          F
         </label>
       </div>
     );
@@ -71,26 +84,27 @@ export default function AthleteForm(props: {
       id='athlete-form'
       onSubmit={(e) => {
         e.preventDefault();
-        if (!values.gender) return Swal.fire("Scegliere il sesso dell'atleta");
-        apiPost(url, values).then((athlete) => {
+        if (!params.gender) return Swal.fire("Scegliere il sesso dell'atleta");
+        apiPost(url, params).then((athlete) => {
           addNewAthleteToTable(athlete);
           handleClose();
         });
       }}
     >
-      {getInputRow('Nome', 'name', 'text')}
-      {getInputRow('Cognome', 'surname', 'text')}
-      {getInputRow("Societa'", 'club', 'text')}
+      {getInputRow('Nome', 'name', 'text', { required: true })}
+      {getInputRow('Cognome', 'surname', 'text', { required: true })}
+      {getInputRow("Societa'", 'club', 'text', { required: true })}
       {getInputRow('Anno Nascita', 'birth_year', 'number', {
+        required: true,
         min: 1900,
         max: new Date().getFullYear(),
       })}
-      {getInputRow('Peso', 'weight', 'number', { min: 1, max: 200 })}
-      <div className='select-gender'>
-        <div className='gender-text'>Sesso</div>
-        {getGenderRadio('M')}
-        {getGenderRadio('F')}
-      </div>
+      {getInputRow('Peso', 'weight', 'number', {
+        required: true,
+        min: 1,
+        max: 200,
+      })}
+      {getGenderRadio()}
       <button className='timer-button orange' type='submit' form='athlete-form'>
         Salva
       </button>

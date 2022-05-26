@@ -20,13 +20,25 @@ export default function AthletesPage() {
   const [isNewAthleteOpen, setIsNewAthleteOpen] = useState(false);
   const [modifyAgeClassOpen, setModifyAgeClassOpen] = useState('');
 
+  /** get the age classes */
   useEffect(() => {
     apiGet('v1/age_classes').then((ageClassData: AgeClassInterface[]) => {
       setAgeClasses(ageClassData);
     });
   }, []);
 
+  /**
+   * get the athletes once gotten the age classes.
+   * the athletes get then ordered in an object where each key is a category id
+   * and every field is an array of the athletes of that category
+   *
+   * possible bug: when we update the age classes after the form submission
+   * maybe the athletes are reloaded. It doesn't happen, but it's something
+   * to look for
+   * search setAgeClasses to know when this useEffect should be called
+   */
   useEffect(() => {
+    console.log('got athletes');
     apiGet('v1/athletes').then((athleteData: AthleteInterface[]) => {
       const myAthletes: { [categoryId: string]: AthleteInterface[] } = {};
       for (const ageClass of ageClasses) {
@@ -41,6 +53,7 @@ export default function AthletesPage() {
     });
   }, [ageClasses]);
 
+  /** get each AgeClass with its Categories and Athletes below */
   function getTableAgeClasses() {
     let tableElem: React.ReactNode[] = [];
     for (const ageClass of ageClasses) {
@@ -65,6 +78,7 @@ export default function AthletesPage() {
     return tableElem;
   }
 
+  /** get each Category of an AgeClass with its Athletes */
   function getTableCategories(ageClass: AgeClassInterface) {
     let tableElem: React.ReactNode[] = [];
     for (const category of ageClass.categories) {
@@ -83,6 +97,7 @@ export default function AthletesPage() {
     return tableElem;
   }
 
+  /** get each Athlete of a Category */
   function getTableAthletes(category: CategoryInterface) {
     const tableElem: React.ReactNode[] = [];
     if (!athletes[category._id]) return [<></>];
@@ -108,15 +123,21 @@ export default function AthletesPage() {
     }
     return tableElem;
   }
-  const getAgeClassForForm = () => {
+
+  /** get the AgeClass that modifyAgeClassOpen is pointing at */
+  const findFormAgeClass = () => {
     const ageClass = ageClasses.find((ac) => ac._id === modifyAgeClassOpen);
     if (!ageClass) throw new Error('age class not found'); // should never be here
     return ageClass;
   };
 
+  /**
+   * if the ageClass is closed, show an error swal
+   * TODO: possibility of reopening an ageClass
+   */
   useEffect(() => {
     if (!modifyAgeClassOpen) return;
-    const ageClass = getAgeClassForForm();
+    const ageClass = findFormAgeClass();
     if (!ageClass.closed) return;
     setModifyAgeClassOpen('');
     Swal.fire(
@@ -124,6 +145,67 @@ export default function AthletesPage() {
       "La classe e' gia' stata chiusa, non e' piu' possibile modificarla"
     );
   }, [modifyAgeClassOpen]);
+
+  /**
+   * return the modal to create a new Athlete
+   * TODO: use the same modal for modifing an athlete
+   */
+  function getModalAthleteForm() {
+    return (
+      <Modal handleClose={() => setIsNewAthleteOpen(false)}>
+        <div className='form-title'>Aggiungi Atleta</div>
+        <AthleteForm
+          handleClose={() => setIsNewAthleteOpen(false)}
+          addNewAthleteToTable={(newAthlete: AthleteInterface) =>
+            setAthletes((prevAth) => {
+              const categoryId = newAthlete.category;
+              const newCategory = {
+                [categoryId]: prevAth[categoryId],
+              };
+              newCategory[categoryId].push(newAthlete);
+              return { ...prevAth, ...newCategory };
+            })
+          }
+          initialParams={{
+            name: null,
+            surname: null,
+            club: null,
+            birth_year: null,
+            weight: null,
+            gender: null,
+          }}
+          url={'v1/athletes'}
+        />
+      </Modal>
+    );
+  }
+
+  /** return the modal to modify parameters and close an AgeClass */
+  function getModalAgeClassForm() {
+    return (
+      <Modal handleClose={() => setModifyAgeClassOpen('')}>
+        <div className='form-title'>{"Impostazioni Classe d'eta'"}</div>
+        <AgeClassForm
+          handleClose={() => setModifyAgeClassOpen('')}
+          ageClass={findFormAgeClass()}
+          updateAgeClass={(
+            newParams: AgeClassInterface['params'],
+            closed: boolean
+          ) =>
+            setAgeClasses((prevAgeClasses) => {
+              const newAgeClass = prevAgeClasses.find(
+                (ac) => ac._id === modifyAgeClassOpen
+              );
+              if (!newAgeClass) throw new Error('age class not found'); // should never be here
+              newAgeClass.params = newParams;
+              newAgeClass.closed = closed;
+              return prevAgeClasses;
+            })
+          }
+        />
+      </Modal>
+    );
+  }
 
   return (
     <div className='tournament-container'>
@@ -150,56 +232,10 @@ export default function AthletesPage() {
           <tbody>{getTableAgeClasses()}</tbody>
         </table>
       </div>
-      {isNewAthleteOpen && (
-        <Modal handleClose={() => setIsNewAthleteOpen(false)}>
-          <div className='form-title'>Aggiungi Atleta</div>
-          <AthleteForm
-            handleClose={() => setIsNewAthleteOpen(false)}
-            addNewAthleteToTable={(newAthlete: AthleteInterface) =>
-              setAthletes((prevAth) => {
-                const categoryId = newAthlete.category;
-                const newCategory = {
-                  [categoryId]: prevAth[categoryId],
-                };
-                newCategory[categoryId].push(newAthlete);
-                return { ...prevAth, ...newCategory };
-              })
-            }
-            initialValues={{
-              name: null,
-              surname: null,
-              club: null,
-              birth_year: null,
-              weight: null,
-              gender: null,
-            }}
-            url={'v1/athletes'}
-          />
-        </Modal>
-      )}
-      {modifyAgeClassOpen !== '' && !getAgeClassForForm().closed && (
-        <Modal handleClose={() => setModifyAgeClassOpen('')}>
-          <div className='form-title'>{"Impostazioni Classe d'eta'"}</div>
-          <AgeClassForm
-            handleClose={() => setModifyAgeClassOpen('')}
-            ageClass={getAgeClassForForm()}
-            updateAgeClass={(
-              newParams: AgeClassInterface['params'],
-              closed: boolean
-            ) =>
-              setAgeClasses((prevAgeClasses) => {
-                const newAgeClass = prevAgeClasses.find(
-                  (ac) => ac._id === modifyAgeClassOpen
-                );
-                if (!newAgeClass) throw new Error('age class not found'); // should never be here
-                newAgeClass.params = newParams;
-                newAgeClass.closed = closed;
-                return prevAgeClasses;
-              })
-            }
-          />
-        </Modal>
-      )}
+      {isNewAthleteOpen && getModalAthleteForm()}
+      {modifyAgeClassOpen !== '' &&
+        !findFormAgeClass().closed &&
+        getModalAgeClassForm()}
     </div>
   );
 }

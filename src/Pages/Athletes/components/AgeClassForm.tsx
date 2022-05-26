@@ -5,7 +5,10 @@ import { AgeClassInterface } from '../../../Types/types';
 export default function AgeClassForm(props: {
   handleClose: () => void;
   ageClass: AgeClassInterface;
-  updateAgeClass: (newParams: AgeClassInterface['params'], closed: boolean) => void;
+  updateAgeClass: (
+    newParams: AgeClassInterface['params'],
+    closed: boolean
+  ) => void;
 }) {
   const { handleClose, ageClass, updateAgeClass } = props;
   const ageClassId = ageClass._id;
@@ -16,21 +19,22 @@ export default function AgeClassForm(props: {
   function getInputRow(
     text: string,
     field: keyof typeof params,
-    isRequired: boolean
+    inputType: string,
+    extraAttributes?: React.InputHTMLAttributes<HTMLInputElement>
   ) {
     return (
       <label className='timer-label' key={field}>
         <span className='input-description'>{text}</span>
         <div className='input-container'>
           <input
-            type='number'
+            type={inputType}
             className='athlete-input'
             value={params[field] || ''}
             onChange={(e) => {
               const updatedParam = { [field]: e.target.value };
               setParams((prevParams) => ({ ...prevParams, ...updatedParam }));
             }}
-            {...{ required: isRequired }}
+            {...extraAttributes}
           />
         </div>
       </label>
@@ -66,13 +70,23 @@ export default function AgeClassForm(props: {
         });
       }}
     >
-      {getInputRow('Tempo Regolamentare', 'match_time', true)}
-      {getInputRow('Tempo Golden Score', 'supplemental_match_time', false)}
+      {getInputRow('Tempo Regolamentare', 'match_time', 'number', {
+        required: true,
+      })}
+      {getInputRow('Tempo Golden Score', 'supplemental_match_time', 'number')}
       (lasciare vuoto per golden score illimitato)
-      {getInputRow('Ippon per Vincere', 'ippon_to_win', true)}
-      {getInputRow('Waza Ari per Vincere', 'wazaari_to_win', true)}
-      {getInputRow('Timer Osaekomi Ippon', 'ippon_timer', true)}
-      {getInputRow('TImer Osaekomi Waza Ari', 'wazaari_timer', true)}
+      {getInputRow('Ippon per Vincere', 'ippon_to_win', 'number', {
+        required: true,
+      })}
+      {getInputRow('Waza Ari per Vincere', 'wazaari_to_win', 'number', {
+        required: true,
+      })}
+      {getInputRow('Timer Osaekomi Ippon', 'ippon_timer', 'number', {
+        required: true,
+      })}
+      {getInputRow('TImer Osaekomi Waza Ari', 'wazaari_timer', 'number', {
+        required: true,
+      })}
       {getCloseToggle()}
       <button className='timer-button orange' type='submit' form='athlete-form'>
         Salva
