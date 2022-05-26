@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import { apiPost } from '../../../Services/Api/api';
 import { AthleteInterface } from '../../../Types/types';
+import InputRow from './InputRow';
 
 export default function AthleteForm(props: {
   handleClose: () => void;
@@ -20,29 +21,12 @@ export default function AthleteForm(props: {
   const { handleClose, addNewAthleteToTable, initialParams, url } = props;
   const [params, setParams] = useState(initialParams);
 
-  function getInputRow(
-    text: string,
-    field: keyof typeof params,
-    inputType: string,
-    extraAttributes?: React.InputHTMLAttributes<HTMLInputElement>
-  ) {
-    return (
-      <label className='timer-label' key={field}>
-        <span className='input-description'>{text}</span>
-        <div className='input-container'>
-          <input
-            type={inputType}
-            className='athlete-input'
-            value={params[field] || ''}
-            onChange={(e) => {
-              const updatedParam = { [field]: e.target.value };
-              setParams((prevParams) => ({ ...prevParams, ...updatedParam }));
-            }}
-            {...extraAttributes}
-          />
-        </div>
-      </label>
-    );
+  function getOnChangeFunction(field: keyof typeof params) {
+    return (e: React.ChangeEvent<HTMLInputElement>) =>
+      setParams((prevParams) => ({
+        ...prevParams,
+        ...{ [field]: e.target.value },
+      }));
   }
 
   function getGenderRadio() {
@@ -91,19 +75,54 @@ export default function AthleteForm(props: {
         });
       }}
     >
-      {getInputRow('Nome', 'name', 'text', { required: true })}
-      {getInputRow('Cognome', 'surname', 'text', { required: true })}
-      {getInputRow("Societa'", 'club', 'text', { required: true })}
-      {getInputRow('Anno Nascita', 'birth_year', 'number', {
-        required: true,
-        min: 1900,
-        max: new Date().getFullYear(),
-      })}
-      {getInputRow('Peso', 'weight', 'number', {
-        required: true,
-        min: 1,
-        max: 200,
-      })}
+      <InputRow
+        value={params.name}
+        onChange={getOnChangeFunction('name')}
+        inputType={'text'}
+        extraAttributes={{ required: true }}
+      >
+        {'Nome'}
+      </InputRow>
+      <InputRow
+        value={params.surname}
+        onChange={getOnChangeFunction('surname')}
+        inputType={'text'}
+        extraAttributes={{ required: true }}
+      >
+        {'Cognome'}
+      </InputRow>
+      <InputRow
+        value={params.club}
+        onChange={getOnChangeFunction('club')}
+        inputType={'text'}
+        extraAttributes={{ required: true }}
+      >
+        {"Societa'"}
+      </InputRow>
+      <InputRow
+        value={params.birth_year}
+        onChange={getOnChangeFunction('birth_year')}
+        inputType={'number'}
+        extraAttributes={{
+          required: true,
+          min: 1900,
+          max: new Date().getFullYear(),
+        }}
+      >
+        {'Anno Nascita'}
+      </InputRow>
+      <InputRow
+        value={params.weight}
+        onChange={getOnChangeFunction('weight')}
+        inputType={'number'}
+        extraAttributes={{
+          required: true,
+          min: 1,
+          max: 200,
+        }}
+      >
+        {'Anno Nascita'}
+      </InputRow>
       {getGenderRadio()}
       <button className='timer-button orange' type='submit' form='athlete-form'>
         Salva
