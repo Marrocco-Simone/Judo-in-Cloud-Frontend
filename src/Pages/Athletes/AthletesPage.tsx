@@ -19,7 +19,10 @@ export default function AthletesPage() {
   }>({});
   const [isNewAthleteOpen, setIsNewAthleteOpen] = useState(false);
   const [modifyAgeClassOpen, setModifyAgeClassOpen] = useState('');
-  /** used to determine if a section is shown or not */
+  /**
+   * used to determine if a section is shown or not
+   * id is either a ageClassId or a CategoryId
+  */
   const [openedTable, setOpenedTable] = useState<{
     [id: string]: boolean;
   }>({});
