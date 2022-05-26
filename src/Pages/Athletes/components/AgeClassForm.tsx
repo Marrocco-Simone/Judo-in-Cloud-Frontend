@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { apiPost } from '../../../Services/Api/api';
 import { AgeClassInterface } from '../../../Types/types';
 import InputRow from './InputRow';
+import InputToggle from './InputToggle';
 
 export default function AgeClassForm(props: {
   handleClose: () => void;
@@ -23,24 +24,6 @@ export default function AgeClassForm(props: {
         ...prevParams,
         ...{ [field]: e.target.value },
       }));
-  }
-
-  function getCloseToggle() {
-    return (
-      <label className='timer-label'>
-        <span className='input-description'>
-          {"Chiudere la classe d'eta'?"}
-        </span>
-        <div className='input-container'>
-          <input
-            type='checkbox'
-            className='toggle-input'
-            onChange={(e) => setClosed(e.target.checked)}
-          />
-          <div className='toggle-fill' />
-        </div>
-      </label>
-    );
   }
 
   return (
@@ -103,7 +86,9 @@ export default function AgeClassForm(props: {
       >
         {'Timer Osaekomi Waza Ari'}
       </InputRow>
-      {getCloseToggle()}
+      <InputToggle onChange={(e) => setClosed(e.target.checked)}>
+        {"Chiudere la classe d'eta'?"}
+      </InputToggle>
       <button className='timer-button orange' type='submit' form='athlete-form'>
         Salva
       </button>

@@ -1,13 +1,13 @@
 import React from 'react';
 
-export default function InputRow(params: {
+export default function InputRow(props: {
   children: React.ReactNode;
   value: string | number | null;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   inputType: string;
   extraAttributes?: React.InputHTMLAttributes<HTMLInputElement>;
 }) {
-  const { children, value, onChange, inputType, extraAttributes } = params;
+  const { children, value, onChange, inputType, extraAttributes } = props;
 
   return (
     <label className='timer-label'>
