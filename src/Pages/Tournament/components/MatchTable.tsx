@@ -33,8 +33,8 @@ export default function MatchTable({
           className={getRowClass(match)}
           onClick={() => setActiveMatch(match._id)}
         >
-          <td className='table-column-40'>{match.whiteAthlete}</td>
-          <td className='table-column-40'>{match.redAthlete}</td>
+          <td className={getWinner(match) === 'Bianco' ? 'table-column-40 bold-text' : 'table-column-40'}>{match.whiteAthlete}</td>
+          <td className={getWinner(match) === 'Rosso' ? 'table-column-40 bold-text' : 'table-column-40'}>{match.redAthlete}</td>
           <td className='table-column-20'>{getWinner(match)}</td>
         </tr>
       );
