@@ -17,8 +17,7 @@ export default function TournamentTable({
   }
 
   function getTableElements() {
-    const tableElem = [<div key='delete'></div>];
-    tableElem.pop(); // only to get the right type of tableElem
+    const tableElem: React.ReactNode[] = [];
     if (tournamentTableData.length === 0) {
       return (
         <tr className='table-empty'>

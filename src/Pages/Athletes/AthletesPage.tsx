@@ -41,8 +41,7 @@ export default function AthletesPage() {
   }, [ageClasses]);
 
   function getTableAgeClasses() {
-    let tableElem = [<div key='delete'></div>];
-    tableElem.pop(); // only to get the right type of tableElem
+    let tableElem: React.ReactNode[] = [];
     for (const ageClass of ageClasses) {
       tableElem.push(
         <tr key={ageClass._id} className='age-class-row centered-text'>
@@ -66,8 +65,7 @@ export default function AthletesPage() {
   }
 
   function getTableCategories(ageClass: AgeClassInterface) {
-    let tableElem = [<div key='delete'></div>];
-    tableElem.pop(); // only to get the right type of tableElem
+    let tableElem: React.ReactNode[] = [];
     for (const category of ageClass.categories) {
       tableElem.push(
         <tr key={category._id} className='category-row centered-text'>
@@ -85,8 +83,7 @@ export default function AthletesPage() {
   }
 
   function getTableAthletes(category: CategoryInterface) {
-    const tableElem = [<div key='delete'></div>];
-    tableElem.pop(); // only to get the right type of tableElem
+    const tableElem: React.ReactNode[] = [];
     if (!athletes[category._id]) return [<></>];
     for (const athlete of athletes[category._id]) {
       tableElem.push(
