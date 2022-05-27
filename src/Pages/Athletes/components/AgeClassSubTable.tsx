@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { FaChevronDown, FaCog } from 'react-icons/fa';
 import { AgeClassInterface, AthleteInterface } from '../../../Types/types';
+import AgeClassRow from './AgeClassRow';
 import CategorySubTable from './CategorySubTable';
 
 export default function AgeClassSubTable(props: {
@@ -27,29 +27,13 @@ export default function AgeClassSubTable(props: {
     return tableElem;
   }
 
-  const ageClassRow = (
-    <tr key={ageClass._id} className='age-class-row centered-text'>
-      <td colSpan={5}>{ageClass.name}</td>
-      <td className='table-column-10 centered-text'>
-        <button
-          className='icon-button orange'
-          onClick={() => modifyAgeClass(ageClass._id)}
-        >
-          <FaCog />
-        </button>
-        <button
-          className='icon-button orange'
-          onClick={() => setOpened((prev) => !prev)}
-        >
-          <FaChevronDown />
-        </button>
-      </td>
-    </tr>
-  );
-
   return (
     <>
-      {ageClassRow}
+      <AgeClassRow
+        ageClass={ageClass}
+        modifyAgeClass={modifyAgeClass}
+        chevronFunction={() => setOpened((prev) => !prev)}
+      />
       {opened && getTableCategories()}
     </>
   );
