@@ -32,7 +32,7 @@ export default function AthleteTable(props: {
     <div className='table-container'>
       <div className='table-text'>
         Gestione Atleti
-        <OrangeButton onClickFunction={openNewAthlete}>
+        <OrangeButton onClickFunction={() => openNewAthlete}>
           Aggiungi Atleta
         </OrangeButton>
       </div>
