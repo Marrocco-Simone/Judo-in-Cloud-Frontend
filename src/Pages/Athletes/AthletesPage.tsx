@@ -2,16 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { FaChevronDown, FaCog } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { apiGet } from '../../Services/Api/api';
-import {
-  AgeClassInterface,
-  AthleteInterface,
-  CategoryInterface,
-} from '../../Types/types';
+import { AgeClassInterface, AthleteInterface } from '../../Types/types';
 import { Modal } from '../MatchTimer/components/Modal';
 import OrangeButton from '../Tournament/components/OrangeButton';
 import AgeClassForm from './components/AgeClassForm';
 import AthleteForm from './components/AthleteForm';
-import AthleteRow from './components/AthleteRow';
+import CategorySubTable from './components/CategorySubTable';
 
 export default function AthletesPage() {
   const [ageClasses, setAgeClasses] = useState<AgeClassInterface[]>([]);
@@ -104,41 +100,14 @@ export default function AthletesPage() {
 
   /** get each Category of an AgeClass with its Athletes */
   function getTableCategories(ageClass: AgeClassInterface) {
-    let tableElem: React.ReactNode[] = [];
+    const tableElem: React.ReactNode[] = [];
     for (const category of ageClass.categories) {
       tableElem.push(
-        <tr key={category._id} className='category-row centered-text'>
-          <td colSpan={5}>{`U${category.max_weight} ${category.gender}`}</td>
-          <td className='table-column-10 centered-text'>
-            <button
-              className='icon-button orange'
-              onClick={() =>
-                setOpenedTable((prevOpTable) => {
-                  return {
-                    ...prevOpTable,
-                    ...{ [category._id]: !prevOpTable[category._id] },
-                  };
-                })
-              }
-            >
-              <FaChevronDown />
-            </button>
-          </td>
-        </tr>
+        <CategorySubTable
+          category={category}
+          athletes={athletes[category._id]}
+        />
       );
-      if (openedTable[category._id]) {
-        tableElem = [...tableElem, ...getTableAthletes(category)];
-      }
-    }
-    return tableElem;
-  }
-
-  /** get each Athlete of a Category */
-  function getTableAthletes(category: CategoryInterface) {
-    const tableElem: React.ReactNode[] = [];
-    if (!athletes[category._id]) return [<></>];
-    for (const athlete of athletes[category._id]) {
-      tableElem.push(<AthleteRow athlete={athlete} />);
     }
     return tableElem;
   }
