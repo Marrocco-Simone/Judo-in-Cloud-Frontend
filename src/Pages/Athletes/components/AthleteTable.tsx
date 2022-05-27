@@ -22,6 +22,7 @@ export default function AthleteTable(props: {
           ageClass={ageClass}
           athletes={athletes}
           modifyAgeClass={() => modifyAgeClass(ageClass._id)}
+          key={ageClass._id}
         />
       );
     }

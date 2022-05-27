@@ -21,6 +21,7 @@ export default function AgeClassSubTable(props: {
         <CategorySubTable
           category={category}
           athletes={athletes[category._id]}
+          key={category._id}
         />
       );
     }

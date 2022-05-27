@@ -9,7 +9,7 @@ export default function AgeClassRow(props: {
 }) {
   const { ageClass, modifyAgeClass, chevronFunction } = props;
   return (
-    <tr key={ageClass._id} className='age-class-row centered-text'>
+    <tr className='age-class-row centered-text'>
       <td colSpan={5}>{ageClass.name}</td>
       <td className='table-column-10 centered-text'>
         <button

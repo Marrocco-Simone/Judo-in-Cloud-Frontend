@@ -8,7 +8,7 @@ export default function CategoryRow(props: {
 }) {
   const { category, chevronFunction } = props;
   return (
-    <tr key={category._id} className='category-row centered-text'>
+    <tr className='category-row centered-text'>
       <td colSpan={5}>{`U${category.max_weight} ${category.gender}`}</td>
       <td className='table-column-10 centered-text'>
         <button className='icon-button orange' onClick={chevronFunction}>

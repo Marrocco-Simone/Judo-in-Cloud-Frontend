@@ -5,7 +5,7 @@ import { AthleteInterface } from '../../../Types/types';
 export default function AthleteRow(props: { athlete: AthleteInterface }) {
   const { athlete } = props;
   return (
-    <tr key={athlete._id}>
+    <tr>
       <td className='table-column-15'>{athlete.name}</td>
       <td className='table-column-15'>{athlete.surname}</td>
       <td className='table-column-15'>{athlete.club}</td>
