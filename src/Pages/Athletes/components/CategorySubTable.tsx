@@ -12,11 +12,23 @@ export default function CategorySubTable(props: {
 
   /** get each Athlete of a Category */
   function getTableAthletes() {
+    if (!athletes) {
+      return [
+        <tr
+          key={`no-athletes-${category._id}`}
+          className='category-row centered-text'
+        >
+          <td colSpan={5}>Nessun Atleta in questa categoria</td>
+          <td className='table-column-10'></td>
+        </tr>,
+      ];
+    }
+
     const tableElem: React.ReactNode[] = [];
-    if (!athletes) return [<></>];
     for (const athlete of athletes) {
       tableElem.push(<AthleteRow athlete={athlete} />);
     }
+
     return tableElem;
   }
 
@@ -34,8 +46,11 @@ export default function CategorySubTable(props: {
     </tr>
   );
 
-  let categorySubTable: React.ReactNode[] = [categoryRow];
-  if (opened) categorySubTable = [...categorySubTable, ...getTableAthletes()];
-
-  return <>{categorySubTable}</>;
+  if (!opened) return categoryRow;
+  return (
+    <>
+      {categoryRow}
+      {getTableAthletes()}
+    </>
+  );
 }
