@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 import { apiGet } from '../../Services/Api/api';
 import { AgeClassInterface, AthleteInterface } from '../../Types/types';
 import { Modal } from '../MatchTimer/components/Modal';
-import AgeClassForm from './components/AgeClassForm';
+import AgeClassFormModal from './components/AgeClassFormModal';
 import AthleteForm from './components/AthleteForm';
 import AthleteTable from './components/AthleteTable';
 
@@ -106,27 +106,24 @@ export default function AthletesPage() {
   /** return the modal to modify parameters and close an AgeClass */
   function getModalAgeClassForm() {
     return (
-      <Modal handleClose={() => setModifyAgeClassOpen('')}>
-        <div className='form-title'>{"Impostazioni Classe d'eta'"}</div>
-        <AgeClassForm
-          handleClose={() => setModifyAgeClassOpen('')}
-          ageClass={findFormAgeClass()}
-          updateAgeClass={(
-            newParams: AgeClassInterface['params'],
-            closed: boolean
-          ) =>
-            setAgeClasses((prevAgeClasses) => {
-              const newAgeClass = prevAgeClasses.find(
-                (ac) => ac._id === modifyAgeClassOpen
-              );
-              if (!newAgeClass) throw new Error('age class not found'); // should never be here
-              newAgeClass.params = newParams;
-              newAgeClass.closed = closed;
-              return prevAgeClasses;
-            })
-          }
-        />
-      </Modal>
+      <AgeClassFormModal
+        handleClose={() => setModifyAgeClassOpen('')}
+        ageClass={findFormAgeClass()}
+        updateAgeClass={(
+          newParams: AgeClassInterface['params'],
+          closed: boolean
+        ) =>
+          setAgeClasses((prevAgeClasses) => {
+            const newAgeClass = prevAgeClasses.find(
+              (ac) => ac._id === modifyAgeClassOpen
+            );
+            if (!newAgeClass) throw new Error('age class not found'); // should never be here
+            newAgeClass.params = newParams;
+            newAgeClass.closed = closed;
+            return prevAgeClasses;
+          })
+        }
+      />
     );
   }
 
