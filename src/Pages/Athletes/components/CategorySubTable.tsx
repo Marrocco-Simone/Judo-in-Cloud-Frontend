@@ -8,20 +8,21 @@ export default function CategorySubTable(props: {
   athletes: AthleteInterface[];
 }) {
   const { category, athletes } = props;
-  const [opened, setOpened] = useState(true);
+  const [opened, setOpened] = useState(false);
 
   /** get each Athlete of a Category */
   function getTableAthletes() {
-    if (!athletes) {
-      return [
+    if (athletes.length === 0) {
+      const noAthletesRow = (
         <tr
           key={`no-athletes-${category._id}`}
-          className='category-row centered-text'
+          className='centered-text'
         >
           <td colSpan={5}>Nessun Atleta in questa categoria</td>
           <td className='table-column-10'></td>
-        </tr>,
-      ];
+        </tr>
+      );
+      return noAthletesRow;
     }
 
     const tableElem: React.ReactNode[] = [];
