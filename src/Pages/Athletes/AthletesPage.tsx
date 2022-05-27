@@ -33,7 +33,6 @@ export default function AthletesPage() {
    * search setAgeClasses to know when this useEffect should be called
    */
   useEffect(() => {
-    console.log('got athletes');
     apiGet('v1/athletes').then((athleteData: AthleteInterface[]) => {
       const myAthletes: { [categoryId: string]: AthleteInterface[] } = {};
       for (const ageClass of ageClasses) {
