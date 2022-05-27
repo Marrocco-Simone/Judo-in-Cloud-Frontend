@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import { apiPost } from '../../../Services/Api/api';
 import { AthleteInterface } from '../../../Types/types';
 import InputRow from './InputRow';
+import TwoOptionRadio from './TwoOptionRadio';
 
 export default function AthleteForm(props: {
   handleClose: () => void;
@@ -27,40 +28,6 @@ export default function AthleteForm(props: {
         ...prevParams,
         ...{ [field]: e.target.value },
       }));
-  }
-
-  function getGenderRadio() {
-    return (
-      <div className='select-gender'>
-        <div className='gender-text'>Sesso</div>
-        <input
-          id={'gender-M'}
-          type='radio'
-          className='radio-input'
-          name='gender'
-          onChange={() => {
-            const updatedParam: { gender: 'M' | 'F' } = { gender: 'M' };
-            setParams((prevParams) => ({ ...prevParams, ...updatedParam }));
-          }}
-        />
-        <label className='timer-label radio-label' htmlFor={'gender-M'}>
-          M
-        </label>
-        <input
-          id={'gender-F'}
-          type='radio'
-          className='radio-input'
-          name='gender'
-          onChange={() => {
-            const updatedParam: { gender: 'M' | 'F' } = { gender: 'F' };
-            setParams((prevParams) => ({ ...prevParams, ...updatedParam }));
-          }}
-        />
-        <label className='timer-label radio-label' htmlFor={'gender-F'}>
-          F
-        </label>
-      </div>
-    );
   }
 
   return (
@@ -121,9 +88,18 @@ export default function AthleteForm(props: {
           max: 200,
         }}
       >
-        {'Anno Nascita'}
+        {'Peso'}
       </InputRow>
-      {getGenderRadio()}
+      <TwoOptionRadio
+        firstOption={'M'}
+        secondOption={'F'}
+        onChange={(option: string) => {
+          if (option !== 'M' && option !== 'F') return;
+          setParams((prevParams) => ({ ...prevParams, ...{ gender: option } }));
+        }}
+      >
+        Sesso
+      </TwoOptionRadio>
       <button className='timer-button orange' type='submit' form='athlete-form'>
         Salva
       </button>
