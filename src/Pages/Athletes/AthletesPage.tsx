@@ -103,29 +103,20 @@ export default function AthletesPage() {
     );
   }
 
-  /** return the modal to modify parameters and close an AgeClass */
-  function getModalAgeClassForm() {
-    return (
-      <AgeClassFormModal
-        handleClose={() => setModifyAgeClassOpen('')}
-        ageClass={findFormAgeClass()}
-        updateAgeClass={(
-          newParams: AgeClassInterface['params'],
-          closed: boolean
-        ) =>
-          setAgeClasses((prevAgeClasses) => {
-            const newAgeClass = prevAgeClasses.find(
-              (ac) => ac._id === modifyAgeClassOpen
-            );
-            if (!newAgeClass) throw new Error('age class not found'); // should never be here
-            newAgeClass.params = newParams;
-            newAgeClass.closed = closed;
-            return prevAgeClasses;
-          })
-        }
-      />
-    );
-  }
+  const updateAgeClass = (
+    newParams: AgeClassInterface['params'],
+    closed: boolean
+  ) => {
+    setAgeClasses((prevAgeClasses) => {
+      const newAgeClass = prevAgeClasses.find(
+        (ageClass) => ageClass._id === modifyAgeClassOpen
+      );
+      if (!newAgeClass) throw new Error('age class not found'); // should never be here
+      newAgeClass.params = newParams;
+      newAgeClass.closed = closed;
+      return prevAgeClasses;
+    });
+  };
 
   return (
     <div className='tournament-container'>
@@ -139,9 +130,13 @@ export default function AthletesPage() {
         openNewAthlete={() => setIsNewAthleteOpen(true)}
       />
       {isNewAthleteOpen && getModalAthleteForm()}
-      {modifyAgeClassOpen !== '' &&
-        !findFormAgeClass().closed &&
-        getModalAgeClassForm()}
+      {modifyAgeClassOpen !== '' && !findFormAgeClass().closed && (
+        <AgeClassFormModal
+          handleClose={() => setModifyAgeClassOpen('')}
+          ageClass={findFormAgeClass()}
+          updateAgeClass={updateAgeClass}
+        />
+      )}
     </div>
   );
 }
