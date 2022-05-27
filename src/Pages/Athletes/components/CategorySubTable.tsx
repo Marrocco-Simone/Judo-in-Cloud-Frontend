@@ -23,16 +23,12 @@ export default function CategorySubTable(props: {
     return tableElem;
   }
 
-  const categoryRow = (
-    <CategoryRow
-      category={category}
-      onClick={() => setOpened((prev) => !prev)}
-    />
-  );
-
   return (
     <>
-      {categoryRow}
+      <CategoryRow
+        category={category}
+        onClick={() => setOpened((prev) => !prev)}
+      />
       {opened && getTableAthletes()}
     </>
   );
