@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { FaChevronDown, FaCog } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { apiGet } from '../../Services/Api/api';
 import { AgeClassInterface, AthleteInterface } from '../../Types/types';
 import { Modal } from '../MatchTimer/components/Modal';
 import OrangeButton from '../Tournament/components/OrangeButton';
 import AgeClassForm from './components/AgeClassForm';
+import AgeClassSubTable from './components/AgeClassSubTable';
 import AthleteForm from './components/AthleteForm';
-import CategorySubTable from './components/CategorySubTable';
 
 export default function AthletesPage() {
   const [ageClasses, setAgeClasses] = useState<AgeClassInterface[]>([]);
@@ -16,13 +15,6 @@ export default function AthletesPage() {
   }>({});
   const [isNewAthleteOpen, setIsNewAthleteOpen] = useState(false);
   const [modifyAgeClassOpen, setModifyAgeClassOpen] = useState('');
-  /**
-   * used to determine if a section is shown or not
-   * id is either a ageClassId or a CategoryId
-   */
-  const [openedTable, setOpenedTable] = useState<{
-    [id: string]: boolean;
-  }>({});
 
   /** get the age classes */
   useEffect(() => {
@@ -45,67 +37,29 @@ export default function AthletesPage() {
     console.log('got athletes');
     apiGet('v1/athletes').then((athleteData: AthleteInterface[]) => {
       const myAthletes: { [categoryId: string]: AthleteInterface[] } = {};
-      const newOpenedTable: { [id: string]: boolean } = {};
       for (const ageClass of ageClasses) {
-        newOpenedTable[ageClass._id] = true;
         for (const cat of ageClass.categories) {
           const categoryId = cat._id;
-          newOpenedTable[categoryId] = true;
           myAthletes[categoryId] = athleteData.filter(
             (ath) => ath.category === categoryId
           );
         }
       }
-      setOpenedTable(newOpenedTable);
       setAthletes(myAthletes);
     });
   }, [ageClasses]);
 
   /** get each AgeClass with its Categories and Athletes below */
   function getTableAgeClasses() {
-    let tableElem: React.ReactNode[] = [];
+    const tableElem: React.ReactNode[] = [];
     for (const ageClass of ageClasses) {
       tableElem.push(
-        <tr key={ageClass._id} className='age-class-row centered-text'>
-          <td colSpan={5}>{ageClass.name}</td>
-          <td className='table-column-10 centered-text'>
-            <button
-              className='icon-button orange'
-              onClick={() => setModifyAgeClassOpen(ageClass._id)}
-            >
-              <FaCog />
-            </button>
-            <button
-              className='icon-button orange'
-              onClick={() =>
-                setOpenedTable((prevOpTable) => {
-                  return {
-                    ...prevOpTable,
-                    ...{ [ageClass._id]: !prevOpTable[ageClass._id] },
-                  };
-                })
-              }
-            >
-              <FaChevronDown />
-            </button>
-          </td>
-        </tr>
-      );
-      if (openedTable[ageClass._id]) {
-        tableElem = [...tableElem, ...getTableCategories(ageClass)];
-      }
-    }
-    return tableElem;
-  }
-
-  /** get each Category of an AgeClass with its Athletes */
-  function getTableCategories(ageClass: AgeClassInterface) {
-    const tableElem: React.ReactNode[] = [];
-    for (const category of ageClass.categories) {
-      tableElem.push(
-        <CategorySubTable
-          category={category}
-          athletes={athletes[category._id]}
+        <AgeClassSubTable
+          ageClass={ageClass}
+          athletes={athletes}
+          modifyAgeClass={(ageClassId: string) =>
+            setModifyAgeClassOpen(ageClassId)
+          }
         />
       );
     }
