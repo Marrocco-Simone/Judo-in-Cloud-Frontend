@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaChevronDown, FaCog, FaPen, FaTrash } from 'react-icons/fa';
+import { FaChevronDown, FaCog } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { apiGet } from '../../Services/Api/api';
 import {
@@ -11,6 +11,7 @@ import { Modal } from '../MatchTimer/components/Modal';
 import OrangeButton from '../Tournament/components/OrangeButton';
 import AgeClassForm from './components/AgeClassForm';
 import AthleteForm from './components/AthleteForm';
+import AthleteRow from './components/AthleteRow';
 
 export default function AthletesPage() {
   const [ageClasses, setAgeClasses] = useState<AgeClassInterface[]>([]);
@@ -137,24 +138,7 @@ export default function AthletesPage() {
     const tableElem: React.ReactNode[] = [];
     if (!athletes[category._id]) return [<></>];
     for (const athlete of athletes[category._id]) {
-      tableElem.push(
-        <tr key={athlete._id}>
-          <td className='table-column-15'>{athlete.name}</td>
-          <td className='table-column-15'>{athlete.surname}</td>
-          <td className='table-column-15'>{athlete.club}</td>
-          <td className='table-column-15'>{athlete.birth_year}</td>
-          <td className='table-column-15'>{athlete.weight}</td>
-          <td className='table-column-15'>{athlete.gender}</td>
-          <td className='table-column-10 centered-text'>
-            <button className='icon-button orange'>
-              <FaPen />
-            </button>
-            <button className='icon-button orange'>
-              <FaTrash />
-            </button>
-          </td>
-        </tr>
-      );
+      tableElem.push(<AthleteRow athlete={athlete} />);
     }
     return tableElem;
   }
