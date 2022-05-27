@@ -30,11 +30,10 @@ export default function CategorySubTable(props: {
     />
   );
 
-  if (!opened) return categoryRow;
   return (
     <>
       {categoryRow}
-      {getTableAthletes()}
+      {opened && getTableAthletes()}
     </>
   );
 }
