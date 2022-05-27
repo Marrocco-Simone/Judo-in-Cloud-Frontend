@@ -22,7 +22,7 @@ export default function AthletesPage() {
   /**
    * used to determine if a section is shown or not
    * id is either a ageClassId or a CategoryId
-  */
+   */
   const [openedTable, setOpenedTable] = useState<{
     [id: string]: boolean;
   }>({});
@@ -94,14 +94,15 @@ export default function AthletesPage() {
           </td>
         </tr>
       );
-      tableElem = [...tableElem, ...getTableCategories(ageClass)];
+      if (openedTable[ageClass._id]) {
+        tableElem = [...tableElem, ...getTableCategories(ageClass)];
+      }
     }
     return tableElem;
   }
 
   /** get each Category of an AgeClass with its Athletes */
   function getTableCategories(ageClass: AgeClassInterface) {
-    if (!openedTable[ageClass._id]) return [];
     let tableElem: React.ReactNode[] = [];
     for (const category of ageClass.categories) {
       tableElem.push(
@@ -124,14 +125,15 @@ export default function AthletesPage() {
           </td>
         </tr>
       );
-      tableElem = [...tableElem, ...getTableAthletes(category)];
+      if (openedTable[category._id]) {
+        tableElem = [...tableElem, ...getTableAthletes(category)];
+      }
     }
     return tableElem;
   }
 
   /** get each Athlete of a Category */
   function getTableAthletes(category: CategoryInterface) {
-    if (!openedTable[category._id]) return [];
     const tableElem: React.ReactNode[] = [];
     if (!athletes[category._id]) return [<></>];
     for (const athlete of athletes[category._id]) {
