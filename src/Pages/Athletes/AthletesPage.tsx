@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { apiGet } from '../../Services/Api/api';
 import { AgeClassInterface, AthleteInterface } from '../../Types/types';
-import { Modal } from '../MatchTimer/components/Modal';
 import AgeClassFormModal from './components/AgeClassFormModal';
-import AthleteForm from './components/AthleteForm';
+import AthleteFormModal from './components/AthleteFormModal';
 import AthleteTable from './components/AthleteTable';
 
 export default function AthletesPage() {
@@ -69,31 +68,6 @@ export default function AthletesPage() {
     );
   }, [modifyAgeClassOpen]);
 
-  /**
-   * return the modal to create a new Athlete
-   * TODO: use the same modal for modifing an athlete
-   */
-  function getModalAthleteForm() {
-    return (
-      <Modal handleClose={() => setIsNewAthleteOpen(false)}>
-        <div className='form-title'>Aggiungi Atleta</div>
-        <AthleteForm
-          handleClose={() => setIsNewAthleteOpen(false)}
-          addNewAthleteToTable={addNewAthleteToTable}
-          initialParams={{
-            name: null,
-            surname: null,
-            club: null,
-            birth_year: null,
-            weight: null,
-            gender: null,
-          }}
-          url={'v1/athletes'}
-        />
-      </Modal>
-    );
-  }
-
   function addNewAthleteToTable(newAthlete: AthleteInterface) {
     setAthletes((prevAth) => {
       const categoryId = newAthlete.category;
@@ -131,7 +105,12 @@ export default function AthletesPage() {
         }
         openNewAthlete={() => setIsNewAthleteOpen(true)}
       />
-      {isNewAthleteOpen && getModalAthleteForm()}
+      {isNewAthleteOpen && (
+        <AthleteFormModal
+          handleClose={() => setIsNewAthleteOpen(false)}
+          addNewAthleteToTable={addNewAthleteToTable}
+        />
+      )}
       {modifyAgeClassOpen !== '' && !findFormAgeClass().closed && (
         <AgeClassFormModal
           handleClose={() => setModifyAgeClassOpen('')}
