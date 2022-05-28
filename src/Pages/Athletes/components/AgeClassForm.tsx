@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Swal from 'sweetalert2';
 import { apiPost } from '../../../Services/Api/api';
 import { AgeClassInterface } from '../../../Types/types';
 import InputRow from './InputRow';
@@ -31,6 +32,19 @@ export default function AgeClassForm(props: {
       id='athlete-form'
       onSubmit={(e) => {
         e.preventDefault();
+        if (
+          !params.match_time ||
+          !params.ippon_timer ||
+          !params.ippon_to_win ||
+          !params.wazaari_timer ||
+          !params.wazaari_to_win
+        ) {
+          return Swal.fire({
+            title: 'Completare tutti i campi',
+            html: 'Ad esclusione del campo <i>Tempo Golden Score</i>',
+            icon: 'warning',
+          });
+        }
         apiPost(`v1/age_classes/${ageClassId}`, { closed, params }).then(() => {
           updateAgeClass(params, closed);
           handleClose();
@@ -41,7 +55,6 @@ export default function AgeClassForm(props: {
         value={params.match_time}
         onChange={getOnChangeFunction('match_time')}
         inputType={'number'}
-        extraAttributes={{ required: true }}
       >
         {'Tempo Regolamentare'}
       </InputRow>
@@ -49,7 +62,6 @@ export default function AgeClassForm(props: {
         value={params.supplemental_match_time}
         onChange={getOnChangeFunction('supplemental_match_time')}
         inputType={'number'}
-        extraAttributes={{ required: false }}
       >
         {'Tempo Golden Score'}
       </InputRow>
@@ -58,7 +70,6 @@ export default function AgeClassForm(props: {
         value={params.ippon_to_win}
         onChange={getOnChangeFunction('ippon_to_win')}
         inputType={'number'}
-        extraAttributes={{ required: true }}
       >
         {'Ippon per Vincere'}
       </InputRow>
@@ -66,7 +77,6 @@ export default function AgeClassForm(props: {
         value={params.wazaari_to_win}
         onChange={getOnChangeFunction('wazaari_to_win')}
         inputType={'number'}
-        extraAttributes={{ required: true }}
       >
         {'Waza Ari per Vincere'}
       </InputRow>
@@ -74,7 +84,6 @@ export default function AgeClassForm(props: {
         value={params.ippon_timer}
         onChange={getOnChangeFunction('ippon_timer')}
         inputType={'number'}
-        extraAttributes={{ required: true }}
       >
         {'Timer Osaekomi Ippon'}
       </InputRow>
@@ -82,7 +91,6 @@ export default function AgeClassForm(props: {
         value={params.wazaari_timer}
         onChange={getOnChangeFunction('wazaari_timer')}
         inputType={'number'}
-        extraAttributes={{ required: true }}
       >
         {'Timer Osaekomi Waza Ari'}
       </InputRow>

@@ -20,6 +20,15 @@ export type AthleteInterface = {
   __v: number;
 };
 
+export type AthleteParamsInterface = {
+  name: string;
+  surname: string;
+  club: string;
+  birth_year: string;
+  weight: string;
+  gender: 'M' | 'F' | '';
+}
+
 export type MatchInterface = {
   _id: string;
   white_athlete: AthleteInterface;

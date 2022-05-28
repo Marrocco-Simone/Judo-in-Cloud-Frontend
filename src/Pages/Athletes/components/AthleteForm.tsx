@@ -1,32 +1,30 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
-import { apiPost } from '../../../Services/Api/api';
-import { AthleteInterface } from '../../../Types/types';
+import { AthleteInterface, AthleteParamsInterface } from '../../../Types/types';
 import InputRow from './InputRow';
 import TwoOptionRadio from './TwoOptionRadio';
 
 export default function AthleteForm(props: {
   handleClose: () => void;
-  addNewAthleteToTable: (newAthlete: AthleteInterface) => void;
-  initialParams: {
-    name: string | null;
-    surname: string | null;
-    club: string | null;
-    birth_year: number | null;
-    weight: number | null;
-    gender: 'M' | 'F' | null;
-  };
-  /* url verso cui fare post con i dati modificati di params */
-  url: string;
+  updateAthleteToTable: (newAthlete: AthleteInterface) => void;
+  initialParams?: AthleteParamsInterface;
+  apiSend: (params: AthleteParamsInterface) => Promise<any>;
 }) {
-  const { handleClose, addNewAthleteToTable, initialParams, url } = props;
-  const [params, setParams] = useState(initialParams);
+  const { handleClose, updateAthleteToTable, initialParams, apiSend } = props;
+  const [params, setParams] = useState<AthleteParamsInterface>({
+    name: initialParams?.name || '',
+    surname: initialParams?.surname || '',
+    club: initialParams?.club || '',
+    birth_year: initialParams?.birth_year || '',
+    weight: initialParams?.weight || '',
+    gender: initialParams?.gender || '',
+  });
 
   function getOnChangeFunction(field: keyof typeof params) {
     return (e: React.ChangeEvent<HTMLInputElement>) =>
       setParams((prevParams) => ({
         ...prevParams,
-        ...{ [field]: e.target.value },
+        ...{ [field]: `${e.target.value}` },
       }));
   }
 
@@ -35,9 +33,26 @@ export default function AthleteForm(props: {
       id='athlete-form'
       onSubmit={(e) => {
         e.preventDefault();
-        if (!params.gender) return Swal.fire("Scegliere il sesso dell'atleta");
-        apiPost(url, params).then((athlete) => {
-          addNewAthleteToTable(athlete);
+        if (
+          !params.name ||
+          !params.surname ||
+          !params.club ||
+          !params.birth_year ||
+          !params.weight
+        ) {
+          return Swal.fire({
+            title: 'Completare tutti i campi',
+            icon: 'warning',
+          });
+        }
+        if (!params.gender) {
+          return Swal.fire({
+            title: "Scegliere il sesso dell'atleta",
+            icon: 'warning',
+          });
+        }
+        apiSend(params).then((athlete) => {
+          updateAthleteToTable(athlete);
           handleClose();
         });
       }}
@@ -46,7 +61,6 @@ export default function AthleteForm(props: {
         value={params.name}
         onChange={getOnChangeFunction('name')}
         inputType={'text'}
-        extraAttributes={{ required: true }}
       >
         {'Nome'}
       </InputRow>
@@ -54,7 +68,6 @@ export default function AthleteForm(props: {
         value={params.surname}
         onChange={getOnChangeFunction('surname')}
         inputType={'text'}
-        extraAttributes={{ required: true }}
       >
         {'Cognome'}
       </InputRow>
@@ -62,7 +75,6 @@ export default function AthleteForm(props: {
         value={params.club}
         onChange={getOnChangeFunction('club')}
         inputType={'text'}
-        extraAttributes={{ required: true }}
       >
         {"Societa'"}
       </InputRow>
@@ -71,7 +83,6 @@ export default function AthleteForm(props: {
         onChange={getOnChangeFunction('birth_year')}
         inputType={'number'}
         extraAttributes={{
-          required: true,
           min: 1900,
           max: new Date().getFullYear(),
         }}
@@ -83,7 +94,6 @@ export default function AthleteForm(props: {
         onChange={getOnChangeFunction('weight')}
         inputType={'number'}
         extraAttributes={{
-          required: true,
           min: 1,
           max: 200,
         }}

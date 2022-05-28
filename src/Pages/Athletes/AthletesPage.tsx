@@ -68,7 +68,7 @@ export default function AthletesPage() {
     );
   }, [modifyAgeClassOpen]);
 
-  function addNewAthleteToTable(newAthlete: AthleteInterface) {
+  function updateAthleteToTable(newAthlete: AthleteInterface) {
     setAthletes((prevAth) => {
       const categoryId = newAthlete.category;
       const newCategory = {
@@ -108,7 +108,7 @@ export default function AthletesPage() {
       {isNewAthleteOpen && (
         <AthleteFormModal
           handleClose={() => setIsNewAthleteOpen(false)}
-          addNewAthleteToTable={addNewAthleteToTable}
+          updateAthleteToTable={updateAthleteToTable}
         />
       )}
       {modifyAgeClassOpen !== '' && !findFormAgeClass().closed && (
