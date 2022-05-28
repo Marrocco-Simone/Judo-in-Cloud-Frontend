@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Swal from 'sweetalert2';
 import { apiGet, apiPost } from '../../Services/Api/api';
 import {
   AgeClassInterface,
@@ -56,22 +55,6 @@ export default function AthletesPage() {
     if (!ageClass) throw new Error('age class not found'); // should never be here
     return ageClass;
   };
-
-  /**
-   * if the ageClass is closed, show an error swal
-   * TODO: possibility of reopening an ageClass
-   */
-  useEffect(() => {
-    if (!modifyAgeClassOpen) return;
-    const ageClass = findFormAgeClass();
-    if (!ageClass.closed) return;
-    setModifyAgeClassOpen('');
-    Swal.fire(
-      "Classe gia' chiusa",
-      "La classe e' gia' stata chiusa, non e' piu' possibile modificarla",
-      'info'
-    );
-  }, [modifyAgeClassOpen]);
 
   function updateAthleteFromTable(newAthlete: AthleteInterface) {
     setAthletes((prevAth) => {
