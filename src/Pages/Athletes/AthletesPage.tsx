@@ -79,16 +79,7 @@ export default function AthletesPage() {
         <div className='form-title'>Aggiungi Atleta</div>
         <AthleteForm
           handleClose={() => setIsNewAthleteOpen(false)}
-          addNewAthleteToTable={(newAthlete: AthleteInterface) =>
-            setAthletes((prevAth) => {
-              const categoryId = newAthlete.category;
-              const newCategory = {
-                [categoryId]: prevAth[categoryId],
-              };
-              newCategory[categoryId].push(newAthlete);
-              return { ...prevAth, ...newCategory };
-            })
-          }
+          addNewAthleteToTable={addNewAthleteToTable}
           initialParams={{
             name: null,
             surname: null,
@@ -103,10 +94,21 @@ export default function AthletesPage() {
     );
   }
 
-  const updateAgeClass = (
+  function addNewAthleteToTable(newAthlete: AthleteInterface) {
+    setAthletes((prevAth) => {
+      const categoryId = newAthlete.category;
+      const newCategory = {
+        [categoryId]: prevAth[categoryId],
+      };
+      newCategory[categoryId].push(newAthlete);
+      return { ...prevAth, ...newCategory };
+    });
+  }
+
+  function updateAgeClass(
     newParams: AgeClassInterface['params'],
     closed: boolean
-  ) => {
+  ) {
     setAgeClasses((prevAgeClasses) => {
       const newAgeClass = prevAgeClasses.find(
         (ageClass) => ageClass._id === modifyAgeClassOpen
@@ -116,7 +118,7 @@ export default function AthletesPage() {
       newAgeClass.closed = closed;
       return prevAgeClasses;
     });
-  };
+  }
 
   return (
     <div className='tournament-container'>
