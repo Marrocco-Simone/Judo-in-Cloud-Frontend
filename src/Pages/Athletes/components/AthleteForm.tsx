@@ -107,6 +107,7 @@ export default function AthleteForm(props: {
           if (option !== 'M' && option !== 'F') return;
           setParams((prevParams) => ({ ...prevParams, ...{ gender: option } }));
         }}
+        value={params.gender}
       >
         Sesso
       </TwoOptionRadio>

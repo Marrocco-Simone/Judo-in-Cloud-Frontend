@@ -5,8 +5,9 @@ export default function TwoOptionRadio(props: {
   firstOption: string;
   secondOption: string;
   onChange: (option: string) => void;
+  value: string;
 }) {
-  const { children, firstOption, secondOption, onChange } = props;
+  const { children, firstOption, secondOption, onChange, value } = props;
   return (
     <div className='select-gender'>
       <div className='gender-text'>{children}</div>
@@ -16,6 +17,7 @@ export default function TwoOptionRadio(props: {
         className='radio-input'
         name='gender'
         onChange={() => onChange(firstOption)}
+        checked={value === firstOption}
       />
       <label className='timer-label radio-label' htmlFor={firstOption}>
         {firstOption}
@@ -26,6 +28,7 @@ export default function TwoOptionRadio(props: {
         className='radio-input'
         name='gender'
         onChange={() => onChange(secondOption)}
+        checked={value === secondOption}
       />
       <label className='timer-label radio-label' htmlFor={secondOption}>
         {secondOption}
