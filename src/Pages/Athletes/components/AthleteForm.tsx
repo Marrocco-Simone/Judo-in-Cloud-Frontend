@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import { AthleteInterface, AthleteParamsInterface } from '../../../Types/types';
-import InputRow from './InputRow';
-import TwoOptionRadio from './TwoOptionRadio';
+import InputRow from '../../../Components/Inputs/InputRow';
+import TwoOptionRadio from '../../../Components/Inputs/TwoOptionRadio';
 
 export default function AthleteForm(props: {
   handleClose: () => void;

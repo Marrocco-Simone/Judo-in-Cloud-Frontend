@@ -12,6 +12,11 @@ import Tournament from './Pages/Tournament/Tournament';
 import MainLayout from './Components/Layout/MainLayout';
 import TournamentPage from './Pages/Tournament/TournamentPage';
 
+/* TODO set as tailwind */
+import './Css/match.css';
+import './Css/modal.css';
+import './Css/tournament.css';
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

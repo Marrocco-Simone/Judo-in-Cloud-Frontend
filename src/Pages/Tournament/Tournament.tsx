@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import './css/tournament.css';
 import TournamentTable from './components/TournamentTable';
 import MatchTable from './components/MatchTable';
 import { apiGet } from '../../Services/Api/api';
@@ -11,7 +10,7 @@ import {
   MatchTableData,
 } from '../../Types/types';
 import Swal from 'sweetalert2';
-import OrangeButton from './components/OrangeButton';
+import OrangeButton from '../../Components/Buttons/OrangeButton';
 
 export default function Tournament() {
   /** for redirect */

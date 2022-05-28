@@ -1,6 +1,6 @@
 import React from 'react';
 import { AthleteInterface, AthleteParamsInterface } from '../../../Types/types';
-import { Modal } from '../../MatchTimer/components/Modal';
+import { Modal } from '../../../Components/Modal/Modal';
 import AthleteForm from './AthleteForm';
 
 export default function AthleteFormModal(props: {

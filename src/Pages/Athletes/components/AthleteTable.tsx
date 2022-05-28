@@ -1,6 +1,6 @@
 import React from 'react';
 import { AgeClassInterface, AthleteInterface } from '../../../Types/types';
-import OrangeButton from '../../Tournament/components/OrangeButton';
+import OrangeButton from '../../../Components/Buttons/OrangeButton';
 import AgeClassSubTable from './AgeClassSubTable';
 
 export default function AthleteTable(props: {

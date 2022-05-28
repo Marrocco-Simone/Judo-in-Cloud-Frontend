@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import './css/match.css';
 import { MatchInterface, MatchParamsInterface } from '../../Types/types';
-import { Modal } from './components/Modal';
+import { Modal } from '../../Components/Modal/Modal';
 import { ModifyParams } from './components/ModifyParams';
 import { apiGet, apiPost } from '../../Services/Api/api';
 

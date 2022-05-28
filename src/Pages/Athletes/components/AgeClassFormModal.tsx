@@ -1,6 +1,6 @@
 import React from 'react';
 import { AgeClassInterface } from '../../../Types/types';
-import { Modal } from '../../MatchTimer/components/Modal';
+import { Modal } from '../../../Components/Modal/Modal';
 import AgeClassForm from './AgeClassForm';
 
 export default function AgeClassFormModal(props: {

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import { apiPost } from '../../../Services/Api/api';
 import { AgeClassInterface } from '../../../Types/types';
-import InputRow from './InputRow';
-import InputToggle from './InputToggle';
+import InputRow from '../../../Components/Inputs/InputRow';
+import InputToggle from '../../../Components/Inputs/InputToggle';
 
 export default function AgeClassForm(props: {
   handleClose: () => void;
