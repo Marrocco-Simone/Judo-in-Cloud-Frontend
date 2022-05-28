@@ -7,8 +7,11 @@ import NoAthletesRow from './NoAthletesRow';
 export default function CategorySubTable(props: {
   category: CategoryInterface;
   athletes: AthleteInterface[];
+  updateAthleteFromTable: (newAthlete: AthleteInterface) => void;
+  deleteAthleteFromTable: (athleteToDelete: AthleteInterface) => void;
 }) {
-  const { category, athletes } = props;
+  const { category, athletes, updateAthleteFromTable, deleteAthleteFromTable } =
+    props;
   const [opened, setOpened] = useState(false);
 
   /** get each Athlete of a Category */
@@ -17,7 +20,14 @@ export default function CategorySubTable(props: {
 
     const tableElem: React.ReactNode[] = [];
     for (const athlete of athletes) {
-      tableElem.push(<AthleteRow athlete={athlete} key={athlete._id} />);
+      tableElem.push(
+        <AthleteRow
+          athlete={athlete}
+          updateAthleteFromTable={updateAthleteFromTable}
+          deleteAthleteFromTable={deleteAthleteFromTable}
+          key={athlete._id}
+        />
+      );
     }
 
     return tableElem;

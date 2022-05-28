@@ -13,7 +13,7 @@ export type AthleteInterface = {
   surname: string;
   competition: string;
   club: string;
-  gender: string;
+  gender: 'M' | 'F';
   weight: number;
   birth_year: number;
   category: string;

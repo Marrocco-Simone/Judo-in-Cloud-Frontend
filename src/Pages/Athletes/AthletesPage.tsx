@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import { apiGet } from '../../Services/Api/api';
-import { AgeClassInterface, AthleteInterface } from '../../Types/types';
+import { apiGet, apiPost } from '../../Services/Api/api';
+import {
+  AgeClassInterface,
+  AthleteInterface,
+  AthleteParamsInterface,
+} from '../../Types/types';
 import AgeClassFormModal from './components/AgeClassFormModal';
 import AthleteFormModal from './components/AthleteFormModal';
 import AthleteTable from './components/AthleteTable';
@@ -64,17 +68,35 @@ export default function AthletesPage() {
     setModifyAgeClassOpen('');
     Swal.fire(
       "Classe gia' chiusa",
-      "La classe e' gia' stata chiusa, non e' piu' possibile modificarla"
+      "La classe e' gia' stata chiusa, non e' piu' possibile modificarla",
+      'info'
     );
   }, [modifyAgeClassOpen]);
 
-  function updateAthleteToTable(newAthlete: AthleteInterface) {
+  function updateAthleteFromTable(newAthlete: AthleteInterface) {
     setAthletes((prevAth) => {
       const categoryId = newAthlete.category;
       const newCategory = {
         [categoryId]: prevAth[categoryId],
       };
-      newCategory[categoryId].push(newAthlete);
+      const athleteToUpdate = newCategory[categoryId].findIndex(
+        (ath) => ath._id === newAthlete._id
+      );
+      if (athleteToUpdate < 0) newCategory[categoryId].push(newAthlete);
+      else newCategory[categoryId][athleteToUpdate] = newAthlete;
+      return { ...prevAth, ...newCategory };
+    });
+  }
+
+  function deleteAthleteFromTable(athleteToDelete: AthleteInterface) {
+    setAthletes((prevAth) => {
+      const categoryId = athleteToDelete.category;
+      const newCategory = {
+        [categoryId]: prevAth[categoryId],
+      };
+      newCategory[categoryId] = newCategory[categoryId].filter(
+        (ath) => ath._id !== athleteToDelete._id
+      );
       return { ...prevAth, ...newCategory };
     });
   }
@@ -104,12 +126,24 @@ export default function AthletesPage() {
           setModifyAgeClassOpen(ageClassId)
         }
         openNewAthlete={() => setIsNewAthleteOpen(true)}
+        updateAthleteFromTable={
+          () =>
+            console.log(
+              'Ci vediamo per aggiornare atleti'
+            ) /* updateAthleteFromTable */
+        }
+        deleteAthleteFromTable={deleteAthleteFromTable}
       />
       {isNewAthleteOpen && (
         <AthleteFormModal
           handleClose={() => setIsNewAthleteOpen(false)}
-          updateAthleteToTable={updateAthleteToTable}
-        />
+          updateAthleteFromTable={updateAthleteFromTable}
+          apiSend={(params: AthleteParamsInterface) =>
+            apiPost('v1/athletes', params)
+          }
+        >
+          Aggiungi Atleta
+        </AthleteFormModal>
       )}
       {modifyAgeClassOpen !== '' && !findFormAgeClass().closed && (
         <AgeClassFormModal

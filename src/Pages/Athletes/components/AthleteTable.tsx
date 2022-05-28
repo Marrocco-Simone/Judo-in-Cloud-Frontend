@@ -10,8 +10,10 @@ export default function AthleteTable(props: {
   };
   modifyAgeClass: (ageClassId: string) => void;
   openNewAthlete: () => void;
+  updateAthleteFromTable: (newAthlete: AthleteInterface) => void;
+  deleteAthleteFromTable: (athleteToDelete: AthleteInterface) => void;
 }) {
-  const { ageClasses, athletes, modifyAgeClass, openNewAthlete } = props;
+  const { ageClasses, athletes, modifyAgeClass, openNewAthlete, updateAthleteFromTable, deleteAthleteFromTable } = props;
 
   /** get each AgeClass with its Categories and Athletes below */
   function getTableAgeClasses() {
@@ -22,6 +24,8 @@ export default function AthleteTable(props: {
           ageClass={ageClass}
           athletes={athletes}
           modifyAgeClass={() => modifyAgeClass(ageClass._id)}
+          updateAthleteFromTable={updateAthleteFromTable}
+          deleteAthleteFromTable={deleteAthleteFromTable}
           key={ageClass._id}
         />
       );

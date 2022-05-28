@@ -39,11 +39,11 @@ export default function AgeClassForm(props: {
           !params.wazaari_timer ||
           !params.wazaari_to_win
         ) {
-          return Swal.fire({
-            title: 'Completare tutti i campi',
-            html: 'Ad esclusione del campo <i>Tempo Golden Score</i>',
-            icon: 'warning',
-          });
+          return Swal.fire(
+            'Completare tutti i campi',
+            'Ad esclusione del campo <i>Tempo Golden Score</i>',
+            'warning'
+          );
         }
         apiPost(`v1/age_classes/${ageClassId}`, { closed, params }).then(() => {
           updateAgeClass(params, closed);

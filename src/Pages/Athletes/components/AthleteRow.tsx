@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaPen, FaTrash } from 'react-icons/fa';
-import { AthleteInterface } from '../../../Types/types';
+import Swal from 'sweetalert2';
+import { AthleteInterface, AthleteParamsInterface } from '../../../Types/types';
+import AthleteFormModal from './AthleteFormModal';
 
-export default function AthleteRow(props: { athlete: AthleteInterface }) {
-  const { athlete } = props;
+export default function AthleteRow(props: {
+  athlete: AthleteInterface;
+  updateAthleteFromTable: (newAthlete: AthleteInterface) => void;
+  deleteAthleteFromTable: (athleteToDelete: AthleteInterface) => void;
+}) {
+  const { athlete, updateAthleteFromTable, deleteAthleteFromTable } = props;
+  const [isModifyAthleteOpen, setIsModifyAthleteOpen] = useState(false);
+
   return (
     <tr>
       <td className='table-column-15'>{athlete.name}</td>
@@ -13,10 +21,53 @@ export default function AthleteRow(props: { athlete: AthleteInterface }) {
       <td className='table-column-15'>{athlete.weight}</td>
       <td className='table-column-15'>{athlete.gender}</td>
       <td className='table-column-10 centered-text'>
-        <button className='icon-button orange'>
+        <button
+          className='icon-button orange'
+          onClick={() => setIsModifyAthleteOpen(true)}
+        >
           <FaPen />
         </button>
-        <button className='icon-button orange'>
+        {isModifyAthleteOpen && (
+          <AthleteFormModal
+            handleClose={() => setIsModifyAthleteOpen(false)}
+            updateAthleteFromTable={updateAthleteFromTable}
+            apiSend={(params: AthleteParamsInterface) =>
+              /* apiPatch(`v1/athletes/${athlete._id}`, params) */
+              Swal.fire('Coming Soon', JSON.stringify(params), 'info')
+            }
+            initialParams={{
+              name: athlete.name,
+              surname: athlete.surname,
+              club: athlete.club,
+              birth_year: `${athlete.birth_year}`,
+              weight: `${athlete.weight}`,
+              gender: athlete.gender,
+            }}
+          >
+            Modifica Atleta
+          </AthleteFormModal>
+        )}
+        <button
+          className='icon-button orange'
+          onClick={() =>
+            Swal.fire({
+              title: 'Sei sicuro?',
+              text: `Stai per eliminare l'atleta ${athlete.name} ${athlete.surname} della societa' ${athlete.club}`,
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: "Si', elimina",
+              cancelButtonText: 'No, torna indietro',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                /* TODO api per eliminare */
+                deleteAthleteFromTable(athlete);
+                Swal.fire('Cancellato', `l'atleta ${athlete.name} ${athlete.surname} e' stato eliminato dal sistema`, 'success');
+              }
+            })
+          }
+        >
           <FaTrash />
         </button>
       </td>

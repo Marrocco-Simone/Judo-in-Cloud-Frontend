@@ -120,7 +120,7 @@ export default function Tournament() {
   function startNextMatch() {
     const fullActiveMatch = matches.find((m) => m._id === activeMatch);
     if (!fullActiveMatch) {
-      return Swal.fire('Nessun incontro selezionato');
+      return Swal.fire('Nessun incontro selezionato', '', 'error');
     }
     if (fullActiveMatch?.is_over) {
       return confirmGoFinishedMatch(
@@ -159,7 +159,7 @@ export default function Tournament() {
         </div>
       </div>
       <div className='button-row'>
-        <OrangeButton onClickFunction={() => Swal.fire('Coming Soon')}>
+        <OrangeButton onClickFunction={() => Swal.fire('Coming Soon', '', 'info')}>
           Prenota Categorie - Coming Soon
         </OrangeButton>
         <OrangeButton

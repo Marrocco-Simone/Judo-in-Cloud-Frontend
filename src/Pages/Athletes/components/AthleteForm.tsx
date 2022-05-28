@@ -6,11 +6,11 @@ import TwoOptionRadio from './TwoOptionRadio';
 
 export default function AthleteForm(props: {
   handleClose: () => void;
-  updateAthleteToTable: (newAthlete: AthleteInterface) => void;
+  updateAthleteFromTable: (newAthlete: AthleteInterface) => void;
   initialParams?: AthleteParamsInterface;
   apiSend: (params: AthleteParamsInterface) => Promise<any>;
 }) {
-  const { handleClose, updateAthleteToTable, initialParams, apiSend } = props;
+  const { handleClose, updateAthleteFromTable, initialParams, apiSend } = props;
   const [params, setParams] = useState<AthleteParamsInterface>({
     name: initialParams?.name || '',
     surname: initialParams?.surname || '',
@@ -40,19 +40,13 @@ export default function AthleteForm(props: {
           !params.birth_year ||
           !params.weight
         ) {
-          return Swal.fire({
-            title: 'Completare tutti i campi',
-            icon: 'warning',
-          });
+          return Swal.fire('Completare tutti i campi', '', 'warning');
         }
         if (!params.gender) {
-          return Swal.fire({
-            title: "Scegliere il sesso dell'atleta",
-            icon: 'warning',
-          });
+          return Swal.fire("Scegliere il sesso dell'atleta", '', 'warning');
         }
         apiSend(params).then((athlete) => {
-          updateAthleteToTable(athlete);
+          updateAthleteFromTable(athlete);
           handleClose();
         });
       }}
