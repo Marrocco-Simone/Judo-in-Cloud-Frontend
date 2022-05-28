@@ -15,7 +15,7 @@ export default function AgeClassForm(props: {
   const { handleClose, ageClass, updateAgeClass } = props;
   const ageClassId = ageClass._id;
   const [params, setParams] = useState(ageClass.params);
-  const [closed, setClosed] = useState(false);
+  const [closed, setClosed] = useState(ageClass.closed);
   if (!ageClass) handleClose();
 
   function getOnChangeFunction(field: keyof typeof params) {
