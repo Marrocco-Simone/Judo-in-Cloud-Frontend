@@ -17,7 +17,7 @@ const PublicTournaments: FC = () => {
 
   /** get data of tournaments when opening the page */
   useEffect(() => {
-    apiGet('v1/tournaments').then((tournamentData: TournamentInterface[]) =>
+    apiGet(`v2/competitions/${competition._id}/tournaments`).then((tournamentData: TournamentInterface[]) =>
       setTournaments(
         tournamentData.map((tour) => {
           return {
