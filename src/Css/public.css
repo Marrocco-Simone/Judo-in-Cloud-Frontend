@@ -6,7 +6,7 @@
   justify-content: left;
   align-items: center;
   text-align: center;
-  font-size: 5vh;
+  font-size: 6vh;
 }
 
 .competition-name {
@@ -16,6 +16,19 @@
   margin: 4vh 0;
   padding: 2vh 15vh;
   border-radius: 5vh;
+  box-shadow: 0 0 1.5vh rgba(0, 0, 0, 0.5);
+}
+
+.select-label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+}
+
+.select {
+  cursor: pointer;
+  padding: 2vh 7vh;
+  border-radius: 2vh;
   box-shadow: 0 0 1.5vh rgba(0, 0, 0, 0.5);
 }
 

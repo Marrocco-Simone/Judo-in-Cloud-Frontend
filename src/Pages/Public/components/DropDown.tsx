@@ -22,14 +22,14 @@ export default function DropDown(props: {
 
   return (
     <div>
-      <label>
+      <label className='select-label'>
         {children}
-        <select value={selected} onChange={(e) => {
+        <select className='select' value={selected} onChange={(e) => {
           const newValue = e.target.value;
           setSelected(newValue);
           chooseOption(newValue);
         }}>
-          <option className='void-option' />
+          <option className='void-option'>--Categorie--</option>
           {getOptions()}
         </select>
       </label>
