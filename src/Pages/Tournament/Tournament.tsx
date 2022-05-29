@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import './css/tournament.css';
 import TournamentTable from './components/TournamentTable';
 import MatchTable from './components/MatchTable';
 import { apiGet } from '../../Services/Api/api';
@@ -11,13 +10,21 @@ import {
   MatchTableData,
 } from '../../Types/types';
 import Swal from 'sweetalert2';
+import OrangeButton from '../../Components/Buttons/OrangeButton';
 
 export default function Tournament() {
-  // for redirect
+  /** for redirect */
   const navigate = useNavigate();
-  // to get the tournament id from query
+  /** get params from url */
   const [searchParams] = useSearchParams();
-  const getStartingTournament = () => {
+  /**
+   * if there is a field 'from_tournament' in the query parameters,
+   * it automatically assigns it the active tournament.
+   * The usage is that when we redirect from this page to another one,
+   * when the page redirect back to this page, the user doesn't need
+   * to select again the tournament
+   */
+  const getTournaments = () => {
     const fromTournament = searchParams.get('from_tournament');
     if (!fromTournament) return '';
     return fromTournament;
@@ -25,35 +32,35 @@ export default function Tournament() {
 
   const [tournaments, setTournaments] = useState<TournamentInterface[]>([]);
   const [matches, setMatches] = useState<MatchInterface[]>([]);
-  const [activeTournament, setActiveTournament] = useState<string>(
-    getStartingTournament()
-  );
+  const [activeTournament, setActiveTournament] = useState(getTournaments());
   const [activeMatch, setActiveMatch] = useState<string>('');
 
+  /** get data of tournaments when opening the page */
   useEffect(() => {
     apiGet('v1/tournaments').then((tournamentData) => {
       setTournaments(tournamentData);
     });
   }, []);
 
-  function getNextMatches(tournamentId: string) {
+  /** when selecting a tournament, load its matches */
+  useEffect(() => {
     /* TODO bisogna sistemare l'api e poi questo */
     /* apiGet(`v1/tournaments/${tournamentId}/next`).then((matchTableData) => { */
-    apiGet(`v1/tournaments/${tournamentId}`).then((matchData) => {
+    apiGet(`v1/tournaments/${activeTournament}`).then((matchData) => {
       if (!matchData?.winners_bracket) return;
       if (matchData.winners_bracket.length === 0) return;
+
       let totalMatches: MatchInterface[] = [];
       for (const bracket of matchData.winners_bracket) {
         totalMatches = [...totalMatches, ...bracket];
       }
       setMatches(totalMatches);
     });
-  }
-
-  useEffect(() => getNextMatches(activeTournament), [activeTournament]);
+  }, [activeTournament]);
 
   function getTournamentsDataForTable() {
     const tournamentTableData: TournamentTableData[] = [];
+
     for (const tour of tournaments) {
       tournamentTableData.push({
         _id: tour._id,
@@ -63,20 +70,22 @@ export default function Tournament() {
         finished: tour.finished,
       });
     }
+
     return tournamentTableData;
+  }
+
+  /** returns if one of the athletes of a match is undefined */
+  function isMatchWithNullAthlete(match: MatchInterface) {
+    if (!match?.white_athlete) return true;
+    if (!match?.red_athlete) return true;
+    return false;
   }
 
   function getMatchesDataForTable() {
     const matchTableData: MatchTableData[] = [];
     for (const match of matches) {
-      if (
-        !match?.white_athlete?.surname ||
-        !match?.white_athlete?.name ||
-        !match?.red_athlete?.surname ||
-        !match?.red_athlete?.name
-      ) {
-        continue;
-      }
+      if (isMatchWithNullAthlete(match)) continue;
+
       matchTableData.push({
         _id: match._id,
         whiteAthlete: `${match.white_athlete.surname} ${match.white_athlete.name}`,
@@ -91,7 +100,7 @@ export default function Tournament() {
     return matchTableData;
   }
 
-  function confirmGoNextMatch(title: string, info: string) {
+  function confirmGoFinishedMatch(title: string, info: string) {
     Swal.fire({
       title,
       html: info,
@@ -105,6 +114,26 @@ export default function Tournament() {
         );
       }
     });
+  }
+
+  function startNextMatch() {
+    const fullActiveMatch = matches.find((m) => m._id === activeMatch);
+    if (!fullActiveMatch) {
+      return Swal.fire('Nessun incontro selezionato', '', 'error');
+    }
+    if (fullActiveMatch?.is_over) {
+      return confirmGoFinishedMatch(
+        "Incontro gia' concluso",
+        "Attenzione, l'incontro e' finito. Vuoi recuperarlo per cambiare l'esito?"
+      );
+    }
+    if (fullActiveMatch?.is_started) {
+      return confirmGoFinishedMatch(
+        "Incontro gia' iniziato",
+        "Attenzione, l'incontro e' gia' stato iniziato da qualche altro tavolo. Iniziarlo e finirlo qui sovrascriverebbe i dati dell'altro tavolo. Continuare?"
+      );
+    }
+    navigate(`/match-timer/${activeMatch}?from_tournament=${activeTournament}`);
   }
 
   return (
@@ -128,51 +157,25 @@ export default function Tournament() {
           />
         </div>
       </div>
-      <div className="button-row">
-        <button
-          className='tournament-button orange'
-          onClick={() => Swal.fire('Coming Soon')}
-        >
+      <div className='button-row'>
+        <OrangeButton onClickFunction={() => Swal.fire('Coming Soon', '', 'info')}>
           Prenota Categorie - Coming Soon
-        </button>
-        <button
-          className='tournament-button orange'
-          onClick={() => navigate(`/tournament/${activeTournament}`)}
+        </OrangeButton>
+        <OrangeButton
+          onClickFunction={() => navigate(`/tournament/${activeTournament}`)}
         >
           Apri Tabellone
-        </button>
-        <button
-          className='tournament-button orange'
-          onClick={() =>
+        </OrangeButton>
+        <OrangeButton
+          onClickFunction={() =>
             navigate(`/match-timer?from_tournament=${activeTournament}`)
           }
         >
           Incontro Amichevole
-        </button>
-        <button
-          className='tournament-button orange'
-          onClick={() => {
-            const fullActiveMatch = matches.find((m) => m._id === activeMatch);
-            if (!fullActiveMatch) return Swal.fire('Nessun incontro selezionato');
-            if (fullActiveMatch?.is_over) {
-              return confirmGoNextMatch(
-                "Incontro gia' concluso",
-                "Attenzione, l'incontro e' finito. Vuoi recuperarlo per cambiare l'esito?"
-              );
-            }
-            if (fullActiveMatch?.is_started) {
-              return confirmGoNextMatch(
-                "Incontro gia' iniziato",
-                "Attenzione, l'incontro e' gia' stato iniziato da qualche altro tavolo. Iniziarlo e finirlo qui sovrascriverebbe i dati dell'altro tavolo. Continuare?"
-              );
-            }
-            navigate(
-              `/match-timer/${activeMatch}?from_tournament=${activeTournament}`
-            );
-          }}
-        >
+        </OrangeButton>
+        <OrangeButton onClickFunction={() => startNextMatch()}>
           Inizia Incontro Selezionato
-        </button>
+        </OrangeButton>
       </div>
     </div>
   );

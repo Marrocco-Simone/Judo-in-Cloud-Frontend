@@ -18,8 +18,7 @@ export default function MatchTable({
   }
 
   function getTableElements() {
-    const tableElem = [<div key='delete'></div>];
-    tableElem.pop(); // only to get the right type of tableElem
+    const tableElem: React.ReactNode[] = [];
     if (matchTableData.length === 0) {
       return (
         <tr className='table-empty'>
@@ -34,8 +33,8 @@ export default function MatchTable({
           className={getRowClass(match)}
           onClick={() => setActiveMatch(match._id)}
         >
-          <td className='table-column-40'>{match.whiteAthlete}</td>
-          <td className='table-column-40'>{match.redAthlete}</td>
+          <td className={getWinner(match) === 'Bianco' ? 'table-column-40 bold-text' : 'table-column-40'}>{match.whiteAthlete}</td>
+          <td className={getWinner(match) === 'Rosso' ? 'table-column-40 bold-text' : 'table-column-40'}>{match.redAthlete}</td>
           <td className='table-column-20'>{getWinner(match)}</td>
         </tr>
       );

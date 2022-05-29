@@ -91,12 +91,10 @@
 }
 
 .table tr.finished-row {
-  font-weight: bold;
   background-color: darkgray;
 }
 
 .table tr.warning-row {
-  font-weight: bold;
   background-color: red;
 }
 
@@ -111,6 +109,10 @@
 .table-column-20 {width: 20%;}
 .table-column-15 {width: 15%;}
 .table-column-10 {width: 10%;}
+
+.bold-text {
+  font-weight: bold;
+}
 
 .age-class-row td{
   height: 10vh !important;

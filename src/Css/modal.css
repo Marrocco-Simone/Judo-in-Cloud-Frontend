@@ -12,8 +12,8 @@
   outline: 0.5vh solid black;
   position: fixed;
   width: 45%;
-  height: 75%;
   top: 50%;
+  min-height: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
@@ -42,6 +42,13 @@
 }
 
 /* form */
+
+.form-title {
+  font-size: 5vh;
+  font-size: bold;
+  margin-left: 1vh;
+  margin-bottom: 1vh;
+}
 
 .timer-label {
   width: 100%;
@@ -72,6 +79,83 @@
 
 .timer-input[type='number'].input-minute {
   width: 30%;
+}
+
+.athlete-input {
+  border: 1px solid black;
+  font-size: 3.5vh;
+  text-align: center;
+  width: 100%;
+  border-radius: 2vh 2vh;
+  box-shadow: 0 0 1.5vh rgba(0, 0, 0, 0.4);
+}
+
+.radio-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 7vh;
+  font-size: 3.5vh;
+  margin: 0 3.5vh;
+  border: 0.1vh solid black;
+  border-radius: 1vh;
+  background-color: lightgray;
+  transition: background 0.2s;
+}
+
+.select-gender {
+  display: flex;
+  font-size: 3vh;
+  justify-content: space-between;
+}
+
+.gender-text {
+  width: 60%;
+}
+
+.radio-input {
+  display: none;
+}
+
+.radio-input:checked + .radio-label {
+  background-color: cornflowerblue;
+}
+
+.toggle-input {
+  display: none;
+  cursor: pointer;
+}
+
+.toggle-fill {
+  cursor: pointer;
+  position: relative;
+  height: 100%;
+  width: 35%;
+  border-radius: 3vh;
+  background-color: lightgray;
+  transition: background 0.2s;
+}
+
+.toggle-input:checked + .toggle-fill {
+  background-color: cornflowerblue;
+}
+
+.toggle-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: white;
+  box-shadow: 0 0 1vh rgba(0, 0, 0, 0.25);
+  border-radius: 3vh;
+  transition: transform 0.2s;
+}
+
+.toggle-input:checked + .toggle-fill::after {
+  transform: translateX(5.5vh);
 }
 
 /* info text */

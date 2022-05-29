@@ -13,12 +13,21 @@ export type AthleteInterface = {
   surname: string;
   competition: string;
   club: string;
-  gender: string;
+  gender: 'M' | 'F';
   weight: number;
   birth_year: number;
   category: string;
   __v: number;
 };
+
+export type AthleteParamsInterface = {
+  name: string;
+  surname: string;
+  club: string;
+  birth_year: string;
+  weight: string;
+  gender: 'M' | 'F' | '';
+}
 
 export type MatchInterface = {
   _id: string;

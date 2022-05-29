@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { MatchParamsInterface } from '../../../Types/types';
-import '../css/modal.css';
 
 export function ModifyParams(props: {
   handleClose: () => void;

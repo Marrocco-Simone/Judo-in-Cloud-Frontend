@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import './css/match.css';
 import { MatchInterface, MatchParamsInterface } from '../../Types/types';
-import { Modal } from './components/Modal';
+import { Modal } from '../../Components/Modal/Modal';
 import { ModifyParams } from './components/ModifyParams';
 import { apiGet, apiPost } from '../../Services/Api/api';
 
@@ -28,6 +27,8 @@ import { apiGet, apiPost } from '../../Services/Api/api';
   se avvio l'osaekomi parte anche il match timer
   dare hansoku make non vuol dire perdere direttamente ma da' ippon all'altro (che poi vince)
   modo diretto per dare hansoku make
+  fare che golden score infinito se il tempo del gs massimo e' null
+  modificare pulsante info in modo pesante (usare una tabella)
 */
 
 const refreshRate = 200;
