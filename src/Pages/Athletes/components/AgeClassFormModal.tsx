@@ -6,9 +6,9 @@ import AgeClassForm from './AgeClassForm';
 export default function AgeClassFormModal(props: {
   handleClose: () => void;
   ageClass: AgeClassInterface;
-  updateAgeClass: (newParams: AgeClassInterface['params'], closed: boolean) => void;
+  updateAgeClassFromTable: (newAgeClass: AgeClassInterface) => void;
 }) {
-  const { handleClose, ageClass, updateAgeClass } = props;
+  const { handleClose, ageClass, updateAgeClassFromTable } = props;
 
   return (
     <Modal handleClose={() => handleClose()}>
@@ -16,7 +16,7 @@ export default function AgeClassFormModal(props: {
       <AgeClassForm
         handleClose={() => handleClose()}
         ageClass={ageClass}
-        updateAgeClass={updateAgeClass}
+        updateAgeClassFromTable={updateAgeClassFromTable}
       />
     </Modal>
   );

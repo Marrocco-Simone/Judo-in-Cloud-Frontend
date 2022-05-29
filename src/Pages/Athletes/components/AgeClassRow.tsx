@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaChevronDown, FaCog } from 'react-icons/fa';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
 import { apiGet, apiPost } from '../../../Services/Api/api';
 import { AgeClassInterface } from '../../../Types/types';
+import AgeClassFormModal from './AgeClassFormModal';
 
 export default function AgeClassRow(props: {
   ageClass: AgeClassInterface;
-  modifyAgeClass: (ageClassId: string) => void;
+  updateAgeClassFromTable: (newAgeClass: AgeClassInterface) => void;
   chevronFunction: () => void;
 }) {
-  const { ageClass, modifyAgeClass, chevronFunction } = props;
+  const { ageClass, updateAgeClassFromTable, chevronFunction } = props;
+  const [isModifyAgeClassOpen, setIsModifyAgeClassOpen] = useState(false);
 
   async function reopenAgeClass() {
     const firstMessage: SweetAlertOptions<any, any> = {
@@ -62,11 +64,18 @@ export default function AgeClassRow(props: {
           className='icon-button orange'
           onClick={() => {
             if (ageClass.closed) return reopenAgeClass();
-            modifyAgeClass(ageClass._id);
+            else setIsModifyAgeClassOpen(true);
           }}
         >
           <FaCog />
         </button>
+        {isModifyAgeClassOpen && (
+          <AgeClassFormModal
+            handleClose={() => setIsModifyAgeClassOpen(false)}
+            ageClass={ageClass}
+            updateAgeClassFromTable={updateAgeClassFromTable}
+          />
+        )}
         <button className='icon-button orange' onClick={chevronFunction}>
           <FaChevronDown />
         </button>

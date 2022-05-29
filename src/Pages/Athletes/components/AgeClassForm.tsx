@@ -8,12 +8,9 @@ import InputToggle from '../../../Components/Inputs/InputToggle';
 export default function AgeClassForm(props: {
   handleClose: () => void;
   ageClass: AgeClassInterface;
-  updateAgeClass: (
-    newParams: AgeClassInterface['params'],
-    closed: boolean
-  ) => void;
+  updateAgeClassFromTable: (newAgeClass: AgeClassInterface) => void;
 }) {
-  const { handleClose, ageClass, updateAgeClass } = props;
+  const { handleClose, ageClass, updateAgeClassFromTable } = props;
   const ageClassId = ageClass._id;
   const [params, setParams] = useState(ageClass.params);
   const [closed, setClosed] = useState(ageClass.closed);
@@ -45,10 +42,13 @@ export default function AgeClassForm(props: {
             'warning'
           );
         }
-        apiPost(`v1/age_classes/${ageClassId}`, { closed, params }).then(() => {
-          updateAgeClass(params, closed);
-          handleClose();
-        });
+        apiPost(`v1/age_classes/${ageClassId}`, { closed, params }).then(
+          (result: AgeClassInterface) => {
+            result.categories = ageClass.categories;
+            updateAgeClassFromTable(result);
+            handleClose();
+          }
+        );
       }}
     >
       <InputRow

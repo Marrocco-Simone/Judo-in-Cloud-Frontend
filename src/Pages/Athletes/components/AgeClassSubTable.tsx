@@ -8,11 +8,11 @@ export default function AgeClassSubTable(props: {
   athletes: {
     [categoryId: string]: AthleteInterface[];
   };
-  modifyAgeClass: (ageClassId: string) => void;
   updateAthleteFromTable: (newAthlete: AthleteInterface) => void;
   deleteAthleteFromTable: (athleteToDelete: AthleteInterface) => void;
+  updateAgeClassFromTable: (newAgeClass: AgeClassInterface) => void;
 }) {
-  const { ageClass, athletes, modifyAgeClass, updateAthleteFromTable, deleteAthleteFromTable } = props;
+  const { ageClass, athletes, updateAthleteFromTable, deleteAthleteFromTable, updateAgeClassFromTable } = props;
   const [opened, setOpened] = useState(true);
 
   /** get each Category of an AgeClass with its Athletes */
@@ -36,7 +36,7 @@ export default function AgeClassSubTable(props: {
     <>
       <AgeClassRow
         ageClass={ageClass}
-        modifyAgeClass={modifyAgeClass}
+        updateAgeClassFromTable={updateAgeClassFromTable}
         chevronFunction={() => setOpened((prev) => !prev)}
       />
       {opened && getTableCategories()}
