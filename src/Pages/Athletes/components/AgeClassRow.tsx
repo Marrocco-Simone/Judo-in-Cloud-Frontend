@@ -47,12 +47,16 @@ export default function AgeClassRow(props: {
       if (!secondResult.isConfirmed) return;
     }
 
-    apiPost(`v1/age_classes/reopen/${ageClass._id}`, {}).then(() =>
-      Swal.fire(
-        'Riaperta',
-        "E' ora possibile aggiungere atleti o modificare i parametri di vittoria",
-        'success'
-      )
+    apiPost(`v1/age_classes/reopen/${ageClass._id}`, {}).then(
+      (result: AgeClassInterface) => {
+        result.categories = ageClass.categories;
+        updateAgeClassFromTable(result);
+        Swal.fire(
+          'Riaperta',
+          "E' ora possibile aggiungere atleti o modificare i parametri di vittoria",
+          'success'
+        );
+      }
     );
   }
 
