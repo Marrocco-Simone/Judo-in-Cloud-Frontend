@@ -1,20 +1,35 @@
 import React, { FC, useContext } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Services/Auth/AuthContext';
+import { deleteToken } from '../../Services/Auth/token-service';
 import DarkModeToggle from '../Buttons/DarkModeToggle';
 import OutlinedButton from '../Buttons/OutlinedButton';
 
 const MainNav: FC = () => {
-  const { user } = useContext(AuthContext);
+  const { user, unsetUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  function loginButton() {
+  function logout() {
+    deleteToken();
+    unsetUser();
+    navigate('/login');
+  }
+
+  function authButton() {
     if (user) {
       return (
-        <NavLink to='/manage'>
-          <OutlinedButton>
-            Ciao <b>{user.username}</b>!
-          </OutlinedButton>
-        </NavLink>
+        <>
+          <NavLink to='/manage'>
+            <OutlinedButton>
+              Ciao <b>{user.username}</b>!
+            </OutlinedButton>
+          </NavLink>
+          <span className='ml-2'>
+            <OutlinedButton style='warn' onClick={logout}>
+              Logout
+            </OutlinedButton>
+          </span>
+        </>
       );
     }
     return (
@@ -43,7 +58,7 @@ const MainNav: FC = () => {
         Match timer
       </NavLink>
 
-      {loginButton()}
+      {authButton()}
     </nav>
   );
 };

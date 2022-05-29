@@ -10,7 +10,7 @@ import { getTheme, ThemeT } from './Services/Theme/theme-service';
 function App() {
   const [user, setUser] = useState<UserI | null>(null);
   const [theme, setTheme] = useState<ThemeT>(() => getTheme());
-  const authContext: AuthContextI = { user, setUser };
+  const authContext: AuthContextI = { user, setUser, unsetUser: () => setUser(null) };
   const themeContext: ThemeContextI = { theme, setTheme };
 
   useEffect(() => {
