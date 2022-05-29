@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaChevronDown, FaCog } from 'react-icons/fa';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+import { apiGet } from '../../../Services/Api/api';
 import { AgeClassInterface } from '../../../Types/types';
 
 export default function AgeClassRow(props: {
@@ -36,7 +37,10 @@ export default function AgeClassRow(props: {
     const firstResult = await Swal.fire(firstMessage);
     if (!firstResult.isConfirmed) return;
 
-    if (firstResult.isConfirmed) {
+    const result: { can_reopen: boolean } = await apiGet(
+      `v1/age_classes/reopen/${ageClass._id}`
+    );
+    if (!result.can_reopen) {
       const secondResult = await Swal.fire(secondMessage);
       if (!secondResult.isConfirmed) return;
     }
