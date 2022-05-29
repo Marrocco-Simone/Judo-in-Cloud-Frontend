@@ -2,15 +2,13 @@ import React, { FC, useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { PublicOutletContext } from './PublicShell';
 import '../../Css/public.css';
-import DropDown from './components/DropDown';
+import DropDown, { OptionInterface } from './components/DropDown';
 import { TournamentInterface } from '../../Types/types';
 import { apiGet } from '../../Services/Api/api';
 
 const PublicTournaments: FC = () => {
   const { competition } = useOutletContext<PublicOutletContext>();
-  const [tournaments, setTournaments] = useState<
-    { value: string; name: string }[]
-  >([]);
+  const [tournaments, setTournaments] = useState<OptionInterface>([]);
   const [selectedTournament, setSelectedTournament] = useState('');
 
   /** get data of tournaments when opening the page */
@@ -32,7 +30,9 @@ const PublicTournaments: FC = () => {
       <div className='competition-name'>{competition.name}</div>
       <DropDown
         options={tournaments}
-        chooseOption={(optionValue: string) => setSelectedTournament(optionValue)}
+        chooseOption={(optionValue: string) =>
+          setSelectedTournament(optionValue)
+        }
       >
         Scegli Categoria
       </DropDown>
