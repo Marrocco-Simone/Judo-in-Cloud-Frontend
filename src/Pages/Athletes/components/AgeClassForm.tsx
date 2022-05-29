@@ -94,7 +94,25 @@ export default function AgeClassForm(props: {
       >
         {'Timer Osaekomi Waza Ari'}
       </InputRow>
-      <InputToggle onChange={(e) => setClosed(e.target.checked)}>
+      <InputToggle
+        checked={closed}
+        onChange={() => {
+          if (closed) return setClosed(false);
+
+          Swal.fire({
+            title: "Chiudere la classe d'eta'?",
+            text: "Verrano creati gli incontri, ma non sara' piu' possibile inserire atleti di questa classe",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: "Si', chiudi la classe d'eta'",
+            cancelButtonText: 'No, torna indietro ',
+          }).then((result) => {
+            if (result.isConfirmed) setClosed(true);
+          });
+        }}
+      >
         {"Chiudere la classe d'eta'?"}
       </InputToggle>
       <button className='timer-button orange' type='submit' form='athlete-form'>
