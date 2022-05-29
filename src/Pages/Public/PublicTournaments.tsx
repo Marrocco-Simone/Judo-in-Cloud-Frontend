@@ -1,12 +1,16 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { PublicOutletContext } from './PublicShell';
 import '../../Css/public.css';
 import DropDown, { OptionInterface } from './components/DropDown';
 import { TournamentInterface } from '../../Types/types';
 import { apiGet } from '../../Services/Api/api';
+import OrangeButton from '../../Components/Buttons/OrangeButton';
 
 const PublicTournaments: FC = () => {
+  // for redirect
+  const navigate = useNavigate();
+
   const { competition } = useOutletContext<PublicOutletContext>();
   const [tournaments, setTournaments] = useState<OptionInterface>([]);
   const [selectedTournament, setSelectedTournament] = useState('');
@@ -36,7 +40,11 @@ const PublicTournaments: FC = () => {
       >
         Scegli Categoria
       </DropDown>
-      {selectedTournament}
+      {selectedTournament && (<OrangeButton
+        onClickFunction={() => navigate(`/tournament/${selectedTournament}`)}
+      >
+        Apri Tabellone
+      </OrangeButton>)}
     </div>
   );
 };
