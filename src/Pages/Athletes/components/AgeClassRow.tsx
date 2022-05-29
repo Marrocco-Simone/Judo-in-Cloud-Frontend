@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaChevronDown, FaCog } from 'react-icons/fa';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
-import { apiGet } from '../../../Services/Api/api';
+import { apiGet, apiPost } from '../../../Services/Api/api';
 import { AgeClassInterface } from '../../../Types/types';
 
 export default function AgeClassRow(props: {
@@ -45,10 +45,12 @@ export default function AgeClassRow(props: {
       if (!secondResult.isConfirmed) return;
     }
 
-    Swal.fire(
-      'Riaperta',
-      "E' ora possibile aggiungere atleti o modificare i parametri di vittoria",
-      'success'
+    apiPost(`v1/age_classes/reopen/${ageClass._id}`, {}).then(() =>
+      Swal.fire(
+        'Riaperta',
+        "E' ora possibile aggiungere atleti o modificare i parametri di vittoria",
+        'success'
+      )
     );
   }
 
