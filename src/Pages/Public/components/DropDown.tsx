@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 
-export type OptionInterface = { value: string; name: string }[];
-
 export default function DropDown(props: {
   children: React.ReactNode;
-  options: OptionInterface;
+  options: { value: string; name: string }[];
   chooseOption: (optionValue: string) => void;
 }) {
   const { children, options, chooseOption } = props;
