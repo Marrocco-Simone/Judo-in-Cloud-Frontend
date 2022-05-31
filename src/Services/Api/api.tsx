@@ -96,6 +96,6 @@ export function apiDelete<T = any>(url: string): Promise<T> {
   return apiCall(url, 'delete');
 }
 
-export function apiPatch<T = any>(url: string, data: object): Promise<T> {
-  return apiCall(url, 'patch', data);
+export function apiPut<T = any>(url: string, data: object): Promise<T> {
+  return apiCall(url, 'put', data);
 }
