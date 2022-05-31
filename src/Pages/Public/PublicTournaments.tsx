@@ -23,10 +23,14 @@ const PublicTournaments: FC = () => {
     apiGet(`v2/competitions/${competition._id}/tournaments`).then(
       (tournamentData: TournamentInterface[]) => setTournaments(tournamentData)
     );
-    apiGet('v1/athletes/club').then((clubArray: string[]) =>
-      setClubs(clubArray)
-    );
+    apiGet('v1/athletes/club').then((clubData: string[]) => setClubs(clubData));
+    console.table(tournaments);
   }, []);
+
+  function getTournamentName(tour?: TournamentInterface) {
+    if (!tour) return '';
+    return `${tour.category.age_class.name} ${tour.category.max_weight} ${tour.category.gender}`;
+  }
 
   return (
     <div className='public-container'>
@@ -35,7 +39,7 @@ const PublicTournaments: FC = () => {
         options={tournaments.map((tour) => {
           return {
             value: tour._id,
-            name: `${tour.category.age_class.name} ${tour.category.max_weight} ${tour.category.gender}`,
+            name: getTournamentName(tour),
           };
         })}
         chooseOption={(optionValue: string) =>
@@ -61,7 +65,11 @@ const PublicTournaments: FC = () => {
         Scegli Club
       </DropDown>
       {selectedClub && (
-        <ClubAthleteTable club={selectedClub}></ClubAthleteTable>
+        <ClubAthleteTable
+          club={selectedClub}
+          tournaments={tournaments}
+          getTournamentName={getTournamentName}
+        />
       )}
     </div>
   );
