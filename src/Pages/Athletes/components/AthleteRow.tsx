@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaPen, FaTrash } from 'react-icons/fa';
 import Swal from 'sweetalert2';
-import { apiDelete } from '../../../Services/Api/api';
+import { apiDelete, apiPut } from '../../../Services/Api/api';
 import { AthleteInterface, AthleteParamsInterface } from '../../../Types/types';
 import AthleteFormModal from './AthleteFormModal';
 
@@ -33,8 +33,14 @@ export default function AthleteRow(props: {
             handleClose={() => setIsModifyAthleteOpen(false)}
             updateAthleteFromTable={updateAthleteFromTable}
             apiSend={(params: AthleteParamsInterface) =>
-              /* apiPatch(`v1/athletes/${athlete._id}`, params) */
-              Swal.fire('Coming Soon', JSON.stringify(params), 'info')
+              apiPut(`v1/athletes/${athlete._id}`, params).then(
+                (newAthlete: AthleteInterface) => {
+                  updateAthleteFromTable(newAthlete);
+                  if (newAthlete.category !== athlete.category) {
+                    deleteAthleteFromTable(athlete);
+                  }
+                }
+              )
             }
             initialParams={{
               name: athlete.name,
@@ -62,9 +68,16 @@ export default function AthleteRow(props: {
               cancelButtonText: 'No, torna indietro',
             }).then((result) => {
               if (result.isConfirmed) {
-                apiDelete(`v1/athletes/${athlete._id}`);
-                deleteAthleteFromTable(athlete);
-                Swal.fire('Cancellato', `l'atleta ${athlete.name} ${athlete.surname} e' stato eliminato dal sistema`, 'success');
+                apiDelete(`v1/athletes/${athlete._id}`).then(
+                  (deletedAthlete) => {
+                    deleteAthleteFromTable(deletedAthlete);
+                    Swal.fire(
+                      'Cancellato',
+                      `l'atleta ${deletedAthlete.name} ${deletedAthlete.surname} e' stato eliminato dal sistema`,
+                      'success'
+                    );
+                  }
+                );
               }
             })
           }
