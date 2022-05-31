@@ -48,6 +48,7 @@ export default function AthletesPage() {
   }, [ageClasses]);
 
   function updateAthleteFromTable(newAthlete: AthleteInterface) {
+    if (!newAthlete) return;
     setAthletes((prevAth) => {
       const categoryId = newAthlete.category;
       const newCategory = {
@@ -63,6 +64,7 @@ export default function AthletesPage() {
   }
 
   function deleteAthleteFromTable(athleteToDelete: AthleteInterface) {
+    if (!athleteToDelete) return;
     setAthletes((prevAth) => {
       const categoryId = athleteToDelete.category;
       const newCategory = {
@@ -76,6 +78,7 @@ export default function AthletesPage() {
   }
 
   function updateAgeClassFromTable(newAgeClass: AgeClassInterface) {
+    if (!newAgeClass) return;
     setAgeClasses((prevAgeClasses) => {
       const newAgeClasses: AgeClassInterface[] = [];
       for (const ageClass of prevAgeClasses) {
@@ -93,12 +96,7 @@ export default function AthletesPage() {
         ageClasses={ageClasses}
         athletes={athletes}
         openNewAthlete={() => setIsNewAthleteOpen(true)}
-        updateAthleteFromTable={
-          () =>
-            console.log(
-              'Ci vediamo per aggiornare atleti'
-            ) /* updateAthleteFromTable */
-        }
+        updateAthleteFromTable={updateAthleteFromTable}
         deleteAthleteFromTable={deleteAthleteFromTable}
         updateAgeClassFromTable={updateAgeClassFromTable}
       />
