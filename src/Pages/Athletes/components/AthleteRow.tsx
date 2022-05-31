@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaPen, FaTrash } from 'react-icons/fa';
 import Swal from 'sweetalert2';
+import { apiDelete } from '../../../Services/Api/api';
 import { AthleteInterface, AthleteParamsInterface } from '../../../Types/types';
 import AthleteFormModal from './AthleteFormModal';
 
@@ -61,7 +62,7 @@ export default function AthleteRow(props: {
               cancelButtonText: 'No, torna indietro',
             }).then((result) => {
               if (result.isConfirmed) {
-                /* TODO api per eliminare */
+                apiDelete(`v1/athletes/${athlete._id}`);
                 deleteAthleteFromTable(athlete);
                 Swal.fire('Cancellato', `l'atleta ${athlete.name} ${athlete.surname} e' stato eliminato dal sistema`, 'success');
               }
