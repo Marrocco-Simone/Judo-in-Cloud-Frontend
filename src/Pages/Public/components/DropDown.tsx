@@ -31,7 +31,7 @@ export default function DropDown(props: {
           setSelected(newValue);
           chooseOption(newValue);
         }}>
-          <option className='void-option'>--Categorie--</option>
+          <option className='void-option'>{children}</option>
           {getOptions()}
         </select>
       </label>

@@ -14,16 +14,26 @@ const PublicTournaments: FC = () => {
   const { competition } = useOutletContext<PublicOutletContext>();
   const [tournaments, setTournaments] = useState<OptionInterface>([]);
   const [selectedTournament, setSelectedTournament] = useState('');
+  const [clubs, setClubs] = useState<OptionInterface>([]);
+  const [selectedClub, setSelectedClub] = useState('');
 
   /** get data of tournaments when opening the page */
   useEffect(() => {
-    apiGet(`v2/competitions/${competition._id}/tournaments`).then((tournamentData: TournamentInterface[]) =>
-      setTournaments(
-        tournamentData.map((tour) => {
-          return {
-            value: tour._id,
-            name: `${tour.category.age_class.name} ${tour.category.max_weight} ${tour.category.gender}`,
-          };
+    apiGet(`v2/competitions/${competition._id}/tournaments`).then(
+      (tournamentData: TournamentInterface[]) =>
+        setTournaments(
+          tournamentData.map((tour) => {
+            return {
+              value: tour._id,
+              name: `${tour.category.age_class.name} ${tour.category.max_weight} ${tour.category.gender}`,
+            };
+          })
+        )
+    );
+    apiGet('v1/athletes/club').then((clubArray: string[]) =>
+      setClubs(
+        clubArray.map((club) => {
+          return { value: club, name: club };
         })
       )
     );
@@ -40,11 +50,21 @@ const PublicTournaments: FC = () => {
       >
         Scegli Categoria
       </DropDown>
-      {selectedTournament && (<OrangeButton
-        onClickFunction={() => navigate(`/tournament/${selectedTournament}`)}
+      {selectedTournament && (
+        <OrangeButton
+          onClickFunction={() => navigate(`/tournament/${selectedTournament}`)}
+        >
+          Apri Tabellone
+        </OrangeButton>
+      )}
+      <div className='competition-name'>Cerca i tuoi Atleti</div>
+      <DropDown
+        options={clubs}
+        chooseOption={(optionValue: string) => setSelectedClub(optionValue)}
       >
-        Apri Tabellone
-      </OrangeButton>)}
+        Scegli Club
+      </DropDown>
+      {selectedClub}
     </div>
   );
 };
