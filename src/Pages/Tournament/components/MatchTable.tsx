@@ -1,15 +1,13 @@
 import React from 'react';
 import { MatchTableData } from '../../../Types/types';
 
-export default function MatchTable({
-  matchTableData,
-  activeMatch,
-  setActiveMatch,
-}: {
+export default function MatchTable(props: {
   matchTableData: MatchTableData[];
   activeMatch: string;
   setActiveMatch: (matchId: string) => void;
 }) {
+  const { matchTableData, activeMatch, setActiveMatch } = props;
+
   function getRowClass(match: MatchTableData) {
     if (activeMatch === match._id) return 'active-row';
     if (match.isOver) return 'finished-row';
@@ -33,8 +31,24 @@ export default function MatchTable({
           className={getRowClass(match)}
           onClick={() => setActiveMatch(match._id)}
         >
-          <td className={getWinner(match) === 'Bianco' ? 'table-column-40 bold-text' : 'table-column-40'}>{match.whiteAthlete}</td>
-          <td className={getWinner(match) === 'Rosso' ? 'table-column-40 bold-text' : 'table-column-40'}>{match.redAthlete}</td>
+          <td
+            className={
+              getWinner(match) === 'Bianco'
+                ? 'table-column-40 bold-text'
+                : 'table-column-40'
+            }
+          >
+            {match.whiteAthlete}
+          </td>
+          <td
+            className={
+              getWinner(match) === 'Rosso'
+                ? 'table-column-40 bold-text'
+                : 'table-column-40'
+            }
+          >
+            {match.redAthlete}
+          </td>
           <td className='table-column-20'>{getWinner(match)}</td>
         </tr>
       );

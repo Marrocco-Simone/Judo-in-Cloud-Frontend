@@ -1,15 +1,13 @@
 import React from 'react';
 import { TournamentTableData } from '../../../Types/types';
 
-export default function TournamentTable({
-  tournamentTableData,
-  activeTournament,
-  setActiveTournament,
-}: {
+export default function TournamentTable(props: {
   tournamentTableData: TournamentTableData[];
   activeTournament: string;
   setActiveTournament: (tournamentId: string) => void;
 }) {
+  const { tournamentTableData, activeTournament, setActiveTournament } = props;
+
   function getRowClass(tour: TournamentTableData) {
     if (activeTournament === tour._id) return 'active-row';
     if (tour.finished) return 'finished-row';
@@ -45,7 +43,7 @@ export default function TournamentTable({
     <table className='table'>
       <thead>
         <tr>
-          <td className='table-column-50'>{'Classe d\'eta\''}</td>
+          <td className='table-column-50'>{"Classe d'eta'"}</td>
           <td className='table-column-25'>Peso</td>
           <td className='table-column-25'>Sesso</td>
         </tr>
