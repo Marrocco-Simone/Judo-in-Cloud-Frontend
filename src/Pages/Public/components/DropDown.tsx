@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function DropDown(props: {
   children: React.ReactNode;
   options: { value: string; name: string }[];
+  selectedOption: string;
   chooseOption: (optionValue: string) => void;
 }) {
-  const { children, options, chooseOption } = props;
-  const [selected, setSelected] = useState('');
+  const { children, options, selectedOption, chooseOption } = props;
 
   function getOptions() {
     const optionElems: React.ReactNode[] = [];
@@ -24,11 +24,11 @@ export default function DropDown(props: {
     <div>
       <label className='select-label'>
         {children}
-        <select className='select' value={selected} onChange={(e) => {
-          const newValue = e.target.value;
-          setSelected(newValue);
-          chooseOption(newValue);
-        }}>
+        <select
+          className='select'
+          value={selectedOption}
+          onChange={(e) => chooseOption(e.target.value)}
+        >
           <option className='void-option'>{children}</option>
           {getOptions()}
         </select>

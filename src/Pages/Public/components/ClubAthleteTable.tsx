@@ -1,4 +1,5 @@
 import React from 'react';
+import { TournamentInterface } from '../../../Types/types';
 
 export type ClubAthlete = {
   _id: string;
@@ -11,8 +12,17 @@ export type ClubAthlete = {
 
 export default function ClubAthleteTable(props: {
   clubAthletes: ClubAthlete[];
+  tournaments: TournamentInterface[];
+  activeAthlete: string;
+  setActiveAthlete: (athleteId: string) => void;
 }) {
-  const { clubAthletes } = props;
+  const { clubAthletes, activeAthlete, setActiveAthlete } = props;
+
+  function getRowClass(athlete: ClubAthlete) {
+    if (activeAthlete === athlete._id) return 'active-row';
+    // if () return 'finished-row';
+    return '';
+  }
 
   function getTableElements() {
     const tableElem: React.ReactNode[] = [];
@@ -27,12 +37,12 @@ export default function ClubAthleteTable(props: {
       tableElem.push(
         <tr
           key={athlete._id}
-          /* className={getRowClass(tour)}
-          onClick={() => setActiveTournament(tour._id)} */
+          className={getRowClass(athlete)}
+          onClick={() => setActiveAthlete(athlete._id)}
         >
           <td className='table-column-40'>{`${athlete.name} ${athlete.surname}`}</td>
           <td className='table-column-40'>{athlete.tournament_name}</td>
-          <td className='table-column-20'>{athlete.tournament_tatami}</td>
+          <td className='table-column-20'>{athlete.tournament_id}</td>
         </tr>
       );
     }

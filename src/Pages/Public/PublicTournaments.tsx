@@ -20,6 +20,7 @@ export default function PublicTournaments() {
   const [clubs, setClubs] = useState<string[]>([]);
   const [selectedClub, setSelectedClub] = useState('');
   const [clubAthletes, setClubAthletes] = useState<ClubAthlete[]>([]);
+  const [activeAthlete, setActiveAthlete] = useState('');
 
   function getTournamentName(category?: TournamentInterface['category']) {
     if (!category) return '';
@@ -59,6 +60,14 @@ export default function PublicTournaments() {
     );
   }, [selectedClub]);
 
+  useEffect(() => {
+    if (!activeAthlete) return;
+    const athlete = clubAthletes.find((ath) => ath._id === activeAthlete);
+    if (!athlete) return;
+    if (!athlete?.tournament_id) return;
+    setSelectedTournament(athlete.tournament_id);
+  }, [activeAthlete]);
+
   return (
     <div className='public-container'>
       <div className='competition-name'>{competition.name}</div>
@@ -69,6 +78,7 @@ export default function PublicTournaments() {
             name: getTournamentName(tour?.category),
           };
         })}
+        selectedOption={selectedTournament}
         chooseOption={(optionValue: string) =>
           setSelectedTournament(optionValue)
         }
@@ -87,11 +97,19 @@ export default function PublicTournaments() {
         options={clubs.map((club) => {
           return { value: club, name: club };
         })}
+        selectedOption={selectedClub}
         chooseOption={(optionValue: string) => setSelectedClub(optionValue)}
       >
         Scegli Club
       </DropDown>
-      {selectedClub && <ClubAthleteTable clubAthletes={clubAthletes} />}
+      {selectedClub && (
+        <ClubAthleteTable
+          clubAthletes={clubAthletes}
+          tournaments={tournaments}
+          activeAthlete={activeAthlete}
+          setActiveAthlete={setActiveAthlete}
+        />
+      )}
     </div>
   );
 }
