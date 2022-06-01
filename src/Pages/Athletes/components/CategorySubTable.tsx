@@ -37,7 +37,8 @@ export default function CategorySubTable(props: {
     <>
       <CategoryRow
         category={category}
-        chevronFunction={() => setOpened((prev) => !prev)}
+        openChevron={() => setOpened((prev) => !prev)}
+        opened={opened}
       />
       {opened && getTableAthletes()}
     </>

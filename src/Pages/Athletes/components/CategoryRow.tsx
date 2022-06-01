@@ -1,18 +1,19 @@
 import React from 'react';
-import { FaChevronDown } from 'react-icons/fa';
+import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import { CategoryInterface } from '../../../Types/types';
 
 export default function CategoryRow(props: {
   category: CategoryInterface;
-  chevronFunction: () => void;
+  openChevron: () => void;
+  opened: boolean;
 }) {
-  const { category, chevronFunction } = props;
+  const { category, openChevron, opened } = props;
   return (
     <tr className='category-row centered-text'>
       <td colSpan={5}>{`U${category.max_weight} ${category.gender}`}</td>
       <td className='table-column-10 centered-text'>
-        <button className='icon-button orange' onClick={chevronFunction}>
-          <FaChevronDown />
+        <button className='icon-button orange' onClick={openChevron}>
+        {(opened && <FaChevronRight />) || <FaChevronDown />}
         </button>
       </td>
     </tr>

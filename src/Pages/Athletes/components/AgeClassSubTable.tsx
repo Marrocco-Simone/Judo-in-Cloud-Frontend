@@ -37,7 +37,8 @@ export default function AgeClassSubTable(props: {
       <AgeClassRow
         ageClass={ageClass}
         updateAgeClassFromTable={updateAgeClassFromTable}
-        chevronFunction={() => setOpened((prev) => !prev)}
+        openChevron={() => setOpened((prev) => !prev)}
+        opened={opened}
       />
       {opened && getTableCategories()}
     </>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaChevronDown, FaCog } from 'react-icons/fa';
+import { FaChevronDown, FaChevronRight, FaCog } from 'react-icons/fa';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
 import { apiGet, apiPost } from '../../../Services/Api/api';
 import { AgeClassInterface } from '../../../Types/types';
@@ -8,9 +8,10 @@ import AgeClassFormModal from './AgeClassFormModal';
 export default function AgeClassRow(props: {
   ageClass: AgeClassInterface;
   updateAgeClassFromTable: (newAgeClass: AgeClassInterface) => void;
-  chevronFunction: () => void;
+  openChevron: () => void;
+  opened: boolean;
 }) {
-  const { ageClass, updateAgeClassFromTable, chevronFunction } = props;
+  const { ageClass, updateAgeClassFromTable, openChevron, opened } = props;
   const [isModifyAgeClassOpen, setIsModifyAgeClassOpen] = useState(false);
 
   async function reopenAgeClass() {
@@ -80,8 +81,8 @@ export default function AgeClassRow(props: {
             updateAgeClassFromTable={updateAgeClassFromTable}
           />
         )}
-        <button className='icon-button orange' onClick={chevronFunction}>
-          <FaChevronDown />
+        <button className='icon-button orange' onClick={openChevron}>
+          {(opened && <FaChevronRight />) || <FaChevronDown />}
         </button>
       </td>
     </tr>
