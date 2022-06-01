@@ -42,7 +42,7 @@ export default function ClubAthleteTable(props: {
         >
           <td className='table-column-40'>{`${athlete.name} ${athlete.surname}`}</td>
           <td className='table-column-40'>{athlete.tournament_name}</td>
-          <td className='table-column-20'>{athlete.tournament_id}</td>
+          <td className='table-column-20'>{athlete.tournament_tatami || ''}</td>
         </tr>
       );
     }
