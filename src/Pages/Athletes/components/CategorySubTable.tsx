@@ -16,7 +16,7 @@ export default function CategorySubTable(props: {
 
   /** get each Athlete of a Category */
   function getTableAthletes() {
-    if (athletes.length === 0) return <NoAthletesRow />;
+    if (!athletes || athletes.length === 0) return <NoAthletesRow />;
 
     const tableElem: React.ReactNode[] = [];
     for (const athlete of athletes) {
