@@ -4,15 +4,14 @@ import {
   AgeClassInterface,
   AthleteInterface,
   AthleteParamsInterface,
+  AthletesPerCategory,
 } from '../../Types/types';
 import AthleteFormModal from './components/AthleteFormModal';
 import AthleteTable from './components/AthleteTable';
 
 export default function AthletesPage() {
   const [ageClasses, setAgeClasses] = useState<AgeClassInterface[]>([]);
-  const [athletes, setAthletes] = useState<{
-    [categoryId: string]: AthleteInterface[];
-  }>({});
+  const [athletes, setAthletes] = useState<AthletesPerCategory>({});
   const [isNewAthleteOpen, setIsNewAthleteOpen] = useState(false);
 
   /** get the age classes */
@@ -20,7 +19,7 @@ export default function AthletesPage() {
     apiGet('v1/age_classes').then((ageClassData: AgeClassInterface[]) => {
       setAgeClasses(ageClassData);
       apiGet('v1/athletes').then((athleteData: AthleteInterface[]) => {
-        const myAthletes: { [categoryId: string]: AthleteInterface[] } = {};
+        const myAthletes: AthletesPerCategory = {};
         for (const ageClass of ageClassData) {
           for (const cat of ageClass.categories) {
             const categoryId = cat._id;

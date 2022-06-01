@@ -127,3 +127,7 @@ export type AgeClassInterface = {
   __v: number;
   categories: CategoryInterface[];
 };
+
+export type AthletesPerCategory = {
+  [categoryId: string]: AthleteInterface[];
+};

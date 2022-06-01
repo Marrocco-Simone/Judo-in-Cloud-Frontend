@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { AgeClassInterface, AthleteInterface } from '../../../Types/types';
+import { AgeClassInterface, AthleteInterface, AthletesPerCategory } from '../../../Types/types';
 import AgeClassRow from './AgeClassRow';
 import CategorySubTable from './CategorySubTable';
 
 export default function AgeClassSubTable(props: {
   ageClass: AgeClassInterface;
-  athletes: {
-    [categoryId: string]: AthleteInterface[];
-  };
+  athletes: AthletesPerCategory;
   updateAthleteFromTable: (newAthlete: AthleteInterface) => void;
   deleteAthleteFromTable: (athleteToDelete: AthleteInterface) => void;
   updateAgeClassFromTable: (newAgeClass: AgeClassInterface) => void;
