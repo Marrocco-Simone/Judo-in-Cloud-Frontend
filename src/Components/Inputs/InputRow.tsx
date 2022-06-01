@@ -2,12 +2,25 @@ import React from 'react';
 
 export default function InputRow(props: {
   children: React.ReactNode;
-  value: string | number | null;
+  value?: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   inputType: string;
   extraAttributes?: React.InputHTMLAttributes<HTMLInputElement>;
+  datalist?: string[];
 }) {
-  const { children, value, onChange, inputType, extraAttributes } = props;
+  const { children, value, onChange, inputType, extraAttributes, datalist } =
+    props;
+
+  function getDatalist() {
+    if (!datalist) return null;
+    return (
+      <datalist id='suggestion-list'>
+        {datalist.map((text) => (
+          <option key={text}>{text}</option>
+        ))}
+      </datalist>
+    );
+  }
 
   return (
     <label className='timer-label'>
@@ -19,7 +32,9 @@ export default function InputRow(props: {
           value={value || ''}
           onChange={onChange}
           {...extraAttributes}
+          {...(datalist && { list: 'suggestion-list' })}
         />
+        {getDatalist()}
       </div>
     </label>
   );
