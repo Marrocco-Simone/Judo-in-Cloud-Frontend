@@ -12,7 +12,7 @@ export default function CategorySubTable(props: {
 }) {
   const { category, athletes, updateAthleteFromTable, deleteAthleteFromTable } =
     props;
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState(true);
 
   /** get each Athlete of a Category */
   function getTableAthletes() {

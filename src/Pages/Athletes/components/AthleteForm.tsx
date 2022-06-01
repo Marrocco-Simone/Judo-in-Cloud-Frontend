@@ -47,7 +47,11 @@ export default function AthleteForm(props: {
         }
         apiSend(params).then((athlete) => {
           updateAthleteFromTable(athlete);
-          handleClose();
+          Swal.fire(
+            'Operazione completata con successo',
+            undefined,
+            'success'
+          ).then(() => handleClose());
         });
       }}
     >

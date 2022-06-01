@@ -46,7 +46,11 @@ export default function AgeClassForm(props: {
           (result: AgeClassInterface) => {
             result.categories = ageClass.categories;
             updateAgeClassFromTable(result);
-            handleClose();
+            Swal.fire(
+              'Operazione completata con successo',
+              undefined,
+              'success'
+            ).then(() => handleClose());
           }
         );
       }}

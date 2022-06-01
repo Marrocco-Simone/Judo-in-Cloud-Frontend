@@ -13,7 +13,7 @@ export default function AgeClassSubTable(props: {
   updateAgeClassFromTable: (newAgeClass: AgeClassInterface) => void;
 }) {
   const { ageClass, athletes, updateAthleteFromTable, deleteAthleteFromTable, updateAgeClassFromTable } = props;
-  const [opened, setOpened] = useState(true);
+  const [opened, setOpened] = useState(!ageClass.closed);
 
   /** get each Category of an AgeClass with its Athletes */
   function getTableCategories() {
