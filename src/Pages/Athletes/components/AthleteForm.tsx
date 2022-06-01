@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { AthleteInterface, AthleteParamsInterface } from '../../../Types/types';
 import InputRow from '../../../Components/Inputs/InputRow';
 import TwoOptionRadio from '../../../Components/Inputs/TwoOptionRadio';
+import { apiGet } from '../../../Services/Api/api';
 
 export default function AthleteForm(props: {
   handleClose: () => void;
@@ -11,6 +12,12 @@ export default function AthleteForm(props: {
   apiSend: (params: AthleteParamsInterface) => Promise<any>;
 }) {
   const { handleClose, updateAthleteFromTable, initialParams, apiSend } = props;
+
+  const [clubs, setClubs] = useState<string[]>([]);
+  useEffect(() => {
+    apiGet('v1/athletes/club').then((clubData: string[]) => setClubs(clubData));
+  }, []);
+
   const [params, setParams] = useState<AthleteParamsInterface>({
     name: initialParams?.name || '',
     surname: initialParams?.surname || '',
@@ -73,6 +80,7 @@ export default function AthleteForm(props: {
         value={params.club}
         onChange={getOnChangeFunction('club')}
         inputType={'text'}
+        datalist={clubs}
       >
         {"Societa'"}
       </InputRow>
