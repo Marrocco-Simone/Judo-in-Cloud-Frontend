@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { PublicOutletContext } from './PublicShell';
 import '../../Css/public.css';
-import DropDown from './components/DropDown';
 import { AthleteInterface, TournamentInterface } from '../../Types/types';
 import { apiGet } from '../../Services/Api/api';
 import OrangeButton from '../../Components/Buttons/OrangeButton';
 import ClubAthleteTable, { ClubAthlete } from './components/ClubAthleteTable';
+import DropDown from '../../Components/Inputs/DropDown';
 
 type AthleteData = AthleteInterface & { tournament: string };
 
