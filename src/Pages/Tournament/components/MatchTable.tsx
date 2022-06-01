@@ -31,35 +31,19 @@ export default function MatchTable(props: {
           className={getRowClass(match)}
           onClick={() => setActiveMatch(match._id)}
         >
-          <td
-            className={
-              getWinner(match) === 'Bianco'
-                ? 'table-column-40 bold-text'
-                : 'table-column-40'
-            }
-          >
-            {match.whiteAthlete}
+          <td className='table-column-40'>{match.whiteAthlete}</td>
+          <td className='table-column-40'>{match.redAthlete}</td>
+          <td className='table-column-20'>
+            {(() => {
+              if (match.winnerAthlete === match.whiteAthlete) return 'Bianco';
+              if (match.winnerAthlete === match.redAthlete) return 'Rosso';
+              return '';
+            })()}
           </td>
-          <td
-            className={
-              getWinner(match) === 'Rosso'
-                ? 'table-column-40 bold-text'
-                : 'table-column-40'
-            }
-          >
-            {match.redAthlete}
-          </td>
-          <td className='table-column-20'>{getWinner(match)}</td>
         </tr>
       );
     }
     return tableElem;
-  }
-
-  function getWinner(match: MatchTableData) {
-    if (match.winnerAthlete === match.whiteAthlete) return 'Bianco';
-    if (match.winnerAthlete === match.redAthlete) return 'Rosso';
-    return '';
   }
 
   return (
