@@ -10,9 +10,11 @@ export function Modal(props: {
   const element = (
     <>
       <div className='overlay' />
-      <div className='modal'>
-        {children}
-        <button className='close-button' onClick={() => handleClose()} />
+      <div className='modal-container'>
+        <div className='modal'>
+          {children}
+          <button className='close-button' onClick={() => handleClose()} />
+        </div>
       </div>
     </>
   );
