@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
-import { AgeClassInterface, AthleteInterface } from '../../../Types/types';
+import { AgeClassInterface, AthleteInterface, AthletesPerCategory } from '../../../Types/types';
 import AgeClassRow from './AgeClassRow';
 import CategorySubTable from './CategorySubTable';
 
 export default function AgeClassSubTable(props: {
   ageClass: AgeClassInterface;
-  athletes: {
-    [categoryId: string]: AthleteInterface[];
-  };
+  athletes: AthletesPerCategory;
   updateAthleteFromTable: (newAthlete: AthleteInterface) => void;
   deleteAthleteFromTable: (athleteToDelete: AthleteInterface) => void;
   updateAgeClassFromTable: (newAgeClass: AgeClassInterface) => void;
 }) {
   const { ageClass, athletes, updateAthleteFromTable, deleteAthleteFromTable, updateAgeClassFromTable } = props;
-  const [opened, setOpened] = useState(true);
+  const [opened, setOpened] = useState(!ageClass?.closed);
 
   /** get each Category of an AgeClass with its Athletes */
   function getTableCategories() {
@@ -37,7 +35,8 @@ export default function AgeClassSubTable(props: {
       <AgeClassRow
         ageClass={ageClass}
         updateAgeClassFromTable={updateAgeClassFromTable}
-        chevronFunction={() => setOpened((prev) => !prev)}
+        openChevron={() => setOpened((prev) => !prev)}
+        opened={opened}
       />
       {opened && getTableCategories()}
     </>

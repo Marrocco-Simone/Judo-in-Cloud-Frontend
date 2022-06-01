@@ -12,11 +12,11 @@ export default function CategorySubTable(props: {
 }) {
   const { category, athletes, updateAthleteFromTable, deleteAthleteFromTable } =
     props;
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState(true);
 
   /** get each Athlete of a Category */
   function getTableAthletes() {
-    if (athletes.length === 0) return <NoAthletesRow />;
+    if (!athletes || athletes.length === 0) return <NoAthletesRow />;
 
     const tableElem: React.ReactNode[] = [];
     for (const athlete of athletes) {
@@ -37,7 +37,8 @@ export default function CategorySubTable(props: {
     <>
       <CategoryRow
         category={category}
-        chevronFunction={() => setOpened((prev) => !prev)}
+        openChevron={() => setOpened((prev) => !prev)}
+        opened={opened}
       />
       {opened && getTableAthletes()}
     </>
