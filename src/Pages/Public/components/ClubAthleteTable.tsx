@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { apiGet } from '../../../Services/Api/api';
-import { AthleteInterface, TournamentInterface } from '../../../Types/types';
+import React from 'react';
 
-type ClubAthlete = {
+export type ClubAthlete = {
+  _id: string;
   name: string;
   surname: string;
   tournament_name: string;
@@ -10,38 +9,46 @@ type ClubAthlete = {
   tournament_tatami?: number;
 };
 
-type AthleteData = AthleteInterface & { tournament: string };
-
 export default function ClubAthleteTable(props: {
-  club: string;
-  tournaments: TournamentInterface[];
-  getTournamentName: (tour?: TournamentInterface) => string;
+  clubAthletes: ClubAthlete[];
 }) {
-  const { club, tournaments, getTournamentName } = props;
-  const [clubAthletes, setClubAthletes] = useState<ClubAthlete[]>([]);
+  const { clubAthletes } = props;
 
-  function getClubAthletes(athletesData: AthleteData[]) {
-    return athletesData.map((athlete: AthleteData) => {
-      const tour = tournaments.find(
-        (tournament) => tournament._id === athlete.tournament
+  function getTableElements() {
+    const tableElem: React.ReactNode[] = [];
+    if (clubAthletes.length === 0) {
+      return (
+        <tr className='table-empty'>
+          <td colSpan={3}>Nessun Atleta da mostrare</td>
+        </tr>
       );
-      return {
-        name: athlete.name,
-        surname: athlete.surname,
-        tournament_name: getTournamentName(tour),
-        tournament_id: tour?._id,
-        tournament_tatami: tour?.tatami_number,
-      };
-    });
+    }
+    for (const athlete of clubAthletes) {
+      tableElem.push(
+        <tr
+          key={athlete._id}
+          /* className={getRowClass(tour)}
+          onClick={() => setActiveTournament(tour._id)} */
+        >
+          <td className='table-column-40'>{`${athlete.name} ${athlete.surname}`}</td>
+          <td className='table-column-40'>{athlete.tournament_name}</td>
+          <td className='table-column-20'>{athlete.tournament_tatami}</td>
+        </tr>
+      );
+    }
+    return tableElem;
   }
 
-  useEffect(() => {
-    apiGet(`v1/athletes/club/${club}`).then((athletesData: AthleteData[]) =>
-      setClubAthletes(getClubAthletes(athletesData))
-    );
-  }, []);
-
-  console.table(clubAthletes);
-
-  return <div>{club}</div>;
+  return (
+    <table className='table'>
+      <thead>
+        <tr>
+          <td className='table-column-40'>Atleta</td>
+          <td className='table-column-40'>Categoria</td>
+          <td className='table-column-20'>Tatami</td>
+        </tr>
+      </thead>
+      <tbody>{getTableElements()}</tbody>
+    </table>
+  );
 }

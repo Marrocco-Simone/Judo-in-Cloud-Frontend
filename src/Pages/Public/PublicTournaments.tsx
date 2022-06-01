@@ -1,14 +1,16 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { PublicOutletContext } from './PublicShell';
 import '../../Css/public.css';
 import DropDown from './components/DropDown';
-import { TournamentInterface } from '../../Types/types';
+import { AthleteInterface, TournamentInterface } from '../../Types/types';
 import { apiGet } from '../../Services/Api/api';
 import OrangeButton from '../../Components/Buttons/OrangeButton';
-import ClubAthleteTable from './components/ClubAthleteTable';
+import ClubAthleteTable, { ClubAthlete } from './components/ClubAthleteTable';
 
-const PublicTournaments: FC = () => {
+type AthleteData = AthleteInterface & { tournament: string };
+
+export default function PublicTournaments() {
   // for redirect
   const navigate = useNavigate();
 
@@ -17,6 +19,12 @@ const PublicTournaments: FC = () => {
   const [selectedTournament, setSelectedTournament] = useState('');
   const [clubs, setClubs] = useState<string[]>([]);
   const [selectedClub, setSelectedClub] = useState('');
+  const [clubAthletes, setClubAthletes] = useState<ClubAthlete[]>([]);
+
+  function getTournamentName(category?: TournamentInterface['category']) {
+    if (!category) return '';
+    return `${category.age_class.name} ${category.max_weight} ${category.gender}`;
+  }
 
   /** get data of tournaments when opening the page */
   useEffect(() => {
@@ -24,13 +32,32 @@ const PublicTournaments: FC = () => {
       (tournamentData: TournamentInterface[]) => setTournaments(tournamentData)
     );
     apiGet('v1/athletes/club').then((clubData: string[]) => setClubs(clubData));
-    console.table(tournaments);
   }, []);
 
-  function getTournamentName(tour?: TournamentInterface) {
-    if (!tour) return '';
-    return `${tour.category.age_class.name} ${tour.category.max_weight} ${tour.category.gender}`;
+  function getClubAthletes(athletesData: AthleteData[]) {
+    return athletesData.map((athlete: AthleteData) => {
+      const tour = tournaments.find(
+        (tournament) => tournament._id === athlete.tournament
+      );
+      return {
+        _id: athlete._id,
+        name: athlete.name,
+        surname: athlete.surname,
+        // @ts-ignore
+        tournament_name: getTournamentName(athlete.category),
+        tournament_id: tour?._id,
+        tournament_tatami: tour?.tatami_number,
+      };
+    });
   }
+
+  useEffect(() => {
+    if (!selectedClub) return;
+    apiGet(`v1/athletes/club/${selectedClub}`).then(
+      (athletesData: AthleteData[]) =>
+        setClubAthletes(getClubAthletes(athletesData))
+    );
+  }, [selectedClub]);
 
   return (
     <div className='public-container'>
@@ -39,7 +66,7 @@ const PublicTournaments: FC = () => {
         options={tournaments.map((tour) => {
           return {
             value: tour._id,
-            name: getTournamentName(tour),
+            name: getTournamentName(tour?.category),
           };
         })}
         chooseOption={(optionValue: string) =>
@@ -64,15 +91,7 @@ const PublicTournaments: FC = () => {
       >
         Scegli Club
       </DropDown>
-      {selectedClub && (
-        <ClubAthleteTable
-          club={selectedClub}
-          tournaments={tournaments}
-          getTournamentName={getTournamentName}
-        />
-      )}
+      {selectedClub && <ClubAthleteTable clubAthletes={clubAthletes} />}
     </div>
   );
-};
-
-export default PublicTournaments;
+}
