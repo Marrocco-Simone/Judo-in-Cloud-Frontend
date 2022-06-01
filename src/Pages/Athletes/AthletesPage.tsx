@@ -19,33 +19,20 @@ export default function AthletesPage() {
   useEffect(() => {
     apiGet('v1/age_classes').then((ageClassData: AgeClassInterface[]) => {
       setAgeClasses(ageClassData);
+      apiGet('v1/athletes').then((athleteData: AthleteInterface[]) => {
+        const myAthletes: { [categoryId: string]: AthleteInterface[] } = {};
+        for (const ageClass of ageClassData) {
+          for (const cat of ageClass.categories) {
+            const categoryId = cat._id;
+            myAthletes[categoryId] = athleteData.filter(
+              (ath) => ath.category === categoryId
+            );
+          }
+        }
+        setAthletes(myAthletes);
+      });
     });
   }, []);
-
-  /**
-   * get the athletes once gotten the age classes.
-   * the athletes get then ordered in an object where each key is a category id
-   * and every field is an array of the athletes of that category
-   *
-   * possible bug: when we update the age classes after the form submission
-   * maybe the athletes are reloaded. It doesn't happen, but it's something
-   * to look for
-   * search setAgeClasses to know when this useEffect should be called
-   */
-  useEffect(() => {
-    apiGet('v1/athletes').then((athleteData: AthleteInterface[]) => {
-      const myAthletes: { [categoryId: string]: AthleteInterface[] } = {};
-      for (const ageClass of ageClasses) {
-        for (const cat of ageClass.categories) {
-          const categoryId = cat._id;
-          myAthletes[categoryId] = athleteData.filter(
-            (ath) => ath.category === categoryId
-          );
-        }
-      }
-      setAthletes(myAthletes);
-    });
-  }, [ageClasses]);
 
   function updateAthleteFromTable(newAthlete: AthleteInterface) {
     if (!newAthlete) return;
