@@ -9,7 +9,7 @@ type propsType = {
 function Player ({ player, state }: propsType) {
   return (
     <div className={`player border-2 flex justify-center items-center ${state}`}>
-      {player?.name}
+      {player?.name} {player?.surname}
     </div>
   );
 }
