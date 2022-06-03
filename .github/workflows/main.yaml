@@ -22,6 +22,6 @@ jobs:
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "rayz-test-app-2"
+          heroku_app_name: "judoincloud"
           heroku_email: "alessandro.girardi-2@studenti.unitn.it"
           buildpack: "https://github.com/mars/create-react-app-buildpack"
