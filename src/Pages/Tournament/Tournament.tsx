@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import TournamentTable from './components/TournamentTable';
 import MatchTable from './components/MatchTable';
-import { apiGet } from '../../Services/Api/api';
+import { apiGet, apiPost } from '../../Services/Api/api';
 import {
   TournamentInterface,
   MatchInterface,
@@ -54,8 +54,7 @@ export default function Tournament() {
         const num = Number(value);
         if (isNaN(num) || !num || num < 1) {
           Swal.showValidationMessage('Inserire numero Tatami');
-        }
-        setNTatami(num);
+        } else setNTatami(num);
       },
       allowOutsideClick: false,
     });
@@ -156,6 +155,37 @@ export default function Tournament() {
     navigate(`/match-timer/${activeMatch}?from_tournament=${activeTournament}`);
   }
 
+  async function reserveTournament(tournamentId: string) {
+    const tourIndex = tournaments.findIndex(
+      (tour) => tour._id === tournamentId
+    );
+    if (tourIndex < 0) return;
+
+    if (tournaments[tourIndex].tatami_number > 0) {
+      const result = await Swal.fire({
+        title: "Torneo gia' prenotato",
+        text: "Questo torneo e' gia' stato prenotato da un altro tavolo. Prenotandolo esso non sara' piu' in grado di iniziare altri incontri finche' non lo riprenotera'",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: "Si', lo voglio io",
+        cancelButtonText: "No, lascialo com'e",
+      });
+      if (!result.isConfirmed) return;
+    }
+
+    apiPost(`v2/tournaments/reserve/${tournamentId}`, {
+      tatami_number: nTatami,
+    });
+
+    setTournaments((prevTournaments) => {
+      const newTournaments = prevTournaments;
+      newTournaments[tourIndex].tatami_number = nTatami;
+      return newTournaments;
+    });
+  }
+
   return (
     <div className='tournament-container'>
       <div className='n-tatami-container'>
@@ -208,7 +238,7 @@ export default function Tournament() {
             <TournamentReserveTable
               tournamentTableData={getTournamentsDataForTable()}
               activeTournament={`${nTatami}`}
-              setActiveTournament={() => {}}
+              setActiveTournament={reserveTournament}
             />
           </div>
         </Modal>
