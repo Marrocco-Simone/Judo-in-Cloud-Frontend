@@ -11,6 +11,8 @@ import {
 } from '../../Types/types';
 import Swal from 'sweetalert2';
 import OrangeButton from '../../Components/Buttons/OrangeButton';
+import { Modal } from '../../Components/Modal/Modal';
+import TournamentReserveTable from './components/TournamentReserveTable';
 
 export default function Tournament() {
   /** for redirect */
@@ -30,11 +32,12 @@ export default function Tournament() {
     return fromTournament;
   };
 
-  const [nTatami, setNTatami] = useState(-1);
   const [tournaments, setTournaments] = useState<TournamentInterface[]>([]);
   const [matches, setMatches] = useState<MatchInterface[]>([]);
   const [activeTournament, setActiveTournament] = useState(getTournaments());
   const [activeMatch, setActiveMatch] = useState<string>('');
+  const [nTatami, setNTatami] = useState(-1);
+  const [isReserveOpen, setIsReserveOpen] = useState(false);
 
   /**
    * get data of tournaments when opening the page
@@ -47,10 +50,14 @@ export default function Tournament() {
     Swal.fire({
       title: 'Inserire numero Tatami',
       input: 'number',
-      preConfirm: (num) => {
-        if (!num || num < 1) Swal.showValidationMessage('Inserire numero Tatami');
+      preConfirm: (value) => {
+        const num = Number(value);
+        if (isNaN(num) || !num || num < 1) {
+          Swal.showValidationMessage('Inserire numero Tatami');
+        }
         setNTatami(num);
       },
+      allowOutsideClick: false,
     });
   }, []);
 
@@ -80,6 +87,7 @@ export default function Tournament() {
         weight: `U${tour.category.max_weight}`,
         gender: tour.category.gender,
         finished: tour.finished,
+        tatami_number: tour.tatami_number,
       });
     }
 
@@ -157,7 +165,9 @@ export default function Tournament() {
         <div className='table-container'>
           <div className='table-text'>Categorie Prenotate</div>
           <TournamentTable
-            tournamentTableData={getTournamentsDataForTable()}
+            tournamentTableData={getTournamentsDataForTable().filter(
+              (tour) => tour.tatami_number === nTatami
+            )}
             activeTournament={activeTournament}
             setActiveTournament={setActiveTournament}
           />
@@ -172,10 +182,8 @@ export default function Tournament() {
         </div>
       </div>
       <div className='button-row'>
-        <OrangeButton
-          onClickFunction={() => Swal.fire('Coming Soon', '', 'info')}
-        >
-          Prenota Categorie - Coming Soon
+        <OrangeButton onClickFunction={() => setIsReserveOpen(true)}>
+          Prenota Categorie
         </OrangeButton>
         <OrangeButton
           onClickFunction={() => navigate(`/tournament/${activeTournament}`)}
@@ -193,6 +201,18 @@ export default function Tournament() {
           Inizia Incontro Selezionato
         </OrangeButton>
       </div>
+      {isReserveOpen && (
+        <Modal handleClose={() => setIsReserveOpen(false)}>
+          <div className='table-container'>
+            <div className='table-text'>Prenota una Categoria</div>
+            <TournamentReserveTable
+              tournamentTableData={getTournamentsDataForTable()}
+              activeTournament={`${nTatami}`}
+              setActiveTournament={() => {}}
+            />
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }

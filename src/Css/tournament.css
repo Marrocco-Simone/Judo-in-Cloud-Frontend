@@ -17,7 +17,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 50%;
+  height: 60%;
   margin-top: 5vh;
 }
 
@@ -43,7 +43,8 @@
 .table {
   background-color: white;
   border-collapse: collapse;
-  width: 85%;
+  margin: 0vh 7vh;
+  margin-bottom: 4vh;
   border-radius: 2vh 2vh;
   overflow: hidden;
   box-shadow: 0 0 1.5vh rgba(0, 0, 0, 0.4);
@@ -63,7 +64,7 @@
 
 .table tbody {
   display: block;
-  height: 40vh;
+  min-height: 40vh;
   overflow-y: auto;
 }
 

@@ -91,6 +91,7 @@ export type TournamentTableData = {
   weight: string;
   gender: string;
   finished: boolean;
+  tatami_number: number;
 };
 
 export type MatchTableData = {

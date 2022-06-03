@@ -10,17 +10,25 @@ export default function AthleteFormModal(props: {
   apiSend: (params: AthleteParamsInterface) => Promise<any>;
   initialParams?: AthleteParamsInterface;
 }) {
-  const { children, handleClose, updateAthleteFromTable, apiSend, initialParams } = props;
+  const {
+    children,
+    handleClose,
+    updateAthleteFromTable,
+    apiSend,
+    initialParams,
+  } = props;
 
   return (
     <Modal handleClose={handleClose}>
-      <div className='form-title'>{children}</div>
-      <AthleteForm
-        handleClose={handleClose}
-        updateAthleteFromTable={updateAthleteFromTable}
-        apiSend={apiSend}
-        initialParams={initialParams}
-      />
+      <div className='form-container'>
+        <div className='form-title'>{children}</div>
+        <AthleteForm
+          handleClose={handleClose}
+          updateAthleteFromTable={updateAthleteFromTable}
+          apiSend={apiSend}
+          initialParams={initialParams}
+        />
+      </div>
     </Modal>
   );
 }
