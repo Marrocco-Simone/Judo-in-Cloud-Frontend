@@ -42,11 +42,19 @@ export default function Tournament() {
   /**
    * get data of tournaments when opening the page
    * user enters the tatami number
+   * if in query it isn't asked
    */
   useEffect(() => {
     apiGet('v1/tournaments').then((tournamentData) => {
       setTournaments(tournamentData);
     });
+
+    const queryNTatami = searchParams.get('ntatami');
+    if (queryNTatami) {
+      const stdNTatami = Number(queryNTatami);
+      if (!isNaN(stdNTatami)) return setNTatami(stdNTatami);
+    }
+
     Swal.fire({
       title: 'Inserire numero Tatami',
       input: 'number',
