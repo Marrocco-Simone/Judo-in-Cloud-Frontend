@@ -33,7 +33,7 @@ export default function AthleteRow(props: {
             handleClose={() => setIsModifyAthleteOpen(false)}
             updateAthleteFromTable={updateAthleteFromTable}
             apiSend={(params: AthleteParamsInterface) =>
-              apiPut(`v1/athletes/${athlete._id}`, params).then(
+              apiPut(`v2/athletes/${athlete._id}`, params).then(
                 (newAthlete: AthleteInterface) => {
                   updateAthleteFromTable(newAthlete);
                   if (newAthlete.category !== athlete.category) {
@@ -68,7 +68,7 @@ export default function AthleteRow(props: {
               cancelButtonText: 'No, torna indietro',
             }).then((result) => {
               if (result.isConfirmed) {
-                apiDelete(`v1/athletes/${athlete._id}`).then(
+                apiDelete(`v2/athletes/${athlete._id}`).then(
                   (deletedAthlete) => {
                     deleteAthleteFromTable(deletedAthlete);
                     Swal.fire(
