@@ -169,3 +169,7 @@
   font-size: 3vh;
   padding: 0.5vh 0.5vh;
 }
+
+.icon-button:disabled {
+  background-color: #BBB !important;
+}

@@ -9,9 +9,15 @@ export default function CategorySubTable(props: {
   athletes: AthleteInterface[];
   updateAthleteFromTable: (newAthlete: AthleteInterface) => void;
   deleteAthleteFromTable: (athleteToDelete: AthleteInterface) => void;
+  modificationsDisabled: boolean
 }) {
-  const { category, athletes, updateAthleteFromTable, deleteAthleteFromTable } =
-    props;
+  const {
+    category,
+    athletes,
+    updateAthleteFromTable,
+    deleteAthleteFromTable,
+    modificationsDisabled,
+  } = props;
   const [opened, setOpened] = useState(true);
 
   /** get each Athlete of a Category */
@@ -26,6 +32,7 @@ export default function CategorySubTable(props: {
           updateAthleteFromTable={updateAthleteFromTable}
           deleteAthleteFromTable={deleteAthleteFromTable}
           key={athlete._id}
+          modificationsDisabled={modificationsDisabled}
         />
       );
     }

@@ -24,6 +24,7 @@ export default function AgeClassSubTable(props: {
           updateAthleteFromTable={updateAthleteFromTable}
           deleteAthleteFromTable={deleteAthleteFromTable}
           key={category._id}
+          modificationsDisabled={ageClass.closed}
         />
       );
     }
