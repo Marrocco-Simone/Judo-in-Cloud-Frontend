@@ -32,7 +32,7 @@ export default function PublicTournaments() {
     apiGet(`v2/competitions/${competition._id}/tournaments`).then(
       (tournamentData: TournamentInterface[]) => setTournaments(tournamentData)
     );
-    apiGet('v1/athletes/club').then((clubData: string[]) => setClubs(clubData));
+    apiGet('v2/athletes/club').then((clubData: string[]) => setClubs(clubData));
   }, []);
 
   function getClubAthletes(athletesData: AthleteData[]) {
@@ -54,7 +54,7 @@ export default function PublicTournaments() {
 
   useEffect(() => {
     if (!selectedClub) return;
-    apiGet(`v1/athletes/club/${selectedClub}`).then(
+    apiGet(`v2/athletes/club/${selectedClub}`).then(
       (athletesData: AthleteData[]) =>
         setClubAthletes(getClubAthletes(athletesData))
     );

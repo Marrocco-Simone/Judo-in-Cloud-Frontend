@@ -41,14 +41,14 @@ export default function AgeClassRow(props: {
     if (!firstResult.isConfirmed) return;
 
     const result: { can_reopen: boolean } = await apiGet(
-      `v1/age_classes/reopen/${ageClass._id}`
+      `v2/age_classes/reopen/${ageClass._id}`
     );
     if (!result.can_reopen) {
       const secondResult = await Swal.fire(secondMessage);
       if (!secondResult.isConfirmed) return;
     }
 
-    apiPost(`v1/age_classes/reopen/${ageClass._id}`, {}).then(
+    apiPost(`v2/age_classes/reopen/${ageClass._id}`, {}).then(
       (result: AgeClassInterface) => {
         result.categories = ageClass.categories;
         updateAgeClassFromTable(result);

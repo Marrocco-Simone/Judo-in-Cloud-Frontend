@@ -15,7 +15,7 @@ export default function AthleteForm(props: {
 
   const [clubs, setClubs] = useState<string[]>([]);
   useEffect(() => {
-    apiGet('v1/athletes/club').then((clubData: string[]) => setClubs(clubData));
+    apiGet('v2/athletes/club').then((clubData: string[]) => setClubs(clubData));
   }, []);
 
   const [params, setParams] = useState<AthleteParamsInterface>({
