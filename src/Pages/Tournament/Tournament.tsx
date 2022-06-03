@@ -179,11 +179,13 @@ export default function Tournament() {
       tatami_number: nTatami,
     });
 
-    setTournaments((prevTournaments) => {
-      const newTournaments = prevTournaments;
-      newTournaments[tourIndex].tatami_number = nTatami;
-      return newTournaments;
-    });
+    setTournaments((prevTournaments) =>
+      prevTournaments.map((tour) => {
+        const newTour: TournamentInterface = tour;
+        if (tour._id === tournamentId) newTour.tatami_number = nTatami;
+        return newTour;
+      })
+    );
   }
 
   return (
