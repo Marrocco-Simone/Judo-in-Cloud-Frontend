@@ -26,8 +26,7 @@ async function apiCall(url: string, method = 'get', data?: any) {
     // prefix the url with the base api url
     switch (process.env.NODE_ENV) {
       case 'production':
-        // TODO: replace with actual url
-        url = `https://api.judoincloud.com/${url}`;
+        url = `https://judoincloud-backend.herokuapp.com/${url}`;
         break;
       case 'development':
       default:
