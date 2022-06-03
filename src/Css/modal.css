@@ -170,18 +170,36 @@
 .toggle-fill::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 0%;
+  left: 0%;
   height: 100%;
   aspect-ratio: 1 / 1;
   background-color: white;
   box-shadow: 0 0 1vh rgba(0, 0, 0, 0.25);
   border-radius: 3vh;
-  transition: transform 0.2s;
+  animation: toggle-uncheck 0.2s ease-out forwards;
+}
+
+@keyframes toggle-uncheck {
+  from {
+    left: 70%;
+  }
+  to {
+    left: 0%;
+  }
+}
+
+@keyframes toggle-check {
+  from {
+    left: 0%;
+  }
+  to {
+    left: 70%;
+  }
 }
 
 .toggle-input:checked + .toggle-fill::after {
-  transform: translateX(200%);
+  animation: toggle-check 0.2s ease-out forwards;
 }
 
 /* info text */
