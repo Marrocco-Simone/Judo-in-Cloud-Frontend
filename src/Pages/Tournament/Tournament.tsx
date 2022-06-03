@@ -160,6 +160,7 @@ export default function Tournament() {
       (tour) => tour._id === tournamentId
     );
     if (tourIndex < 0) return;
+    if (tournaments[tourIndex].tatami_number === nTatami) return;
 
     if (tournaments[tourIndex].tatami_number > 0) {
       const result = await Swal.fire({
