@@ -181,7 +181,7 @@
 }
 
 .toggle-input:checked + .toggle-fill::after {
-  transform: translateX(5.5vh);
+  transform: translateX(200%);
 }
 
 /* info text */
