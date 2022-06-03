@@ -42,10 +42,10 @@ export default function MatchTimer() {
   // to get the tournament id from query
   const [searchParams/* , setSearchParams */] = useSearchParams();
   function turnBack() {
-    const params = searchParams.get('from_tournament');
-    const query = !params ? '' : params;
+    const tournament = searchParams.get('from_tournament');
+    const ntatami = searchParams.get('n_tatami');
     navigate(
-      `/tournament?from_tournament=${query}`
+      `/tournament?from_tournament=${tournament}&n_tatami=${ntatami}`
     );
   }
 
@@ -78,7 +78,7 @@ export default function MatchTimer() {
   let { matchId } = useParams();
   React.useEffect(() => {
     if (!matchId) return; // amichevole, usiamo i valori di default
-    apiGet(`v1/match/${matchId}`)
+    apiGet(`v1/matches/${matchId}`)
       .then((matchData: MatchInterface) => {
         if (!matchData) return;
         const redAthlete = matchData.red_athlete;
@@ -112,7 +112,7 @@ export default function MatchTimer() {
           setWhiteWazaari(matchScores.white_wazaari);
           setWhiteShido(matchScores.white_penalties);
         } else setMatchTimer(matchData.params.match_time); // if match is new, full timer
-        apiPost(`v1/match/${matchId}`, { is_started: true });
+        apiPost(`v1/matches/${matchId}`, { is_started: true });
       })
       .catch(() => {
         matchId = '';
@@ -719,7 +719,7 @@ export default function MatchTimer() {
                 return turnBack(); // amichevole
               }
               if (winner === 'none') return;
-              apiPost(`v1/match/${matchId}`, getVictoryData()).then(() =>
+              apiPost(`v1/matches/${matchId}`, getVictoryData()).then(() =>
                 turnBack()
               );
             }}

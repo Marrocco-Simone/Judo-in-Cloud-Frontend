@@ -49,7 +49,7 @@ export default function Tournament() {
       setTournaments(tournamentData);
     });
 
-    const queryNTatami = searchParams.get('ntatami');
+    const queryNTatami = searchParams.get('n_tatami');
     if (queryNTatami) {
       const stdNTatami = Number(queryNTatami);
       if (!isNaN(stdNTatami)) return setNTatami(stdNTatami);
@@ -137,7 +137,7 @@ export default function Tournament() {
     }).then((result) => {
       if (result.isConfirmed) {
         navigate(
-          `/match-timer/${activeMatch}?from_tournament=${activeTournament}`
+          `/match-timer/${activeMatch}?from_tournament=${activeTournament}&n_tatami=${nTatami}`
         );
       }
     });
@@ -160,7 +160,7 @@ export default function Tournament() {
         "Attenzione, l'incontro e' gia' stato iniziato da qualche altro tavolo. Iniziarlo e finirlo qui sovrascriverebbe i dati dell'altro tavolo. Continuare?"
       );
     }
-    navigate(`/match-timer/${activeMatch}?from_tournament=${activeTournament}`);
+    navigate(`/match-timer/${activeMatch}?from_tournament=${activeTournament}&n_tatami=${nTatami}`);
   }
 
   async function reserveTournament(tournamentId: string) {
@@ -227,13 +227,13 @@ export default function Tournament() {
           Prenota Categorie
         </OrangeButton>
         <OrangeButton
-          onClickFunction={() => navigate(`/tournament/${activeTournament}`)}
+          onClickFunction={() => navigate(`/tournament/${activeTournament}&n_tatami=${nTatami}`)}
         >
           Apri Tabellone
         </OrangeButton>
         <OrangeButton
           onClickFunction={() =>
-            navigate(`/match-timer?from_tournament=${activeTournament}`)
+            navigate(`/match-timer?from_tournament=${activeTournament}&n_tatami=${nTatami}`)
           }
         >
           Incontro Amichevole
