@@ -6,10 +6,10 @@ import { BracketI } from '../../models/bracket.model';
 
 type PropsT = {
   bracket: BracketI;
+  compact: boolean;
 }
 
-function Bracket ({ bracket }: PropsT) {
-  const compact = bracket.length > 3;
+function Bracket ({ bracket, compact }: PropsT) {
   const finalMatch = bracket[bracket.length - 1][0];
   const winner = finalMatch !== null && finalMatch.winner_athlete !== null
     ? finalMatch.winner_athlete

@@ -12,12 +12,14 @@ export default function AgeClassFormModal(props: {
 
   return (
     <Modal handleClose={() => handleClose()}>
-      <div className='form-title'>{"Impostazioni Classe d'eta'"}</div>
-      <AgeClassForm
-        handleClose={() => handleClose()}
-        ageClass={ageClass}
-        updateAgeClassFromTable={updateAgeClassFromTable}
-      />
+      <div className='form-container'>
+        <div className='form-title'>{"Impostazioni Classe d'eta'"}</div>
+        <AgeClassForm
+          handleClose={() => handleClose()}
+          ageClass={ageClass}
+          updateAgeClassFromTable={updateAgeClassFromTable}
+        />
+      </div>
     </Modal>
   );
 }
