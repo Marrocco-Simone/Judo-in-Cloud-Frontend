@@ -50,9 +50,10 @@
   top: 0;
   transform: translate(40%, -40%);
   background-color: red;
-  font-size: 4vh;
+  font-size: 5vh;
   border-radius: 100%;
-  padding: 1vh 2vh;
+  width: 8vh;
+  height: 8vh;
 }
 
 .close-button:hover {
@@ -60,7 +61,7 @@
 }
 
 .close-button::after {
-  content: 'X';
+  content: '\2715';
 }
 
 /* form */
