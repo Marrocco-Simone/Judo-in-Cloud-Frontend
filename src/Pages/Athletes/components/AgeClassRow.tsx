@@ -82,7 +82,7 @@ export default function AgeClassRow(props: {
           />
         )}
         <button className='icon-button orange' onClick={openChevron}>
-          {(opened && <FaChevronRight />) || <FaChevronDown />}
+          {(opened && <FaChevronDown />) || <FaChevronRight />}
         </button>
       </td>
     </tr>
