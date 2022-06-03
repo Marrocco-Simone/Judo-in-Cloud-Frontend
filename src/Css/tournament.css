@@ -5,16 +5,19 @@
 
 .n-tatami-container {
   display: flex;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
   height: 10%;
+  font-weight: bold;
+  font-size: 5vh;
+  background-color: skyblue;
 }
 
 .multi-table-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 60%;
+  height: 50%;
   margin-top: 5vh;
 }
 

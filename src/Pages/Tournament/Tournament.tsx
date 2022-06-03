@@ -30,15 +30,27 @@ export default function Tournament() {
     return fromTournament;
   };
 
+  const [nTatami, setNTatami] = useState(-1);
   const [tournaments, setTournaments] = useState<TournamentInterface[]>([]);
   const [matches, setMatches] = useState<MatchInterface[]>([]);
   const [activeTournament, setActiveTournament] = useState(getTournaments());
   const [activeMatch, setActiveMatch] = useState<string>('');
 
-  /** get data of tournaments when opening the page */
+  /**
+   * get data of tournaments when opening the page
+   * user enters the tatami number
+   */
   useEffect(() => {
     apiGet('v1/tournaments').then((tournamentData) => {
       setTournaments(tournamentData);
+    });
+    Swal.fire({
+      title: 'Inserire numero Tatami',
+      input: 'number',
+      preConfirm: (num) => {
+        if (!num || num < 1) Swal.showValidationMessage('Inserire numero Tatami');
+        setNTatami(num);
+      },
     });
   }, []);
 
@@ -138,7 +150,9 @@ export default function Tournament() {
 
   return (
     <div className='tournament-container'>
-      <div className='n-tatami-container'></div>
+      <div className='n-tatami-container'>
+        {nTatami > 0 && `Tatami numero ${nTatami}`}
+      </div>
       <div className='multi-table-container'>
         <div className='table-container'>
           <div className='table-text'>Categorie Prenotate</div>
@@ -158,7 +172,9 @@ export default function Tournament() {
         </div>
       </div>
       <div className='button-row'>
-        <OrangeButton onClickFunction={() => Swal.fire('Coming Soon', '', 'info')}>
+        <OrangeButton
+          onClickFunction={() => Swal.fire('Coming Soon', '', 'info')}
+        >
           Prenota Categorie - Coming Soon
         </OrangeButton>
         <OrangeButton
