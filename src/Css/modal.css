@@ -1,0 +1,217 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 1;
+}
+
+.modal-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  width: 60%;
+  min-height: 60%;
+  outline: 0.5vh solid black;
+  background-color: white;
+  z-index: 1;
+  animation: modal-popup 0.3s ease-in-out forwards;
+  border-radius: 5vh;
+}
+
+@keyframes modal-popup {
+  0% {
+    transform: scale(70%);
+  }
+  75% {
+    transform: scale(105%);
+  }
+  100% {
+    transform: scale(100%);
+  }
+}
+
+.close-button {
+  size: 0.1vh;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translate(40%, -40%);
+  background-color: red;
+  font-size: 4vh;
+  border-radius: 100%;
+  padding: 1vh 2vh;
+}
+
+.close-button:hover {
+  background-color: coral;
+}
+
+.close-button::after {
+  content: 'X';
+}
+
+/* form */
+
+.form-container {
+  padding: 8vh;
+}
+
+.form-title {
+  font-size: 5vh;
+  font-size: bold;
+  margin-left: 1vh;
+  margin-bottom: 1vh;
+}
+
+.timer-label {
+  width: 100%;
+  display: flex;
+  padding-bottom: 1.5vh;
+}
+
+.input-description {
+  font-size: 3vh;
+  width: 60%;
+}
+
+.input-container {
+  width: 40%;
+  display: flex;
+  justify-content: center;
+}
+
+.timer-input {
+  border: 1px solid black;
+  font-size: 3.5vh;
+  text-align: center;
+}
+
+.timer-input[type='number'] {
+  width: 62%;
+}
+
+.timer-input[type='number'].input-minute {
+  width: 30%;
+}
+
+.athlete-input {
+  border: 1px solid black;
+  font-size: 3.5vh;
+  text-align: center;
+  width: 100%;
+  border-radius: 2vh 2vh;
+  box-shadow: 0 0 1.5vh rgba(0, 0, 0, 0.4);
+}
+
+.radio-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 7vh;
+  font-size: 3.5vh;
+  margin: 0 3.5vh;
+  border: 0.1vh solid black;
+  border-radius: 1vh;
+  background-color: lightgray;
+  transition: background 0.2s;
+}
+
+.select-gender {
+  display: flex;
+  font-size: 3vh;
+  justify-content: space-between;
+}
+
+.gender-text {
+  width: 60%;
+}
+
+.radio-input {
+  display: none;
+}
+
+.radio-input:checked + .radio-label {
+  background-color: cornflowerblue;
+}
+
+.toggle-input {
+  display: none;
+  cursor: pointer;
+}
+
+.toggle-fill {
+  cursor: pointer;
+  position: relative;
+  height: 100%;
+  width: 35%;
+  border-radius: 3vh;
+  background-color: lightgray;
+  transition: background 0.2s;
+}
+
+.toggle-input:checked + .toggle-fill {
+  background-color: cornflowerblue;
+}
+
+.toggle-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: white;
+  box-shadow: 0 0 1vh rgba(0, 0, 0, 0.25);
+  border-radius: 3vh;
+  transition: transform 0.2s;
+}
+
+.toggle-input:checked + .toggle-fill::after {
+  transform: translateX(5.5vh);
+}
+
+/* info text */
+
+.info {
+  height: 100%;
+  overflow-y: scroll;
+  font-size: 4vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.info span {
+  border: 1px solid black;
+}
+
+/* scrollbar customization */
+/* for firefox users */
+.info {
+  scrollbar-width: normal;
+  scrollbar-color: #999 #444;
+}
+
+/* for chrome users */
+.info::-webkit-scrollbar {
+  width: 3vh;
+}
+.info::-webkit-scrollbar-thumb {
+  background-color: #999;
+}
+.info::-webkit-scrollbar-track {
+  background-color: #444;
+}

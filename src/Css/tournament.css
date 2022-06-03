@@ -1,0 +1,171 @@
+.tournament-container {
+  background-color: cornflowerblue;
+  height: 100vh;
+}
+
+.n-tatami-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10%;
+  font-weight: bold;
+  font-size: 5vh;
+  background-color: skyblue;
+}
+
+.multi-table-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60%;
+  margin-top: 5vh;
+}
+
+.table-container {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  justify-content: center;
+  align-items: center;
+  font-size: 3vh;
+}
+
+.table-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 3vh;
+  font-weight: bold;
+  width: 100%;
+  padding: 3vh 7vh;
+}
+
+.table {
+  background-color: white;
+  border-collapse: collapse;
+  margin: 0vh 7vh;
+  margin-bottom: 4vh;
+  border-radius: 2vh 2vh;
+  overflow: hidden;
+  box-shadow: 0 0 1.5vh rgba(0, 0, 0, 0.4);
+}
+
+#athlete-table {
+  width: 95%;
+}
+
+.table thead td {
+  background-color: lightskyblue;
+  font-weight: bold;
+  padding: 1vh 1vh;
+  height: 1vh;
+  border: 0.1vh solid lightskyblue;
+}
+
+.table tbody {
+  display: block;
+  height: 40vh;
+  overflow-y: auto;
+}
+
+#athlete-table tbody{
+  height: 73.75vh;
+}
+
+.table thead,
+.table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.table tbody td {
+  border: 0.1vh solid lightgray;
+  padding: 1vh 1vh;
+  height: 1vh;
+}
+
+.table tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.table tr.active-row {
+  font-weight: bold;
+  background-color: lightgreen;
+}
+
+.table tr.finished-row {
+  background-color: darkgray;
+}
+
+.table tr.warning-row {
+  background-color: red;
+}
+
+.table-empty {
+  text-align: center;
+  font-size: bold;
+}
+
+.table-column-50 {width: 50%;}
+.table-column-40 {width: 40%;}
+.table-column-25 {width: 25%;}
+.table-column-20 {width: 20%;}
+.table-column-15 {width: 15%;}
+.table-column-10 {width: 10%;}
+
+.bold-text {
+  font-weight: bold;
+}
+
+.age-class-row td{
+  height: 10vh !important;
+  font-size: 5vh;
+  font-weight: bold;
+  background-color: lightskyblue;
+}
+
+.category-row td {
+  height: 8vh !important;
+  font-size: 3.5vh;
+  font-weight: bold;
+  background-color: lightcyan;
+}
+
+.centered-text {
+  text-align: center;
+}
+
+.button-row {
+  margin-top: 7vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.tournament-button {
+  border: 0.5vh solid black;
+  border-radius: 1.5vh;
+  cursor: pointer;
+  font-size: 2.5vh;
+  padding: 1.5vh 2.5vh;
+  width: 15%;
+  height: 12vh;
+}
+
+.athlete-button {
+  border: 0.5vh solid black;
+  border-radius: 1.5vh;
+  cursor: pointer;
+  font-size: 2.5vh;
+  width: 15%;
+  height: 7vh;
+}
+
+.icon-button {
+  border: 0.5vh solid black;
+  border-radius: 1.5vh;
+  cursor: pointer;
+  font-size: 3vh;
+  padding: 0.5vh 0.5vh;
+}

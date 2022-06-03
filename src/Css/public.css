@@ -1,0 +1,38 @@
+.public-container {
+  background-color: cornflowerblue;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: center;
+  text-align: center;
+  font-size: large;
+}
+
+.competition-name {
+  font-weight: bold;
+  font-size: larger;
+  background-color: lightskyblue;
+  margin-top: 4vh;
+  padding: 2vh 15vh;
+  border-radius: 5vh;
+  box-shadow: 0 0 1.5vh rgba(0, 0, 0, 0.5);
+}
+
+.select-label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  margin: 4vh 0;
+}
+
+.select {
+  cursor: pointer;
+  padding: 2vh 7vh;
+  border-radius: 2vh;
+  box-shadow: 0 0 1.5vh rgba(0, 0, 0, 0.5);
+}
+
+.void-option {
+  display: none;
+}

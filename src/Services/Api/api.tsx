@@ -26,8 +26,7 @@ async function apiCall(url: string, method = 'get', data?: any) {
     // prefix the url with the base api url
     switch (process.env.NODE_ENV) {
       case 'production':
-        // TODO: replace with actual url
-        url = `https://api.judoincloud.com/${url}`;
+        url = `https://judoincloud-backend.herokuapp.com/api/${url}`;
         break;
       case 'development':
       default:
@@ -94,4 +93,8 @@ export function apiGet<T = any>(url: string): Promise<T> {
 
 export function apiDelete<T = any>(url: string): Promise<T> {
   return apiCall(url, 'delete');
+}
+
+export function apiPut<T = any>(url: string, data: object): Promise<T> {
+  return apiCall(url, 'put', data);
 }
