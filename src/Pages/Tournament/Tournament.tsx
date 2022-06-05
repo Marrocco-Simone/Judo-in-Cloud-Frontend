@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 import OrangeButton from '../../Components/Buttons/OrangeButton';
 import { Modal } from '../../Components/Modal/Modal';
 import TournamentReserveTable from './components/TournamentReserveTable';
-import { getTatami, storeTatami } from '../../Services/TournamentManagement/tatami-service';
+import { deleteTatami, getTatami, storeTatami } from '../../Services/TournamentManagement/tatami-service';
 import { FaPencilAlt } from 'react-icons/fa';
 
 export default function Tournament() {
@@ -204,6 +204,11 @@ export default function Tournament() {
     );
   }
 
+  function clearTatami() {
+    setNTatami(null);
+    deleteTatami();
+  }
+
   function getHeader () {
     if (nTatami === null) {
       return <></>;
@@ -211,7 +216,7 @@ export default function Tournament() {
     return (
       <>
         Tatami numero {nTatami}
-        <button className='text-2xl ml-2' onClick={() => setNTatami(null)}>
+        <button className='text-2xl ml-2' onClick={clearTatami}>
           <FaPencilAlt></FaPencilAlt>
         </button>
       </>
