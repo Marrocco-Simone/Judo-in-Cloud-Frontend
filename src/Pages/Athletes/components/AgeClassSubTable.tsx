@@ -15,19 +15,16 @@ export default function AgeClassSubTable(props: {
 
   /** get each Category of an AgeClass with its Athletes */
   function getTableCategories() {
-    const tableElem: React.ReactNode[] = [];
-    for (const category of ageClass.categories) {
-      tableElem.push(
-        <CategorySubTable
-          category={category}
-          athletes={athletes[category._id]}
-          updateAthleteFromTable={updateAthleteFromTable}
-          deleteAthleteFromTable={deleteAthleteFromTable}
-          key={category._id}
-        />
-      );
-    }
-    return tableElem;
+    return ageClass.categories.map((category) => (
+      <CategorySubTable
+        category={category}
+        athletes={athletes[category._id]}
+        updateAthleteFromTable={updateAthleteFromTable}
+        deleteAthleteFromTable={deleteAthleteFromTable}
+        key={category._id}
+        modificationsDisabled={ageClass.closed}
+      />
+    ));
   }
 
   return (

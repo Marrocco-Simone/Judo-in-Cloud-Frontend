@@ -6,7 +6,6 @@ import { apiGet, apiPost } from '../../Services/Api/api';
 import {
   TournamentInterface,
   MatchInterface,
-  TournamentTableData,
   MatchTableData,
 } from '../../Types/types';
 import Swal from 'sweetalert2';
@@ -85,20 +84,14 @@ export default function Tournament() {
   }, [activeTournament]);
 
   function getTournamentsDataForTable() {
-    const tournamentTableData: TournamentTableData[] = [];
-
-    for (const tour of tournaments) {
-      tournamentTableData.push({
-        _id: tour._id,
-        ageClassName: tour.category.age_class.name,
-        weight: `U${tour.category.max_weight}`,
-        gender: tour.category.gender,
-        finished: tour.finished,
-        tatami_number: tour.tatami_number,
-      });
-    }
-
-    return tournamentTableData;
+    return tournaments.map((tour) => ({
+      _id: tour._id,
+      ageClassName: tour.category.age_class.name,
+      weight: `U${tour.category.max_weight}`,
+      gender: tour.category.gender,
+      finished: tour.finished,
+      tatami_number: tour.tatami_number,
+    }));
   }
 
   /** returns if one of the athletes of a match is undefined */
@@ -108,6 +101,7 @@ export default function Tournament() {
     return false;
   }
 
+  /* TODO cambiare con .map() */
   function getMatchesDataForTable() {
     const matchTableData: MatchTableData[] = [];
     for (const match of matches) {

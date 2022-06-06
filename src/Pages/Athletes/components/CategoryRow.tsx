@@ -13,7 +13,7 @@ export default function CategoryRow(props: {
       <td colSpan={5}>{`U${category.max_weight} ${category.gender}`}</td>
       <td className='table-column-10 centered-text'>
         <button className='icon-button orange' onClick={openChevron}>
-        {(opened && <FaChevronRight />) || <FaChevronDown />}
+        {(opened && <FaChevronDown />) || <FaChevronRight />}
         </button>
       </td>
     </tr>

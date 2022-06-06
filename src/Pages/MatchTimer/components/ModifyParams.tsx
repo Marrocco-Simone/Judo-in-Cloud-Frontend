@@ -31,7 +31,7 @@ export function ModifyParams(props: {
     return (
       <input
         type='number'
-        className='timer-input'
+        className='athlete-input input-number'
         value={num}
         onChange={(e) => {
           const value = Number(e.target.value);
@@ -46,7 +46,7 @@ export function ModifyParams(props: {
     return (
       <input
         type='number'
-        className='timer-input input-minute'
+        className='athlete-input input-minute'
         value={num}
         onChange={(e) => {
           const value = Number(e.target.value);
