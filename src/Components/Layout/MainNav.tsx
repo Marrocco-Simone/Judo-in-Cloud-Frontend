@@ -2,6 +2,7 @@ import React, { FC, useContext } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Services/Auth/AuthContext';
 import { deleteToken } from '../../Services/Auth/token-service';
+import { deleteTatami } from '../../Services/TournamentManagement/tatami-service';
 import DarkModeToggle from '../Buttons/DarkModeToggle';
 import OutlinedButton from '../Buttons/OutlinedButton';
 
@@ -11,6 +12,7 @@ const MainNav: FC = () => {
 
   function logout() {
     deleteToken();
+    deleteTatami();
     unsetUser();
     navigate('/login');
   }

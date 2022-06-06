@@ -2,7 +2,7 @@
   line-height: 1;
   margin: 0;
   height: 100vh;
-  font-size: 5vh;
+  font-size: 5rem;
   perspective: 10vh;
 }
 
@@ -31,7 +31,7 @@
 }
 
 .timer-button {
-  border: 0.5vh solid black;
+  border: 0.25rem solid black;
   border-radius: 1.5vh;
   box-sizing: content-box;
   cursor: pointer;
@@ -100,6 +100,10 @@
 
 #current-tournament-container {
   grid-column-end: span 2;
+}
+
+#params-form {
+  padding: 5rem;
 }
 
 /* score row */
@@ -221,6 +225,7 @@
   font-weight: bold;
   font-size: 6vh;
   text-align: center;
+  @apply dark:bg-neutral-700;
 }
 
 .athlete-name {

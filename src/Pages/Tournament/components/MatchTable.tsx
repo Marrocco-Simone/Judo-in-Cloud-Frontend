@@ -9,14 +9,13 @@ export default function MatchTable(props: {
   const { matchTableData, activeMatch, setActiveMatch } = props;
 
   function getRowClass(match: MatchTableData) {
-    if (activeMatch === match._id) return 'active-row';
+    if (activeMatch === match._id) return 'active-row cursor-pointer';
     if (match.isOver) return 'finished-row';
-    if (match.isStarted) return 'warning-row';
-    return '';
+    if (match.isStarted) return 'warning-row cursor-pointer';
+    return 'cursor-pointer';
   }
 
   function getTableElements() {
-    const tableElem: React.ReactNode[] = [];
     if (matchTableData.length === 0) {
       return (
         <tr className='table-empty'>
@@ -24,26 +23,24 @@ export default function MatchTable(props: {
         </tr>
       );
     }
-    for (const match of matchTableData) {
-      tableElem.push(
-        <tr
-          key={match._id}
-          className={getRowClass(match)}
-          onClick={() => setActiveMatch(match._id)}
-        >
-          <td className='table-column-40'>{match.whiteAthlete}</td>
-          <td className='table-column-40'>{match.redAthlete}</td>
-          <td className='table-column-20'>
-            {(() => {
-              if (match.winnerAthlete === match.whiteAthlete) return 'Bianco';
-              if (match.winnerAthlete === match.redAthlete) return 'Rosso';
-              return '';
-            })()}
-          </td>
-        </tr>
-      );
-    }
-    return tableElem;
+
+    return matchTableData.map((match) => (
+      <tr
+        key={match._id}
+        className={getRowClass(match)}
+        onClick={() => setActiveMatch(match._id)}
+      >
+        <td className='table-column-40'>{match.whiteAthlete}</td>
+        <td className='table-column-40'>{match.redAthlete}</td>
+        <td className='table-column-20'>
+          {(() => {
+            if (match.winnerAthlete === match.whiteAthlete) return 'Bianco';
+            if (match.winnerAthlete === match.redAthlete) return 'Rosso';
+            return '';
+          })()}
+        </td>
+      </tr>
+    ));
   }
 
   return (

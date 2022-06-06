@@ -15,12 +15,11 @@ export default function TournamentReserveTable(props: {
 
   function getRowClass(tour: TournamentTableData) {
     if (activeTournament === `${tour.tatami_number}`) return 'active-row';
-    if (tour.tatami_number > 0) return 'finished-row';
-    return '';
+    if (tour.tatami_number > 0) return 'finished-row cursor-pointer';
+    return 'cursor-pointer';
   }
 
   function getTableElements() {
-    const tableElem: React.ReactNode[] = [];
     if (tournamentTableData.length === 0) {
       return (
         <tr className='table-empty'>
@@ -28,32 +27,30 @@ export default function TournamentReserveTable(props: {
         </tr>
       );
     }
-    for (const tour of tournamentTableData) {
-      tableElem.push(
-        <tr
-          key={tour._id}
-          className={getRowClass(tour)}
-          onClick={() => setActiveTournament(tour._id)}
-        >
-          <td className='table-column-50'>{tour.ageClassName}</td>
-          <td className='table-column-25'>{tour.weight}</td>
-          <td className='table-column-25'>{tour.gender}</td>
-        </tr>
-      );
-    }
-    return tableElem;
+
+    return tournamentTableData.map((tour) => (
+      <tr
+        key={tour._id}
+        className={getRowClass(tour)}
+        onClick={() => setActiveTournament(tour._id)}
+      >
+        <td className='table-column-50'>{tour.ageClassName}</td>
+        <td className='table-column-25'>{tour.weight}</td>
+        <td className='table-column-25'>{tour.gender}</td>
+      </tr>
+    ));
   }
 
   return (
     <table className='table'>
       <thead>
         <tr>
-          <td className='table-column-50'>{"Classe d'eta'"}</td>
+          <td className='table-column-50'>{"Classe d'età"}</td>
           <td className='table-column-25'>Peso</td>
           <td className='table-column-25'>Sesso</td>
         </tr>
       </thead>
-      <tbody style={{ height: '60vh' }}>{getTableElements()}</tbody>
+      <tbody className='higher-table'>{getTableElements()}</tbody>
     </table>
   );
 }
