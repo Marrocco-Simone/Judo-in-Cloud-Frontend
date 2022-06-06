@@ -1,4 +1,5 @@
 .tournament-container {
+  @apply dark:bg-neutral-800;
   background-color: cornflowerblue;
   height: 100vh;
 }
@@ -11,6 +12,7 @@
   font-weight: bold;
   font-size: 5vh;
   background-color: skyblue;
+  @apply dark:bg-sky-700;
 }
 
 .multi-table-container {
@@ -41,7 +43,8 @@
 }
 
 .table {
-  background-color: white;
+  @apply dark:bg-neutral-800;
+  @apply bg-white;
   border-collapse: collapse;
   margin: 0vh 7vh;
   margin-bottom: 4vh;
@@ -55,11 +58,14 @@
 }
 
 .table thead td {
-  background-color: lightskyblue;
+  @apply bg-sky-200;
+  @apply border-sky-200;
+  @apply dark:bg-sky-800;
+  @apply dark:border-sky-800;
   font-weight: bold;
   padding: 1vh 1vh;
   height: 1vh;
-  border: 0.1vh solid lightskyblue;
+  border: 0.1vh solid;
 }
 
 .table tbody {
@@ -80,22 +86,27 @@
 }
 
 .table tbody td {
-  border: 0.1vh solid lightgray;
+  @apply dark:border-neutral-900;
+  @apply border-neutral-200;
+  border: 0.1vh solid;
   padding: 1vh 1vh;
   height: 1vh;
 }
 
 .table tr:nth-of-type(even) {
+  @apply dark:bg-neutral-700;
   background-color: #f3f3f3;
 }
 
 .table tr.active-row {
   font-weight: bold;
   background-color: lightgreen;
+  @apply dark:bg-green-700;
 }
 
 .table tr.finished-row {
   background-color: darkgray;
+  @apply dark:bg-neutral-500;
 }
 
 .table tr.warning-row {
@@ -122,14 +133,16 @@
   height: 10vh !important;
   font-size: 5vh;
   font-weight: bold;
-  background-color: lightskyblue;
+  @apply bg-sky-400;
+  @apply dark:bg-sky-900;
 }
 
 .category-row td {
   height: 8vh !important;
   font-size: 3.5vh;
   font-weight: bold;
-  background-color: lightcyan;
+  @apply bg-sky-200;
+  @apply dark:bg-sky-700;
 }
 
 .centered-text {
@@ -160,6 +173,12 @@
   font-size: 2.5vh;
   width: 15%;
   height: 7vh;
+}
+.orange {
+  @apply dark:bg-orange-700;
+  @apply dark:hover:bg-orange-500;
+  @apply bg-orange-400;
+  @apply hover:bg-orange-700;
 }
 
 .icon-button {

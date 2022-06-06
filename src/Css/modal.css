@@ -25,7 +25,10 @@
   width: 60%;
   min-height: 60%;
   outline: 0.5vh solid black;
-  background-color: white;
+  /* background-color: white; */
+  @apply bg-white;
+  @apply dark:bg-neutral-800;
+  @apply dark:text-neutral-200;
   z-index: 1;
   animation: modal-popup 0.3s ease-in-out forwards;
   border-radius: 5vh;
@@ -114,6 +117,8 @@
   width: 100%;
   border-radius: 2vh 2vh;
   box-shadow: 0 0 1.5vh rgba(0, 0, 0, 0.4);
+  @apply bg-transparent;
+  @apply dark:border-neutral-400;
 }
 
 .radio-label {
@@ -128,6 +133,7 @@
   border-radius: 1vh;
   background-color: lightgray;
   transition: background 0.2s;
+  @apply dark:bg-neutral-600;
 }
 
 .select-gender {
