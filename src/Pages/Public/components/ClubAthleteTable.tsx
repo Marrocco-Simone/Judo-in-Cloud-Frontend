@@ -25,7 +25,6 @@ export default function ClubAthleteTable(props: {
   }
 
   function getTableElements() {
-    const tableElem: React.ReactNode[] = [];
     if (clubAthletes.length === 0) {
       return (
         <tr className='table-empty'>
@@ -33,20 +32,18 @@ export default function ClubAthleteTable(props: {
         </tr>
       );
     }
-    for (const athlete of clubAthletes) {
-      tableElem.push(
-        <tr
-          key={athlete._id}
-          className={getRowClass(athlete)}
-          onClick={() => setActiveAthlete(athlete._id)}
-        >
-          <td className='table-column-40'>{`${athlete.name} ${athlete.surname}`}</td>
-          <td className='table-column-40'>{athlete.tournament_name}</td>
-          <td className='table-column-20'>{athlete.tournament_tatami || ''}</td>
-        </tr>
-      );
-    }
-    return tableElem;
+
+    return clubAthletes.map((athlete) => (
+      <tr
+        key={athlete._id}
+        className={getRowClass(athlete)}
+        onClick={() => setActiveAthlete(athlete._id)}
+      >
+        <td className='table-column-40'>{`${athlete.name} ${athlete.surname}`}</td>
+        <td className='table-column-40'>{athlete.tournament_name}</td>
+        <td className='table-column-20'>{athlete.tournament_tatami || ''}</td>
+      </tr>
+    ));
   }
 
   return (

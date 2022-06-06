@@ -9,15 +9,11 @@ export default function DropDown(props: {
   const { children, options, selectedOption, chooseOption } = props;
 
   function getOptions() {
-    const optionElems: React.ReactNode[] = [];
-    for (const option of options) {
-      optionElems.push(
-        <option value={option.value} key={option.value}>
-          {option.name}
-        </option>
-      );
-    }
-    return optionElems;
+    return options.map((option) => (
+      <option value={option.value} key={option.value}>
+        {option.name}
+      </option>
+    ));
   }
 
   return (

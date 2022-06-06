@@ -20,7 +20,6 @@ export default function TournamentReserveTable(props: {
   }
 
   function getTableElements() {
-    const tableElem: React.ReactNode[] = [];
     if (tournamentTableData.length === 0) {
       return (
         <tr className='table-empty'>
@@ -28,20 +27,18 @@ export default function TournamentReserveTable(props: {
         </tr>
       );
     }
-    for (const tour of tournamentTableData) {
-      tableElem.push(
-        <tr
-          key={tour._id}
-          className={getRowClass(tour)}
-          onClick={() => setActiveTournament(tour._id)}
-        >
-          <td className='table-column-50'>{tour.ageClassName}</td>
-          <td className='table-column-25'>{tour.weight}</td>
-          <td className='table-column-25'>{tour.gender}</td>
-        </tr>
-      );
-    }
-    return tableElem;
+
+    return tournamentTableData.map((tour) => (
+      <tr
+        key={tour._id}
+        className={getRowClass(tour)}
+        onClick={() => setActiveTournament(tour._id)}
+      >
+        <td className='table-column-50'>{tour.ageClassName}</td>
+        <td className='table-column-25'>{tour.weight}</td>
+        <td className='table-column-25'>{tour.gender}</td>
+      </tr>
+    ));
   }
 
   return (

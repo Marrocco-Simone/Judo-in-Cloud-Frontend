@@ -9,7 +9,7 @@ export default function CategorySubTable(props: {
   athletes: AthleteInterface[];
   updateAthleteFromTable: (newAthlete: AthleteInterface) => void;
   deleteAthleteFromTable: (athleteToDelete: AthleteInterface) => void;
-  modificationsDisabled: boolean
+  modificationsDisabled: boolean;
 }) {
   const {
     category,
@@ -24,20 +24,15 @@ export default function CategorySubTable(props: {
   function getTableAthletes() {
     if (!athletes || athletes.length === 0) return <NoAthletesRow />;
 
-    const tableElem: React.ReactNode[] = [];
-    for (const athlete of athletes) {
-      tableElem.push(
-        <AthleteRow
-          athlete={athlete}
-          updateAthleteFromTable={updateAthleteFromTable}
-          deleteAthleteFromTable={deleteAthleteFromTable}
-          key={athlete._id}
-          modificationsDisabled={modificationsDisabled}
-        />
-      );
-    }
-
-    return tableElem;
+    return athletes.map((athlete) => (
+      <AthleteRow
+        athlete={athlete}
+        updateAthleteFromTable={updateAthleteFromTable}
+        deleteAthleteFromTable={deleteAthleteFromTable}
+        key={athlete._id}
+        modificationsDisabled={modificationsDisabled}
+      />
+    ));
   }
 
   return (
