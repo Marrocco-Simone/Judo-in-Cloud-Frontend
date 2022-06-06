@@ -1,7 +1,6 @@
 .tournament-container {
   @apply dark:bg-neutral-800;
   background-color: cornflowerblue;
-  height: 100vh;
 }
 
 .n-tatami-container {
