@@ -15,8 +15,8 @@ export default function TournamentReserveTable(props: {
 
   function getRowClass(tour: TournamentTableData) {
     if (activeTournament === `${tour.tatami_number}`) return 'active-row';
-    if (tour.tatami_number > 0) return 'finished-row';
-    return '';
+    if (tour.tatami_number > 0) return 'finished-row cursor-pointer';
+    return 'cursor-pointer';
   }
 
   function getTableElements() {
@@ -45,7 +45,7 @@ export default function TournamentReserveTable(props: {
     <table className='table'>
       <thead>
         <tr>
-          <td className='table-column-50'>{"Classe d'eta'"}</td>
+          <td className='table-column-50'>{"Classe d'età"}</td>
           <td className='table-column-25'>Peso</td>
           <td className='table-column-25'>Sesso</td>
         </tr>
