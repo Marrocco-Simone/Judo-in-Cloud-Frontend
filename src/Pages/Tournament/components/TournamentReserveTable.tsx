@@ -50,7 +50,7 @@ export default function TournamentReserveTable(props: {
           <td className='table-column-25'>Sesso</td>
         </tr>
       </thead>
-      <tbody style={{ height: '60vh' }}>{getTableElements()}</tbody>
+      <tbody className='higher-table'>{getTableElements()}</tbody>
     </table>
   );
 }

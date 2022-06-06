@@ -68,6 +68,10 @@
   overflow-y: auto;
 }
 
+.table tbody.higher-table {
+  height: 38rem;
+}
+
 #athlete-table tbody{
   height: 44.5rem;
 }
