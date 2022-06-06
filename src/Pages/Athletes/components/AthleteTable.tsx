@@ -1,5 +1,9 @@
 import React from 'react';
-import { AgeClassInterface, AthleteInterface, AthletesPerCategory } from '../../../Types/types';
+import {
+  AgeClassInterface,
+  AthleteInterface,
+  AthletesPerCategory,
+} from '../../../Types/types';
 import OrangeButton from '../../../Components/Buttons/OrangeButton';
 import AgeClassSubTable from './AgeClassSubTable';
 
@@ -22,20 +26,16 @@ export default function AthleteTable(props: {
 
   /** get each AgeClass with its Categories and Athletes below */
   function getTableAgeClasses() {
-    const tableElem: React.ReactNode[] = [];
-    for (const ageClass of ageClasses) {
-      tableElem.push(
-        <AgeClassSubTable
-          ageClass={ageClass}
-          athletes={athletes}
-          updateAthleteFromTable={updateAthleteFromTable}
-          deleteAthleteFromTable={deleteAthleteFromTable}
-          updateAgeClassFromTable={updateAgeClassFromTable}
-          key={ageClass._id}
-        />
-      );
-    }
-    return tableElem;
+    return ageClasses.map((ageClass) => (
+      <AgeClassSubTable
+        ageClass={ageClass}
+        athletes={athletes}
+        updateAthleteFromTable={updateAthleteFromTable}
+        deleteAthleteFromTable={deleteAthleteFromTable}
+        updateAgeClassFromTable={updateAgeClassFromTable}
+        key={ageClass._id}
+      />
+    ));
   }
 
   return (

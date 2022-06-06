@@ -10,7 +10,7 @@
   align-items: center;
   height: 10%;
   font-weight: bold;
-  font-size: 5vh;
+  font-size: 4rem;
   background-color: skyblue;
   @apply dark:bg-sky-700;
 }
@@ -20,7 +20,7 @@
   justify-content: space-between;
   align-items: center;
   height: 60%;
-  margin-top: 5vh;
+  margin-top: 2rem;
 }
 
 .table-container {
@@ -29,28 +29,28 @@
   text-align: left;
   justify-content: center;
   align-items: center;
-  font-size: 3vh;
+  font-size: 1.8rem;
 }
 
 .table-text {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 3vh;
+  font-size: 2.5rem;
   font-weight: bold;
   width: 100%;
-  padding: 3vh 7vh;
+  padding: 2rem 4.5rem;
 }
 
 .table {
   @apply dark:bg-neutral-800;
   @apply bg-white;
   border-collapse: collapse;
-  margin: 0vh 7vh;
-  margin-bottom: 4vh;
-  border-radius: 2vh 2vh;
+  margin: 0rem 4.5rem;
+  margin-bottom: 2rem;
+  border-radius: 1.5rem;
   overflow: hidden;
-  box-shadow: 0 0 1.5vh rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.4);
 }
 
 #athlete-table {
@@ -63,19 +63,23 @@
   @apply dark:bg-sky-800;
   @apply dark:border-sky-800;
   font-weight: bold;
-  padding: 1vh 1vh;
-  height: 1vh;
-  border: 0.1vh solid;
+  padding: 0.5rem;
+  height: 100%;
+  border: 0.1rem solid lightskyblue;
 }
 
 .table tbody {
   display: block;
-  height: 40vh;
+  height: 25rem;
   overflow-y: auto;
 }
 
+.table tbody.higher-table {
+  height: 38rem;
+}
+
 #athlete-table tbody{
-  height: 73.75vh;
+  height: 44.5rem;
 }
 
 .table thead,
@@ -88,9 +92,8 @@
 .table tbody td {
   @apply dark:border-neutral-900;
   @apply border-neutral-200;
-  border: 0.1vh solid;
-  padding: 1vh 1vh;
-  height: 1vh;
+  border: 0.05rem solid lightgray;
+  padding: 0.5rem;
 }
 
 .table tr:nth-of-type(even) {
@@ -130,16 +133,14 @@
 }
 
 .age-class-row td{
-  height: 10vh !important;
-  font-size: 5vh;
+  font-size: 3rem;
   font-weight: bold;
   @apply bg-sky-400;
   @apply dark:bg-sky-900;
 }
 
 .category-row td {
-  height: 8vh !important;
-  font-size: 3.5vh;
+  font-size: 2.5rem;
   font-weight: bold;
   @apply bg-sky-200;
   @apply dark:bg-sky-700;
@@ -150,29 +151,20 @@
 }
 
 .button-row {
-  margin-top: 7vh;
+  margin-top: 4rem;
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
 
 .tournament-button {
-  border: 0.5vh solid black;
-  border-radius: 1.5vh;
+  border: 0.25rem solid black;
+  border-radius: 1rem;
   cursor: pointer;
-  font-size: 2.5vh;
-  padding: 1.5vh 2.5vh;
-  width: 15%;
-  height: 12vh;
-}
-
-.athlete-button {
-  border: 0.5vh solid black;
-  border-radius: 1.5vh;
-  cursor: pointer;
-  font-size: 2.5vh;
-  width: 15%;
-  height: 7vh;
+  font-size: 1.75rem;
+  padding: 1rem;
+  height: 8rem;
+  aspect-ratio: 16 / 9;
 }
 .orange {
   @apply dark:bg-orange-700;
@@ -182,9 +174,13 @@
 }
 
 .icon-button {
-  border: 0.5vh solid black;
-  border-radius: 1.5vh;
+  border: 0.25rem solid black;
+  border-radius: 1rem;
   cursor: pointer;
-  font-size: 3vh;
-  padding: 0.5vh 0.5vh;
+  font-size: 1.75rem;
+  padding: 0.25rem;
+}
+
+.icon-button:disabled {
+  background-color: #BBB !important;
 }

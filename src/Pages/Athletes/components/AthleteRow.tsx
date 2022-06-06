@@ -9,8 +9,14 @@ export default function AthleteRow(props: {
   athlete: AthleteInterface;
   updateAthleteFromTable: (newAthlete: AthleteInterface) => void;
   deleteAthleteFromTable: (athleteToDelete: AthleteInterface) => void;
+  modificationsDisabled: boolean;
 }) {
-  const { athlete, updateAthleteFromTable, deleteAthleteFromTable } = props;
+  const {
+    athlete,
+    updateAthleteFromTable,
+    deleteAthleteFromTable,
+    modificationsDisabled,
+  } = props;
   const [isModifyAthleteOpen, setIsModifyAthleteOpen] = useState(false);
 
   return (
@@ -24,6 +30,7 @@ export default function AthleteRow(props: {
       <td className='table-column-10 centered-text'>
         <button
           className='icon-button orange'
+          disabled={modificationsDisabled}
           onClick={() => setIsModifyAthleteOpen(true)}
         >
           <FaPen />
@@ -56,6 +63,7 @@ export default function AthleteRow(props: {
         )}
         <button
           className='icon-button orange'
+          disabled={modificationsDisabled}
           onClick={() =>
             Swal.fire({
               title: 'Sei sicuro?',
