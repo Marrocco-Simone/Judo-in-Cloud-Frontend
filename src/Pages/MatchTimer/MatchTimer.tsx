@@ -43,9 +43,8 @@ export default function MatchTimer() {
   const [searchParams/* , setSearchParams */] = useSearchParams();
   function turnBack() {
     const tournament = searchParams.get('from_tournament');
-    const ntatami = searchParams.get('n_tatami');
     navigate(
-      `/tournament?from_tournament=${tournament}&n_tatami=${ntatami}`
+      `/tournament?from_tournament=${tournament}`
     );
   }
 

@@ -13,6 +13,8 @@ import Swal from 'sweetalert2';
 import OrangeButton from '../../Components/Buttons/OrangeButton';
 import { Modal } from '../../Components/Modal/Modal';
 import TournamentReserveTable from './components/TournamentReserveTable';
+import { deleteTatami, getTatami, storeTatami } from '../../Services/TournamentManagement/tatami-service';
+import { FaPencilAlt } from 'react-icons/fa';
 
 export default function Tournament() {
   /** for redirect */
@@ -36,37 +38,40 @@ export default function Tournament() {
   const [matches, setMatches] = useState<MatchInterface[]>([]);
   const [activeTournament, setActiveTournament] = useState(getTournaments());
   const [activeMatch, setActiveMatch] = useState<string>('');
-  const [nTatami, setNTatami] = useState(-1);
+  const [nTatami, setNTatami] = useState(() => getTatami());
   const [isReserveOpen, setIsReserveOpen] = useState(false);
 
   /**
    * get data of tournaments when opening the page
-   * user enters the tatami number
-   * if in query it isn't asked
    */
   useEffect(() => {
     apiGet('v1/tournaments').then((tournamentData) => {
       setTournaments(tournamentData);
     });
-
-    const queryNTatami = searchParams.get('n_tatami');
-    if (queryNTatami) {
-      const stdNTatami = Number(queryNTatami);
-      if (!isNaN(stdNTatami)) return setNTatami(stdNTatami);
-    }
-
-    Swal.fire({
-      title: 'Inserire numero Tatami',
-      input: 'number',
-      preConfirm: (value) => {
-        const num = Number(value);
-        if (isNaN(num) || !num || num < 1) {
-          Swal.showValidationMessage('Inserire numero Tatami');
-        } else setNTatami(num);
-      },
-      allowOutsideClick: false,
-    });
   }, []);
+
+  /**
+   * allows the user to set the tatami number
+   */
+  useEffect(() => {
+    if (nTatami === null) {
+      setMatches([]);
+      Swal.fire({
+        title: 'Inserire numero Tatami',
+        input: 'number',
+        preConfirm: (value) => {
+          const num = Number(value);
+          if (isNaN(num) || !num || num < 1) {
+            Swal.showValidationMessage('Inserire numero Tatami valido');
+          } else {
+            storeTatami(num);
+            setNTatami(num);
+          }
+        },
+        allowOutsideClick: false,
+      });
+    }
+  }, [nTatami]);
 
   /** when selecting a tournament, load its matches */
   useEffect(() => {
@@ -137,7 +142,7 @@ export default function Tournament() {
     }).then((result) => {
       if (result.isConfirmed) {
         navigate(
-          `/match-timer/${activeMatch}?from_tournament=${activeTournament}&n_tatami=${nTatami}`
+          `/match-timer/${activeMatch}?from_tournament=${activeTournament}`
         );
       }
     });
@@ -149,10 +154,11 @@ export default function Tournament() {
       return Swal.fire('Nessun incontro selezionato', '', 'error');
     }
     if (fullActiveMatch?.is_over) {
-      return confirmGoFinishedMatch(
-        "Incontro gia' concluso",
-        "Attenzione, l'incontro e' finito. Vuoi recuperarlo per cambiare l'esito?"
-      );
+      return Swal.fire({
+        title: "Incontro gia' concluso",
+        text: "Non è possibile rigiocare l'incontro perché è già concluso",
+        icon: 'error'
+      });
     }
     if (fullActiveMatch?.is_started) {
       return confirmGoFinishedMatch(
@@ -160,7 +166,7 @@ export default function Tournament() {
         "Attenzione, l'incontro e' gia' stato iniziato da qualche altro tavolo. Iniziarlo e finirlo qui sovrascriverebbe i dati dell'altro tavolo. Continuare?"
       );
     }
-    navigate(`/match-timer/${activeMatch}?from_tournament=${activeTournament}&n_tatami=${nTatami}`);
+    navigate(`/match-timer/${activeMatch}?from_tournament=${activeTournament}`);
   }
 
   async function reserveTournament(tournamentId: string) {
@@ -172,14 +178,14 @@ export default function Tournament() {
 
     if (tournaments[tourIndex].tatami_number > 0) {
       const result = await Swal.fire({
-        title: "Torneo gia' prenotato",
-        text: "Questo torneo e' gia' stato prenotato da un altro tavolo. Prenotandolo esso non sara' piu' in grado di iniziare altri incontri finche' non lo riprenotera'",
+        title: 'Torneo già prenotato',
+        text: 'Questo torneo è già stato prenotato da un altro tavolo. Prenotandolo esso non sarà più in grado di iniziare altri incontri finché non lo riprenoterà',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: "Si', lo voglio io",
-        cancelButtonText: "No, lascialo com'e",
+        confirmButtonText: 'Sì, lo voglio io',
+        cancelButtonText: "No, lascialo com'è",
       });
       if (!result.isConfirmed) return;
     }
@@ -190,17 +196,49 @@ export default function Tournament() {
 
     setTournaments((prevTournaments) =>
       prevTournaments.map((tour) => {
-        const newTour: TournamentInterface = tour;
-        if (tour._id === tournamentId) newTour.tatami_number = nTatami;
-        return newTour;
+        if (nTatami === null || tour._id !== tournamentId) {
+          return tour;
+        }
+        return { ...tour, tatami_number: nTatami };
       })
     );
+  }
+
+  function clearTatami() {
+    setNTatami(null);
+    deleteTatami();
+  }
+
+  function getHeader () {
+    if (nTatami === null) {
+      return <></>;
+    }
+    return (
+      <>
+        Tatami numero {nTatami}
+        <button className='text-2xl ml-2' onClick={clearTatami}>
+          <FaPencilAlt></FaPencilAlt>
+        </button>
+      </>
+    );
+  }
+
+  function openBrackets () {
+    if (!activeTournament) {
+      Swal.fire({
+        title: 'Nessun torneo selezionato',
+        text: 'Seleziona un torneo prima di aprire il tabellone',
+        icon: 'error',
+      });
+      return;
+    }
+    navigate(`/tournament/${activeTournament}`);
   }
 
   return (
     <div className='tournament-container'>
       <div className='n-tatami-container'>
-        {nTatami > 0 && `Tatami numero ${nTatami}`}
+        {getHeader()}
       </div>
       <div className='multi-table-container'>
         <div className='table-container'>
@@ -211,6 +249,15 @@ export default function Tournament() {
             )}
             activeTournament={activeTournament}
             setActiveTournament={setActiveTournament}
+            noResultsMessage={
+              <>
+                Nessun Torneo Disponibile
+                <button className='text-sky-500 ml-2 dark:text-sky-400'
+                  onClick={() => setIsReserveOpen(true)}>
+                  Prenota Categorie
+                </button>
+              </>
+            }
           />
         </div>
         <div className='table-container'>
@@ -227,13 +274,13 @@ export default function Tournament() {
           Prenota Categorie
         </OrangeButton>
         <OrangeButton
-          onClickFunction={() => navigate(`/tournament/${activeTournament}&n_tatami=${nTatami}`)}
+          onClickFunction={openBrackets}
         >
           Apri Tabellone
         </OrangeButton>
         <OrangeButton
           onClickFunction={() =>
-            navigate(`/match-timer?from_tournament=${activeTournament}&n_tatami=${nTatami}`)
+            navigate(`/match-timer?from_tournament=${activeTournament}`)
           }
         >
           Incontro Amichevole
