@@ -59,7 +59,7 @@
   align-items: center;
   height: 100vh;
   width: 100vw;
-  font-size: 10rem;
+  font-size: 10vw;
   font-weight: bold;
   padding: 3rem;
 }
@@ -75,7 +75,7 @@
 .img-container p {
   width: 40vw;
   padding: 3vw;
-  font-size: 2.5rem;
+  font-size: 2.5vw;
 }
 
 .img-container img {
