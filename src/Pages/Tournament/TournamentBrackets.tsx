@@ -49,7 +49,7 @@ export const TournamentPage: FC = () => {
   }
 
   return (
-    <div>
+    <div className='bg-white dark:bg-neutral-800'>
       <h1 className='pb-2'>
         <span className='text-3xl font-extrabold'>
           <span className='dark:text-neutral-50'>{tournament.competition.name}</span>
