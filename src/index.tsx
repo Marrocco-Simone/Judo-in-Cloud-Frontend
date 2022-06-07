@@ -10,7 +10,7 @@ import AthletesPage from './Pages/Athletes/AthletesPage';
 import CompetitionManagementPage from './Pages/CompetitionManagement/CompetitionManagementPage';
 import Tournament from './Pages/Tournament/Tournament';
 import MainLayout from './Components/Layout/MainLayout';
-import TournamentPage from './Pages/Tournament/TournamentPage';
+import TournamentPage from './Pages/Tournament/TournamentBrackets';
 import PublicTournament from './Pages/Public/PublicTournaments';
 import PublicShell from './Pages/Public/PublicShell';
 
@@ -18,6 +18,7 @@ import PublicShell from './Pages/Public/PublicShell';
 import './Css/match.css';
 import './Css/modal.css';
 import './Css/tournament.css';
+import PublicBrackets from './Pages/Public/PublicBrackets';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -41,6 +42,7 @@ root.render(
             } />
             <Route path=':slug' element={<PublicShell />} >
               <Route index element={<PublicTournament />} />
+              <Route path=':tournamentId' element={<PublicBrackets />} />
             </Route>
 
           </Route>

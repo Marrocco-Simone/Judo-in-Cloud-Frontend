@@ -17,7 +17,7 @@ export default function DropDown(props: {
   }
 
   return (
-    <div>
+    <div className='select-wrapper'>
       <label className='select-label'>
         {children}
         <select

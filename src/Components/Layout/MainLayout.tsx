@@ -6,7 +6,7 @@ const MainLayout: FC = () => {
   return (
     <>
       <MainNav></MainNav>
-      <div className='px-2 pt-2 md:px-4 h-full'>
+      <div className='h-full'>
         <Outlet></Outlet>
       </div>
     </>
