@@ -31,7 +31,7 @@ function App() {
     <ThemeContext.Provider value={themeContext}>
       <AuthContext.Provider value={authContext}>
         <div className={theme === 'dark' ? 'dark' : ''}>
-          <div className='w-full min-h-screen dark:bg-neutral-800 dark:text-neutral-200'>
+          <div className='w-full min-h-screen dark:bg-neutral-800 dark:text-neutral-200 bg-[#6495ed]'>
             <Outlet></Outlet>
           </div>
         </div>

@@ -9,10 +9,10 @@ export default function MatchTable(props: {
   const { matchTableData, activeMatch, setActiveMatch } = props;
 
   function getRowClass(match: MatchTableData) {
-    if (activeMatch === match._id) return 'active-row';
+    if (activeMatch === match._id) return 'active-row cursor-pointer';
     if (match.isOver) return 'finished-row';
-    if (match.isStarted) return 'warning-row';
-    return '';
+    if (match.isStarted) return 'warning-row cursor-pointer';
+    return 'cursor-pointer';
   }
 
   function getTableElements() {

@@ -43,16 +43,9 @@ export default function MatchTimer() {
   const [searchParams] = useSearchParams();
   function turnBack() {
     const tournament = searchParams.get('from_tournament');
-    const ntatami = searchParams.get('n_tatami');
-    let url = '/tournament';
-    if (ntatami && tournament) {
-      url += `?from_tournament=${tournament}&n_tatami=${ntatami}`;
-    } else if (tournament) {
-      url += `?from_tournament=${tournament}`;
-    } else if (ntatami) {
-      url += `?n_tatami=${ntatami}`;
-    }
-    navigate(url);
+    if (tournament) {
+      navigate(`/tournament?from_tournament=${tournament}`);
+    } else navigate('/tournament');
   }
 
   // should be in props
