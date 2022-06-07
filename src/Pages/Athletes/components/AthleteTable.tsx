@@ -6,6 +6,8 @@ import {
 } from '../../../Types/types';
 import OrangeButton from '../../../Components/Buttons/OrangeButton';
 import AgeClassSubTable from './AgeClassSubTable';
+import { FaArrowLeft } from 'react-icons/fa';
+import { NavLink } from 'react-router-dom';
 
 export default function AthleteTable(props: {
   ageClasses: AgeClassInterface[];
@@ -41,7 +43,12 @@ export default function AthleteTable(props: {
   return (
     <div className='table-container'>
       <div className='table-text'>
-        Gestione Atleti
+        <span className='flex items-center'>
+          <NavLink to='/manage'>
+            <FaArrowLeft className='mr-2' />
+          </NavLink>
+          Gestione Atleti
+        </span>
         <OrangeButton onClickFunction={() => openNewAthlete()}>
           Aggiungi Atleta
         </OrangeButton>

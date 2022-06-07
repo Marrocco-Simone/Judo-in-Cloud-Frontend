@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { NavLink, useNavigate, useSearchParams } from 'react-router-dom';
 import TournamentTable from './components/TournamentTable';
 import MatchTable from './components/MatchTable';
 import { apiGet, apiPost } from '../../Services/Api/api';
@@ -13,7 +13,7 @@ import OrangeButton from '../../Components/Buttons/OrangeButton';
 import { Modal } from '../../Components/Modal/Modal';
 import TournamentReserveTable from './components/TournamentReserveTable';
 import { deleteTatami, getTatami, storeTatami } from '../../Services/TournamentManagement/tatami-service';
-import { FaPencilAlt } from 'react-icons/fa';
+import { FaArrowLeft, FaPencilAlt } from 'react-icons/fa';
 
 export default function Tournament() {
   /** for redirect */
@@ -209,7 +209,12 @@ export default function Tournament() {
     }
     return (
       <>
-        Tatami numero {nTatami}
+        <span className='flex items-center'>
+          <NavLink to='/manage'>
+            <FaArrowLeft className='mr-2' />
+          </NavLink>
+          Tatami numero {nTatami}
+        </span>
         <button className='text-2xl ml-2' onClick={clearTatami}>
           <FaPencilAlt></FaPencilAlt>
         </button>
