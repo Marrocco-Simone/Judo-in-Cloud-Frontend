@@ -25,14 +25,15 @@
   @apply bg-white;
   @apply dark:bg-neutral-800;
   @apply dark:text-neutral-200;
-  width: 70rem;
-  min-height: 45rem;
-  max-height: 55rem;
+  width: 60vw;
+  min-height: 65vh;
+  max-height: 85vh;
   outline: 0.3rem solid black;
   z-index: 1;
   animation: modal-popup 0.3s ease-in-out forwards;
   border-radius: 2.5rem;
 }
+
 
 @keyframes modal-popup {
   0% {
@@ -75,7 +76,7 @@
 
 .form-title {
   font-size: 3.5rem;
-  font-size: bold;
+  font-weight: bold;
   margin-left: 0.5rem;
   margin-bottom: 1rem;
 }
@@ -197,4 +198,25 @@
 
 .info span {
   margin: 0.3rem;
+}
+
+@media (max-width: 1024px) {
+  .modal {
+    width: 90vw;
+  }
+}
+
+@media (max-height: 800px) {
+  .form-title {
+    font-size: 5vh;
+  }
+  .input-description, 
+  .athlete-input,
+  .select-gender,
+  .radio-label {
+    font-size: 4vh;
+  }
+  .form-container {
+    padding: 4vh;
+  }
 }
