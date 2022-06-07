@@ -12,7 +12,11 @@ import Swal from 'sweetalert2';
 import OrangeButton from '../../Components/Buttons/OrangeButton';
 import { Modal } from '../../Components/Modal/Modal';
 import TournamentReserveTable from './components/TournamentReserveTable';
-import { deleteTatami, getTatami, storeTatami } from '../../Services/TournamentManagement/tatami-service';
+import {
+  deleteTatami,
+  getTatami,
+  storeTatami,
+} from '../../Services/TournamentManagement/tatami-service';
 import { FaArrowLeft, FaPencilAlt } from 'react-icons/fa';
 
 export default function Tournament() {
@@ -107,8 +111,12 @@ export default function Tournament() {
 
       matchTableData.push({
         _id: match._id,
-        whiteAthlete: match.white_athlete ? `${match.white_athlete.surname} ${match.white_athlete.name}` : '',
-        redAthlete: match.red_athlete ? `${match.red_athlete.surname} ${match.red_athlete.name}` : '',
+        whiteAthlete: match.white_athlete
+          ? `${match.white_athlete.surname} ${match.white_athlete.name}`
+          : '',
+        redAthlete: match.red_athlete
+          ? `${match.red_athlete.surname} ${match.red_athlete.name}`
+          : '',
         winnerAthlete:
           match.is_over && match.winner_athlete
             ? `${match.winner_athlete.surname} ${match.winner_athlete.name}`
@@ -141,19 +149,81 @@ export default function Tournament() {
     if (!fullActiveMatch) {
       return Swal.fire('Nessun incontro selezionato', '', 'error');
     }
-    if (fullActiveMatch?.is_over) {
+    if (fullActiveMatch.is_over) {
       return Swal.fire({
         title: "Incontro gia' concluso",
         text: "Non è possibile rigiocare l'incontro perché è già concluso",
-        icon: 'error'
+        icon: 'error',
       });
     }
-    if (fullActiveMatch?.is_started) {
+    if (fullActiveMatch.is_started) {
       return confirmGoFinishedMatch(
         "Incontro gia' iniziato",
         "Attenzione, l'incontro e' gia' stato iniziato da qualche altro tavolo. Iniziarlo e finirlo qui sovrascriverebbe i dati dell'altro tavolo. Continuare?"
       );
     }
+
+    /* TODO ELIMINARE */
+    if (!fullActiveMatch.red_athlete) {
+      return Swal.fire({
+        title: "Manca l'atleta rosso",
+        text: 'Vuoi assegnare la vittoria al bianco?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: "Si', dai al bianco la vittoria",
+        cancelButtonText: 'No, torna indietro ',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          apiPost(`v1/matches/${fullActiveMatch._id}`, {
+            winner_athlete: fullActiveMatch.white_athlete._id,
+            is_over: true,
+            is_started: true,
+            match_scores: {
+              final_time: 0,
+              white_ippon: 0,
+              white_wazaari: 0,
+              white_penalties: 0,
+              red_ippon: 0,
+              red_wazaari: 0,
+              red_penalties: 0,
+            },
+          });
+        }
+      });
+    }
+    /* TODO ELIMINARE */
+    if (!fullActiveMatch.white_athlete) {
+      return Swal.fire({
+        title: "Manca l'atleta bianco",
+        text: 'Vuoi assegnare la vittoria al rosso?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: "Si', dai al rosso la vittoria",
+        cancelButtonText: 'No, torna indietro ',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          apiPost(`v1/matches/${fullActiveMatch._id}`, {
+            winner_athlete: fullActiveMatch.red_athlete._id,
+            is_over: true,
+            is_started: true,
+            match_scores: {
+              final_time: 0,
+              white_ippon: 0,
+              white_wazaari: 0,
+              white_penalties: 0,
+              red_ippon: 0,
+              red_wazaari: 0,
+              red_penalties: 0,
+            },
+          });
+        }
+      });
+    }
+
     navigate(`/match-timer/${activeMatch}?from_tournament=${activeTournament}`);
   }
 
@@ -197,7 +267,7 @@ export default function Tournament() {
     deleteTatami();
   }
 
-  function getHeader () {
+  function getHeader() {
     if (nTatami === null) {
       return <></>;
     }
@@ -216,7 +286,7 @@ export default function Tournament() {
     );
   }
 
-  function openBrackets () {
+  function openBrackets() {
     if (!activeTournament) {
       Swal.fire({
         title: 'Nessun torneo selezionato',
@@ -230,9 +300,7 @@ export default function Tournament() {
 
   return (
     <div className='tournament-container'>
-      <div className='n-tatami-container'>
-        {getHeader()}
-      </div>
+      <div className='n-tatami-container'>{getHeader()}</div>
       <div className='multi-table-container'>
         <div className='table-container'>
           <div className='table-text'>Categorie Prenotate</div>
@@ -245,8 +313,10 @@ export default function Tournament() {
             noResultsMessage={
               <>
                 Nessun Torneo Disponibile
-                <button className='text-sky-500 ml-2 dark:text-sky-400'
-                  onClick={() => setIsReserveOpen(true)}>
+                <button
+                  className='text-sky-500 ml-2 dark:text-sky-400'
+                  onClick={() => setIsReserveOpen(true)}
+                >
                   Prenota Categorie
                 </button>
               </>
@@ -266,9 +336,7 @@ export default function Tournament() {
         <OrangeButton onClickFunction={() => setIsReserveOpen(true)}>
           Prenota Categorie
         </OrangeButton>
-        <OrangeButton
-          onClickFunction={openBrackets}
-        >
+        <OrangeButton onClickFunction={openBrackets}>
           Apri Tabellone
         </OrangeButton>
         <OrangeButton
