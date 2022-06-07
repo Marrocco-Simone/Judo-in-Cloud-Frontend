@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 export default function WelcomePage() {
   return (
@@ -22,7 +23,7 @@ export default function WelcomePage() {
         `}</p>
       </div>
       <div className='img-container'>
-      <p>{`
+        <p>{`
           Grazie al tabellone moderno, e' possibile assegnare i punteggi ed iniziare i timer
           con un click o con la tastiera. La vittoria viene assegnata automaticamente, devi solo
           confermare!
@@ -30,12 +31,18 @@ export default function WelcomePage() {
         <img src='match-timer-screenshot.jpg' />
       </div>
       <div className='img-container'>
-        <img src='public-screenshot.png' className='vertical-img'/>
-        <p>{`
+        <img src='public-screenshot.png' className='vertical-img' />
+        <p>
+          {`
           Basta fogli svolazzanti e confusione! Grazie a Judo in Cloud,
           allenatori ed atleti potranno vedere dove devono combattere comodamente dal
           loro telefono
-        `}</p>
+        `}
+          <br />
+          <NavLink to='gara-lavis' style={{ color: 'cornflowerblue' }}>
+            Guarda qui un esempio
+          </NavLink>
+        </p>
       </div>
     </div>
   );

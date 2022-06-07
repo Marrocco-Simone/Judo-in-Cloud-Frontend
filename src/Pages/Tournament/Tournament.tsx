@@ -54,6 +54,16 @@ export default function Tournament() {
   }, []);
 
   /**
+   * update tournaments when reserving new ones
+   */
+  useEffect(() => {
+    if (!isReserveOpen) return;
+    apiGet('v1/tournaments').then((tournamentData) => {
+      setTournaments(tournamentData);
+    });
+  }, [isReserveOpen]);
+
+  /**
    * allows the user to set the tatami number
    */
   useEffect(() => {
@@ -204,24 +214,26 @@ export default function Tournament() {
         cancelButtonColor: '#d33',
         confirmButtonText: "Si', dai al rosso la vittoria",
         cancelButtonText: 'No, torna indietro ',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          apiPost(`v1/matches/${fullActiveMatch._id}`, {
-            winner_athlete: fullActiveMatch.red_athlete._id,
-            is_over: true,
-            is_started: true,
-            match_scores: {
-              final_time: 0,
-              white_ippon: 0,
-              white_wazaari: 0,
-              white_penalties: 0,
-              red_ippon: 0,
-              red_wazaari: 0,
-              red_penalties: 0,
-            },
-          });
-        }
-      }).then(() => window.location.reload());
+      })
+        .then((result) => {
+          if (result.isConfirmed) {
+            apiPost(`v1/matches/${fullActiveMatch._id}`, {
+              winner_athlete: fullActiveMatch.red_athlete._id,
+              is_over: true,
+              is_started: true,
+              match_scores: {
+                final_time: 0,
+                white_ippon: 0,
+                white_wazaari: 0,
+                white_penalties: 0,
+                red_ippon: 0,
+                red_wazaari: 0,
+                red_penalties: 0,
+              },
+            });
+          }
+        })
+        .then(() => window.location.reload());
     }
 
     navigate(`/match-timer/${activeMatch}?from_tournament=${activeTournament}`);
