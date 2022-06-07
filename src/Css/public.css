@@ -38,3 +38,15 @@
 .void-option {
   display: none;
 }
+
+@media all and (max-width: 40rem) {
+  .table {
+    width: 100%
+  }
+}
+
+@media all and (max-width: 30rem) {
+  :root {
+    font-size: 3vw;
+  }
+}
