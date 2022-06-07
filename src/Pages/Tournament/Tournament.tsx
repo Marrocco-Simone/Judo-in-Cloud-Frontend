@@ -69,18 +69,10 @@ export default function Tournament() {
 
   /** when selecting a tournament, load its matches */
   useEffect(() => {
-    /* TODO bisogna sistemare l'api e poi questo */
-    /* apiGet(`v1/tournaments/${tournamentId}/next`).then((matchTableData) => { */
-    apiGet(`v1/tournaments/${activeTournament}`).then((matchData) => {
-      if (!matchData?.winners_bracket) return;
-      if (matchData.winners_bracket.length === 0) return;
-
-      let totalMatches: MatchInterface[] = [];
-      for (const bracket of matchData.winners_bracket) {
-        totalMatches = [...totalMatches, ...bracket];
-      }
-      setMatches(totalMatches);
-    });
+    if (!activeTournament) return;
+    apiGet(`v1/tournaments/${activeTournament}/matches`).then((matchData) =>
+      setMatches(matchData)
+    );
   }, [activeTournament]);
 
   function getTournamentsDataForTable() {
@@ -95,25 +87,26 @@ export default function Tournament() {
   }
 
   /** returns if one of the athletes of a match is undefined */
-  function isMatchWithNullAthlete(match: MatchInterface) {
+  /* function isMatchWithNullAthlete(match: MatchInterface) {
     if (!match?.white_athlete) return true;
     if (!match?.red_athlete) return true;
     return false;
-  }
+  } */
 
   /* TODO cambiare con .map() */
   function getMatchesDataForTable() {
     const matchTableData: MatchTableData[] = [];
     for (const match of matches) {
-      if (isMatchWithNullAthlete(match)) continue;
+      /* if (isMatchWithNullAthlete(match)) continue; */
 
       matchTableData.push({
         _id: match._id,
-        whiteAthlete: `${match.white_athlete.surname} ${match.white_athlete.name}`,
-        redAthlete: `${match.red_athlete.surname} ${match.red_athlete.name}`,
-        winnerAthlete: match.is_over
-          ? `${match.winner_athlete.surname} ${match.winner_athlete.name}`
-          : '',
+        whiteAthlete: match.white_athlete ? `${match.white_athlete.surname} ${match.white_athlete.name}` : '',
+        redAthlete: match.red_athlete ? `${match.red_athlete.surname} ${match.red_athlete.name}` : '',
+        winnerAthlete:
+          match.is_over && match.winner_athlete
+            ? `${match.winner_athlete.surname} ${match.winner_athlete.name}`
+            : '',
         isStarted: match.is_started,
         isOver: match.is_over,
       });
@@ -154,7 +147,9 @@ export default function Tournament() {
         "Attenzione, l'incontro e' gia' stato iniziato da qualche altro tavolo. Iniziarlo e finirlo qui sovrascriverebbe i dati dell'altro tavolo. Continuare?"
       );
     }
-    navigate(`/match-timer/${activeMatch}?from_tournament=${activeTournament}&n_tatami=${nTatami}`);
+    navigate(
+      `/match-timer/${activeMatch}?from_tournament=${activeTournament}&n_tatami=${nTatami}`
+    );
   }
 
   async function reserveTournament(tournamentId: string) {
@@ -221,13 +216,17 @@ export default function Tournament() {
           Prenota Categorie
         </OrangeButton>
         <OrangeButton
-          onClickFunction={() => navigate(`/tournament/${activeTournament}&n_tatami=${nTatami}`)}
+          onClickFunction={() =>
+            navigate(`/tournament/${activeTournament}&n_tatami=${nTatami}`)
+          }
         >
           Apri Tabellone
         </OrangeButton>
         <OrangeButton
           onClickFunction={() =>
-            navigate(`/match-timer?from_tournament=${activeTournament}&n_tatami=${nTatami}`)
+            navigate(
+              `/match-timer?from_tournament=${activeTournament}&n_tatami=${nTatami}`
+            )
           }
         >
           Incontro Amichevole

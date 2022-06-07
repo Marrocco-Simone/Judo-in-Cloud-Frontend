@@ -14,7 +14,6 @@ import TournamentPage from './Pages/Tournament/TournamentPage';
 import PublicTournament from './Pages/Public/PublicTournaments';
 import PublicShell from './Pages/Public/PublicShell';
 
-/* TODO set as tailwind */
 import './Css/match.css';
 import './Css/modal.css';
 import './Css/tournament.css';
