@@ -39,6 +39,41 @@
   display: none;
 }
 
+.welcome-page {
+  background-color: white;
+}
+
+.h1-title {
+  font-size: 3rem;
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.img-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.img-container p {
+  width: 40vw;
+  padding: 3vw;
+  font-size: 2.5rem;
+}
+
+.img-container img {
+  width: 60vw;
+  padding: 3vw;
+}
+
+.img-container .vertical-img {
+  height: 100vh;
+  width: auto;
+}
+
+
 @media (max-width: 40rem) {
   .table {
     width: 100%

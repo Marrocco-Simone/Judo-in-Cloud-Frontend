@@ -17,6 +17,7 @@ import PublicShell from './Pages/Public/PublicShell';
 import './Css/match.css';
 import './Css/modal.css';
 import './Css/tournament.css';
+import WelcomePage from './Pages/Public/WelcomePage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -27,7 +28,7 @@ root.render(
       <Routes>
         <Route element={<App />}>
           <Route element={<MainLayout />} >
-            <Route index element={<></>}></Route>
+            <Route index element={<WelcomePage />}></Route>
             <Route path='login' element={<LoginPage />} />
             <Route path='manage' element={<CompetitionManagementPage />} />
             <Route path='athletes' element={<AthletesPage />} />
