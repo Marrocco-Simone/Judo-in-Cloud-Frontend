@@ -22,11 +22,13 @@
 }
 
 .modal {
+  @apply bg-white;
+  @apply dark:bg-neutral-800;
+  @apply dark:text-neutral-200;
   width: 70rem;
   min-height: 45rem;
   max-height: 55rem;
   outline: 0.3rem solid black;
-  background-color: white;
   z-index: 1;
   animation: modal-popup 0.3s ease-in-out forwards;
   border-radius: 2.5rem;
@@ -102,6 +104,8 @@
   width: 100%;
   border-radius: 1.1rem;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.4);
+  @apply bg-transparent;
+  @apply dark:border-neutral-400;
 }
 
 .athlete-input.input-number {
@@ -125,6 +129,7 @@
   border-radius: 1rem;
   background-color: lightgray;
   transition: background 0.2s;
+  @apply dark:bg-neutral-600;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.4);
 }
 
