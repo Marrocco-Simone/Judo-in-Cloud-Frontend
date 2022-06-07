@@ -50,3 +50,9 @@
     font-size: 3vw;
   }
 }
+
+@media (max-height: 30rem) {
+  :root {
+    font-size: 3vh;
+  }
+}
