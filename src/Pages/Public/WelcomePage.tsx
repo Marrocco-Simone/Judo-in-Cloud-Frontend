@@ -27,7 +27,7 @@ export default function WelcomePage() {
           con un click o con la tastiera. La vittoria viene assegnata automaticamente, devi solo
           confermare!
         `}</p>
-        <img src='match-timer-screenshot.png' />
+        <img src='match-timer-screenshot.jpg' />
       </div>
       <div className='img-container'>
         <img src='public-screenshot.png' className='vertical-img'/>

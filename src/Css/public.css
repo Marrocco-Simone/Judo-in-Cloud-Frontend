@@ -78,8 +78,9 @@
 }
 
 .img-container img {
+  border: 5px solid black;
   width: 60vw;
-  padding: 3vw;
+  margin: 3vw;
 }
 
 .img-container .vertical-img {
@@ -128,7 +129,7 @@
   
   .img-container img {
     width: 100vw;
-    padding: 2vh 2vw;
+    margin: 2vh 2vw;
   }
   
   .img-container .vertical-img {
