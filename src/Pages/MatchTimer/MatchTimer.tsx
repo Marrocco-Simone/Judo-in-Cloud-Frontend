@@ -756,7 +756,7 @@ export default function MatchTimer() {
 
   return (
     <div
-      className='wrapper'
+      className='wrapper bg-white dark:bg-neutral-800'
       tabIndex={0}
       onKeyDown={(e) => keyboardEventShortcuts(e)}
       onContextMenu={(e) => e.preventDefault()}

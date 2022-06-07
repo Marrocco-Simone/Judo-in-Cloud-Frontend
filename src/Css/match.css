@@ -226,6 +226,7 @@
   font-size: 6vh;
   text-align: center;
   @apply dark:bg-neutral-700;
+  @apply bg-neutral-200;
 }
 
 .athlete-name {
