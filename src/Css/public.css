@@ -1,5 +1,6 @@
 .public-container {
-  background-color: cornflowerblue;
+  @apply px-2;
+  @apply md:px-4;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -9,12 +10,19 @@
   font-size: 2rem;
 }
 
+.select-wrapper {
+  @apply w-full;
+  @apply max-w-md;
+}
+
 .competition-name {
+  @apply w-full;
+  @apply max-w-md;
+  @apply bg-sky-300;
+  @apply dark:bg-sky-600;
   font-weight: bold;
   font-size: 3rem;
-  background-color: lightskyblue;
   margin-top: 4rem;
-  width: 30rem;
   padding: 1.5rem 1.5rem;
   border-radius: 2rem;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
@@ -28,9 +36,10 @@
 }
 
 .select {
+  @apply dark:bg-neutral-700;
+  @apply bg-white;
   cursor: pointer;
   padding: 1.5rem 1.5rem;
-  min-width: 30rem;
   border-radius: 1.5rem;
   box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.5);
 }

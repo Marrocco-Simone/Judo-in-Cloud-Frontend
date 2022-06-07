@@ -95,7 +95,7 @@
 }
 
 .table tr:nth-of-type(even) {
-  @apply dark:bg-neutral-700;
+  @apply dark:bg-neutral-900;
   background-color: #f3f3f3;
 }
 

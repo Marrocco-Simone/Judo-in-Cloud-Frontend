@@ -22,17 +22,19 @@ export default function AthleteForm(props: {
     name: initialParams?.name || '',
     surname: initialParams?.surname || '',
     club: initialParams?.club || '',
-    birth_year: initialParams?.birth_year || '',
-    weight: initialParams?.weight || '',
+    birth_year: initialParams?.birth_year || 0,
+    weight: initialParams?.weight || 0,
     gender: initialParams?.gender || '',
   });
 
   function getOnChangeFunction(field: keyof typeof params) {
-    return (e: React.ChangeEvent<HTMLInputElement>) =>
-      setParams((prevParams) => ({
+    return (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { type, value } = e.target;
+      return setParams((prevParams) => ({
         ...prevParams,
-        ...{ [field]: `${e.target.value}` },
+        ...{ [field]: type === 'number' ? parseInt(e.target.value, 10) : value },
       }));
+    };
   }
 
   return (

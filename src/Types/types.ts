@@ -24,8 +24,8 @@ export type AthleteParamsInterface = {
   name: string;
   surname: string;
   club: string;
-  birth_year: string;
-  weight: string;
+  birth_year: number;
+  weight: number;
   gender: 'M' | 'F' | '';
 }
 
