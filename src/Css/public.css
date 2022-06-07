@@ -53,9 +53,14 @@
 }
 
 .h1-title {
-  font-size: 3rem;
-  text-align: center;
-  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  font-size: 10rem;
+  font-weight: bold;
+  padding: 3rem;
 }
 
 .img-container {
@@ -82,7 +87,6 @@
   width: auto;
 }
 
-
 @media (max-width: 40rem) {
   .table {
     width: 100%
@@ -92,5 +96,43 @@
 @media (orientation: portrait) {
   :root {
     font-size: 3vw;
+  }
+}
+
+@media (orientation: portrait) {
+  .h1-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10vw;
+    font-weight: bold;
+    padding: 3rem;
+    height: 100vh;
+  }
+
+  .img-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  .img-container p {
+    width: auto;
+    height: 40vh;
+    padding: 0 10vw;
+    font-size: 6vw;
+  }
+  
+  .img-container img {
+    width: 100vw;
+    padding: 2vh 2vw;
+  }
+  
+  .img-container .vertical-img {
+    height: 100vh;
+    width: auto;
   }
 }
