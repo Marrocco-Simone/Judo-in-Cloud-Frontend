@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { MatchInterface, MatchParamsInterface } from '../../Types/types';
-import { Modal } from '../../Components/Modal/Modal';
-import { ModifyParams } from './components/ModifyParams';
+/* import { Modal } from '../../Components/Modal/Modal';
+import { ModifyParams } from './components/ModifyParams'; */
 import { apiGet, apiPost } from '../../Services/Api/api';
 
 /* add line 'window.addEventListener("contextmenu", e => e.preventDefault());' to index.tsx */
@@ -139,8 +139,8 @@ export default function MatchTimer() {
 
   const [winner, setWinner] = useState<AthleteColor>('none');
 
-  const [isInfoOpen, setIsInfoOpen] = useState(false);
-  const [isModifyOpen, setIsModifyOpen] = useState(false);
+  /* const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [isModifyOpen, setIsModifyOpen] = useState(false); */
 
   // // // // // /Points Functions // // // // // // // // // // // // // // // // // // // // // // // // // //
 
@@ -306,7 +306,7 @@ export default function MatchTimer() {
   }
 
   /** write keyboardShortcuts in a readable format */
-  function getKeyboardShortcutInfo() {
+  /* function getKeyboardShortcutInfo() {
     const kbInfoElem = [];
     for (const field in keyboardShortcuts) {
       const tasto = keyboardShortcuts[field].translate || field;
@@ -318,20 +318,20 @@ export default function MatchTimer() {
       );
     }
     return kbInfoElem;
-  }
+  } */
 
   // // // // // /TOP ROW// // // // // // // // // // // // // // // // // // // // // // // // // //
 
   /** returns a function that calls @param setFunction to false. Used to pass to a modal as handleClose */
-  const handleClose = (setFunction: Function) => {
+  /* const handleClose = (setFunction: Function) => {
     return () => setFunction(false);
-  };
+  }; */
 
   /** get the button to open the information about the page */
   function getInfoButton() {
     return (
       <div id='info-button-container'>
-        <button
+        {/* <button
           className='timer-button orange'
           id='info-button'
           onClick={() => setIsInfoOpen(true)}
@@ -342,15 +342,16 @@ export default function MatchTimer() {
           <Modal handleClose={handleClose(setIsInfoOpen)}>
             <div className='info'>{getKeyboardShortcutInfo()}</div>
           </Modal>
-        )}
+        )} */}
       </div>
     );
   }
 
   function getModifyParamsButton() {
     return (
-      <div id='current-tournament-container'>
-        <button
+      <div id='current-tournament-container' style={{ fontSize: '4rem' }/* TODO DELETE */}>
+        {categoryName/* TODO DELETE */}
+        {/* <button
           className='timer-button white'
           id='current-tournament-button'
           onClick={() => setIsModifyOpen(true)}
@@ -375,7 +376,7 @@ export default function MatchTimer() {
               setParams={setParams}
             ></ModifyParams>
           </Modal>
-        )}
+        )} */}
       </div>
     );
   }
