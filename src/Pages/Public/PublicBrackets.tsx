@@ -29,7 +29,7 @@ const PublicBrackets: FC = () => {
   }
 
   return (
-    <>
+    <div className='px-2 pt-2 md:px-4'>
       <h1 className='pb-2'>
         <span className='text-3xl font-extrabold'>
           <NavLink to={`/${tournament.competition.slug}`}>
@@ -42,7 +42,7 @@ const PublicBrackets: FC = () => {
         </span>
       </h1>
       <Brackets tournament={tournament}></Brackets>
-    </>
+    </div>
   );
 };
 
