@@ -87,7 +87,7 @@ export default function PublicTournaments() {
       </DropDown>
       {selectedTournament && (
         <OrangeButton
-          onClickFunction={() => navigate(`/tournament/${selectedTournament}`)}
+          onClickFunction={() => navigate(`${selectedTournament}`)}
         >
           Apri Tabellone
         </OrangeButton>
