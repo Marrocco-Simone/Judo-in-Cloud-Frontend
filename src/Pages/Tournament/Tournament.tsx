@@ -92,17 +92,18 @@ export default function Tournament() {
   }
 
   /** returns if one of the athletes of a match is undefined */
-  /* function isMatchWithNullAthlete(match: MatchInterface) {
+  function isMatchWithNullAthlete(match: MatchInterface) {
+    if (!match.is_over) return false;
     if (!match?.white_athlete) return true;
     if (!match?.red_athlete) return true;
     return false;
-  } */
+  }
 
   /* TODO cambiare con .map() */
   function getMatchesDataForTable() {
     const matchTableData: MatchTableData[] = [];
     for (const match of matches) {
-      /* if (isMatchWithNullAthlete(match)) continue; */
+      if (isMatchWithNullAthlete(match)) continue;
 
       matchTableData.push({
         _id: match._id,

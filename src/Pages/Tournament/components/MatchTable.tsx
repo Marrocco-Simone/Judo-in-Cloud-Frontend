@@ -34,6 +34,7 @@ export default function MatchTable(props: {
         <td className='table-column-40'>{match.redAthlete}</td>
         <td className='table-column-20'>
           {(() => {
+            if (!match.winnerAthlete) return '';
             if (match.winnerAthlete === match.whiteAthlete) return 'Bianco';
             if (match.winnerAthlete === match.redAthlete) return 'Rosso';
             return '';
