@@ -189,7 +189,7 @@ export default function Tournament() {
               red_wazaari: 0,
               red_penalties: 0,
             },
-          });
+          }).then(() => window.location.reload());
         }
       });
     }
@@ -221,7 +221,7 @@ export default function Tournament() {
             },
           });
         }
-      });
+      }).then(() => window.location.reload());
     }
 
     navigate(`/match-timer/${activeMatch}?from_tournament=${activeTournament}`);
