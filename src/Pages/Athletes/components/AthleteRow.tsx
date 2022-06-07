@@ -53,8 +53,8 @@ export default function AthleteRow(props: {
               name: athlete.name,
               surname: athlete.surname,
               club: athlete.club,
-              birth_year: `${athlete.birth_year}`,
-              weight: `${athlete.weight}`,
+              birth_year: athlete.birth_year,
+              weight: athlete.weight,
               gender: athlete.gender,
             }}
           >
